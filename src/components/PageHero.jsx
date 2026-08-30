@@ -7,8 +7,8 @@ export default function PageHero({ eyebrow, title, lede, image }) {
       {image && (
         <div className="absolute inset-0 -z-10">
           <Image src={image} alt="" className="w-full h-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0F1215] via-[#0F1215]/85 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0F1215] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F4EFE3] via-[#F4EFE3]/85 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F4EFE3] to-transparent" />
         </div>
       )}
       <p className="chrono-eyebrow mb-5">{eyebrow}</p>

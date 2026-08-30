@@ -18,7 +18,7 @@ export default function Home() {
       <section className="relative py-20 md:py-32">
         <div className="absolute inset-0 -z-10 -mx-6 md:-mx-20">
           <Image src="https://media.base44.com/images/public/6a9374897e9609e0d36beee4/783ff2ac4_generated_2e68a725.png" alt="" className="w-full h-full object-cover opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F1215] via-[#0F1215]/80 to-[#0F1215]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#F4EFE3] via-[#F4EFE3]/80 to-[#F4EFE3]/60" />
         </div>
         <p className="chrono-eyebrow mb-6">The Chronos Archive · IB History</p>
         <h1 className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.9] tracking-tight max-w-5xl">

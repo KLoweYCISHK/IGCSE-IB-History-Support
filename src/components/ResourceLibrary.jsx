@@ -35,7 +35,7 @@ export default function ResourceLibrary({ section, caseStudy }) {
         title="The Resource Vault"
         description="Curated documents, archives, videos and readings. Students may add a link they've found."
         right={
-          <Button onClick={() => setEditing({})} className="bg-[#8C1C13] hover:bg-[#a52218] text-[#F4F1EA]">
+          <Button onClick={() => setEditing({})} className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]">
             <Plus className="w-4 h-4 mr-1.5" /> Add a resource
           </Button>
         }
@@ -55,7 +55,7 @@ export default function ResourceLibrary({ section, caseStudy }) {
                 {r.description && <p className="mt-2 text-sm text-foreground/60 leading-relaxed">{r.description}</p>}
                 <div className="mt-4 flex items-center justify-between">
                   {r.url ? (
-                    <a href={r.url} target="_blank" rel="noreferrer" className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#c9564a] inline-flex items-center gap-1.5">
+                    <a href={r.url} target="_blank" rel="noreferrer" className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#6F551A] inline-flex items-center gap-1.5">
                       Open <ExternalLink className="w-3 h-3" />
                     </a>
                   ) : <span />}
@@ -68,7 +68,7 @@ export default function ResourceLibrary({ section, caseStudy }) {
               </div>
               {editMode && (
                 <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition bg-card/90 border border-border rounded">
-                  <button onClick={() => setEditing(r)} className="p-1.5 hover:text-[#c9564a]"><Pencil className="w-4 h-4" /></button>
+                  <button onClick={() => setEditing(r)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
                   <button onClick={async () => { await base44.entities.Resource.delete(r.id); load(); }} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
               )}

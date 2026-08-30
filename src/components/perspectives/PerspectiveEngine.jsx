@@ -50,7 +50,7 @@ export default function PerspectiveEngine({ unit }) {
             {UNITS[unit].topics.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
-        <Button className="h-12 bg-[#8C1C13] hover:bg-[#a52218] text-[#F4F1EA]" onClick={() => setEditing({ student_name: user?.full_name || '' })}>
+        <Button className="h-12 bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]" onClick={() => setEditing({ student_name: user?.full_name || '' })}>
           <Plus className="w-4 h-4 mr-1.5" /> Add perspective
         </Button>
       </div>

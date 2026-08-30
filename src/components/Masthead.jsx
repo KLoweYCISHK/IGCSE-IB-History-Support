@@ -30,14 +30,14 @@ export default function Masthead() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-[#0F1215]/92 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border bg-[#F4EFE3]/92 backdrop-blur-md">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-5 flex flex-wrap items-center justify-between gap-5">
         <Link to="/" className="flex items-center gap-4 group">
-          <span className="flex items-center justify-center w-12 h-12 rounded-full border border-[#8C1C13] overflow-hidden shrink-0">
+          <span className="flex items-center justify-center w-12 h-12 rounded-full border border-[#6F551A] overflow-hidden shrink-0">
             {settings?.logo_url ? (
               <Image src={settings.logo_url} alt="Logo" className="w-full h-full" />
             ) : (
-              <Landmark className="w-5 h-5 text-[#c9564a]" />
+              <Landmark className="w-5 h-5 text-[#6F551A]" />
             )}
           </span>
           <span>
@@ -53,7 +53,7 @@ export default function Masthead() {
         <div className="flex items-center gap-3">
           <SiteNav />
           {editMode && (
-            <button onClick={() => setDraft({ ...settings })} className="p-2 text-muted-foreground hover:text-[#c9564a]" title="Site identity">
+            <button onClick={() => setDraft({ ...settings })} className="p-2 text-muted-foreground hover:text-[#6F551A]" title="Site identity">
               <Settings className="w-4 h-4" />
             </button>
           )}

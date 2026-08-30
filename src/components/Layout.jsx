@@ -5,7 +5,7 @@ import AdminBar from './AdminBar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-[#0F1215]">
+    <div className="min-h-screen bg-[#F4EFE3]">
       <Masthead />
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
         <div className="relative md:pl-10">

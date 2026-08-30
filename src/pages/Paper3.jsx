@@ -44,7 +44,7 @@ export default function Paper3() {
               key={k}
               onClick={() => setUnit(k)}
               className={`px-6 py-3 font-mono text-[11px] uppercase tracking-[0.2em] border-r border-border last:border-r-0 transition-colors ${
-                unit === k ? 'bg-[#8C1C13] text-[#F4F1EA]' : 'text-foreground/60 hover:bg-white/[0.04]'
+                unit === k ? 'bg-[#6F551A] text-[#F4EFE3]' : 'text-foreground/60 hover:bg-white/[0.04]'
               }`}
             >
               {UNITS[k].label}

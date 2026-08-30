@@ -10,7 +10,7 @@ export default function AdminBar() {
   if (!isAdmin) {
     return (
       <div className="fixed bottom-5 right-5 z-50">
-        <button onClick={login} className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-[#c9564a] border border-border bg-[#12161a]/90 backdrop-blur px-4 py-2.5 rounded-full">
+        <button onClick={login} className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-[#6F551A] border border-border bg-[#FBF7EE]/90 backdrop-blur px-4 py-2.5 rounded-full">
           Ms Lowe — sign in
         </button>
       </div>
@@ -18,17 +18,17 @@ export default function AdminBar() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 border border-border bg-[#12161a]/95 backdrop-blur px-3 py-2 rounded-full shadow-2xl">
+    <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 border border-border bg-[#FBF7EE]/95 backdrop-blur px-3 py-2 rounded-full shadow-2xl">
       <Button
         size="sm"
         onClick={() => setEditMode(!editMode)}
-        className={editMode ? 'bg-[#8C1C13] hover:bg-[#a52218] text-[#F4F1EA]' : ''}
+        className={editMode ? 'bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]' : ''}
         variant={editMode ? 'default' : 'outline'}
       >
         {editMode ? <Unlock className="w-3.5 h-3.5 mr-1.5" /> : <Lock className="w-3.5 h-3.5 mr-1.5" />}
         {editMode ? 'Editing' : 'Edit mode'}
       </Button>
-      <button onClick={logout} className="p-2 text-muted-foreground hover:text-[#c9564a]" title="Sign out">
+      <button onClick={logout} className="p-2 text-muted-foreground hover:text-[#6F551A]" title="Sign out">
         <LogOut className="w-4 h-4" />
       </button>
     </div>

@@ -66,7 +66,7 @@ export default function AddPerspectiveDialog({ open, onOpenChange, unit, initial
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button disabled={!valid || saving} onClick={submit} className="bg-[#8C1C13] hover:bg-[#a52218] text-[#F4F1EA]">
+          <Button disabled={!valid || saving} onClick={submit} className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]">
             {saving ? 'Saving…' : 'Submit perspective'}
           </Button>
         </DialogFooter>

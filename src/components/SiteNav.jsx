@@ -26,17 +26,17 @@ export default function SiteNav() {
           <Link
             to={item.to}
             className={`block px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors ${
-              pathname === item.to ? 'text-[#F4F1EA]' : 'text-foreground/50 hover:text-[#F4F1EA]'
+              pathname === item.to ? 'text-foreground' : 'text-foreground/50 hover:text-foreground'
             }`}
           >
             {item.label}
-            <span className={`block mt-1.5 h-px transition-all duration-500 ${pathname === item.to ? 'bg-[#8C1C13]' : 'bg-transparent group-hover:bg-border'}`} />
+            <span className={`block mt-1.5 h-px transition-all duration-500 ${pathname === item.to ? 'bg-[#6F551A]' : 'bg-transparent group-hover:bg-border'}`} />
           </Link>
           {item.preview && (
             <div className="absolute left-0 top-full pt-1 hidden group-hover:block z-40">
               <div className="min-w-[190px] border border-border bg-[#12161a]/95 backdrop-blur rounded-sm py-2 shadow-2xl">
                 {item.preview.map((p) => (
-                  <Link key={p.to} to={p.to} className="block px-4 py-2 text-sm text-foreground/70 hover:text-[#F4F1EA] hover:bg-white/[0.04]">
+                  <Link key={p.to} to={p.to} className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-white/[0.04]">
                     {p.label}
                   </Link>
                 ))}

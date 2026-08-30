@@ -29,7 +29,7 @@ export default function ResourceForm({ open, onOpenChange, initial, onSave }) {
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button disabled={!draft.title} onClick={() => onSave(draft)} className="bg-[#8C1C13] hover:bg-[#a52218] text-[#F4F1EA]">Save</Button>
+          <Button disabled={!draft.title} onClick={() => onSave(draft)} className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

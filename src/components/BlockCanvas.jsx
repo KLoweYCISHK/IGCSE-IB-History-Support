@@ -47,7 +47,7 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
     load();
   };
 
-  if (loading) return <div className="h-24 animate-pulse bg-white/[0.03] rounded" />;
+  if (loading) return <div className="h-24 animate-pulse bg-black/[0.04] rounded" />;
 
   return (
     <div className="space-y-10">
@@ -59,9 +59,9 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
         <article key={b.id} className="relative group">
           {editMode && (
             <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
-              <button onClick={() => move(i, -1)} className="p-1.5 hover:text-[#c9564a]"><ArrowUp className="w-4 h-4" /></button>
-              <button onClick={() => move(i, 1)} className="p-1.5 hover:text-[#c9564a]"><ArrowDown className="w-4 h-4" /></button>
-              <button onClick={() => setEditing(b)} className="p-1.5 hover:text-[#c9564a]"><Pencil className="w-4 h-4" /></button>
+              <button onClick={() => move(i, -1)} className="p-1.5 hover:text-[#6F551A]"><ArrowUp className="w-4 h-4" /></button>
+              <button onClick={() => move(i, 1)} className="p-1.5 hover:text-[#6F551A]"><ArrowDown className="w-4 h-4" /></button>
+              <button onClick={() => setEditing(b)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
               <button onClick={() => remove(b.id)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
             </div>
           )}
