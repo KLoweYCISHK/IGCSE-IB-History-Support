@@ -8,6 +8,7 @@ export default function Paper1() {
   return (
     <div>
       <PageHero
+        page="paper1"
         eyebrow="Prescribed subject · Source paper"
         title="Paper 1"
         lede="The source booklet, the four questions, and the discipline of using evidence well."

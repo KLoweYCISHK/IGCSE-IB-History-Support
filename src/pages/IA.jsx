@@ -15,6 +15,7 @@ export default function IA() {
   return (
     <div>
       <PageHero
+        page="ia"
         eyebrow="Internal Assessment · 20% of your grade"
         title="The IA"
         lede="A historical investigation of your own making. Follow the roadmap, step by step."

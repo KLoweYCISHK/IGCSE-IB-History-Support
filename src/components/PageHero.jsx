@@ -1,19 +1,68 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { base44 } from '@/api/base44Client';
+import { useAdmin } from '@/lib/AdminContext';
 import { Image } from '@/components/ui/image';
+import { Pencil } from 'lucide-react';
+import HeroForm from './HeroForm';
 
-export default function PageHero({ eyebrow, title, lede, image }) {
+export default function PageHero({ page, eyebrow, title, lede, image }) {
+  const { editMode } = useAdmin();
+  const [meta, setMeta] = useState(null);
+  const [editing, setEditing] = useState(false);
+
+  const load = useCallback(async () => {
+    if (!page) { setMeta(null); return; }
+    const list = await base44.entities.PageMeta.filter({ page });
+    setMeta(list[0] || null);
+  }, [page]);
+
+  useEffect(() => {
+    load();
+    const handler = () => load();
+    window.addEventListener('archive:reload', handler);
+    return () => window.removeEventListener('archive:reload', handler);
+  }, [load]);
+
+  const save = async (draft) => {
+    if (meta?.id) await base44.entities.PageMeta.update(meta.id, draft);
+    else await base44.entities.PageMeta.create({ page, ...draft });
+    setEditing(false);
+    load();
+  };
+
+  const eEyebrow = meta?.eyebrow ?? eyebrow;
+  const eTitle = meta?.title ?? title;
+  const eLede = meta?.description ?? lede;
+  const eImage = meta?.image_url ?? image;
+
   return (
     <header className="relative pt-16 pb-14 md:pt-24 md:pb-20 overflow-hidden">
-      {image && (
+      {eImage && (
         <div className="absolute inset-0 -z-10">
-          <Image src={image} alt="" className="w-full h-full object-cover opacity-25" />
+          <Image src={eImage} alt="" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#F4EFE3] via-[#F4EFE3]/85 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F4EFE3] to-transparent" />
         </div>
       )}
-      <p className="chrono-eyebrow mb-5">{eyebrow}</p>
-      <h1 className="font-display text-6xl md:text-8xl leading-[0.92] tracking-tight max-w-4xl">{title}</h1>
-      {lede && <p className="mt-6 max-w-2xl text-lg text-foreground/60 leading-relaxed">{lede}</p>}
+      <p className="chrono-eyebrow mb-5">{eEyebrow}</p>
+      <h1 className="font-display text-6xl md:text-8xl leading-[0.92] tracking-tight max-w-4xl">{eTitle}</h1>
+      {eLede && <p className="mt-6 max-w-2xl text-lg text-foreground/60 leading-relaxed">{eLede}</p>}
+
+      {editMode && (
+        <button
+          onClick={() => setEditing(true)}
+          className="absolute top-4 right-4 inline-flex items-center gap-1.5 border border-border bg-card/90 px-3 py-1.5 rounded-sm text-xs hover:text-[#6F551A]"
+        >
+          <Pencil className="w-3.5 h-3.5" /> Edit hero
+        </button>
+      )}
+
+      <HeroForm
+        open={editing}
+        onOpenChange={setEditing}
+        initial={{ eyebrow: eEyebrow, title: eTitle, description: eLede, image_url: eImage }}
+        onSave={save}
+      />
     </header>
   );
 }

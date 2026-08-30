@@ -16,6 +16,7 @@ export default function Paper3() {
   return (
     <div>
       <PageHero
+        page="paper3"
         eyebrow="Depth study · Historical perspectives"
         title="Paper 3"
         lede="Deep regional knowledge, essay craft, and a living library of historiography."

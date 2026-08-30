@@ -1,0 +1,46 @@
+import React, { useEffect, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+
+export default function HeroForm({ open, onOpenChange, initial, onSave }) {
+  const [draft, setDraft] = useState(initial || {});
+
+  useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
+
+  const set = (k) => (e) => setDraft((d) => ({ ...d, [k]: e.target.value }));
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="font-display text-2xl">Edit hero</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          <div className="space-y-1.5">
+            <Label>Eyebrow</Label>
+            <Input value={draft.eyebrow || ''} onChange={set('eyebrow')} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Title</Label>
+            <Input value={draft.title || ''} onChange={set('title')} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Description</Label>
+            <Textarea rows={3} value={draft.description || ''} onChange={set('description')} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Image URL</Label>
+            <Input value={draft.image_url || ''} onChange={set('image_url')} />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]" onClick={() => onSave(draft)}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}

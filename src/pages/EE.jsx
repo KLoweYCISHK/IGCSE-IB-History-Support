@@ -15,6 +15,7 @@ export default function EE() {
   return (
     <div>
       <PageHero
+        page="ee"
         eyebrow="Extended Essay · 4,000 words"
         title="The EE"
         lede="A sustained piece of independent research. Here is the path through it."

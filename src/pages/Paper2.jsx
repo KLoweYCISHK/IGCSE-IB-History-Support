@@ -15,6 +15,7 @@ export default function Paper2() {
   return (
     <div>
       <PageHero
+        page="paper2"
         eyebrow="World history topics · Three case studies"
         title="Paper 2"
         lede="Authoritarian states through Hitler, Castro and Chiang Kai-shek — compared, contrasted, argued."
