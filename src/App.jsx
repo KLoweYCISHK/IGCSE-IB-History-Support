@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { AdminProvider } from '@/lib/AdminContext';
 import Layout from '@/components/Layout';
 import Home from '@/pages/Home';
+import HistoricalConcepts from '@/pages/HistoricalConcepts';
 import Paper1 from '@/pages/Paper1';
 import Paper2 from '@/pages/Paper2';
 import Paper3 from '@/pages/Paper3';
@@ -43,6 +44,7 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/historical-concepts" element={<HistoricalConcepts />} />
         <Route path="/paper-1" element={<Paper1 />} />
         <Route path="/paper-2" element={<Paper2 />} />
         <Route path="/paper-3" element={<Paper3 />} />
