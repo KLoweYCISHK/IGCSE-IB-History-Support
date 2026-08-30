@@ -5,7 +5,7 @@ const NAV = [
   { to: '/paper-3#perspectives', label: 'Historical Concepts' },
   { to: '/paper-1', label: 'Paper 1' },
   { to: '/paper-2', label: 'Paper 2' },
-  { to: '/paper-3', label: 'Paper 3' },
+  { to: '/paper-3', label: 'Paper 3 (HL)' },
   { to: '/ia', label: 'IA' },
   { to: '/ee', label: 'EE' },
 ];

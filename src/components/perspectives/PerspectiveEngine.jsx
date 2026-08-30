@@ -23,6 +23,12 @@ export default function PerspectiveEngine({ unit }) {
 
   useEffect(() => { setQuery(''); setTopic('all'); load(); }, [load]);
 
+  useEffect(() => {
+    const handler = () => load();
+    window.addEventListener('perspectives:reload', handler);
+    return () => window.removeEventListener('perspectives:reload', handler);
+  }, [load]);
+
   const filtered = useMemo(
     () => items.filter((i) =>
       (topic === 'all' || i.topic === topic) &&

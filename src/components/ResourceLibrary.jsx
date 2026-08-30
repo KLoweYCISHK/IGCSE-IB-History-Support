@@ -7,7 +7,7 @@ import { ExternalLink, Pencil, Trash2, Plus } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import ResourceForm from './ResourceForm';
 
-export default function ResourceLibrary({ section, caseStudy }) {
+export default function ResourceLibrary({ section, caseStudy, module }) {
   const { editMode, isAdmin } = useAdmin();
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -15,15 +15,20 @@ export default function ResourceLibrary({ section, caseStudy }) {
   const load = useCallback(async () => {
     const query = { section };
     if (caseStudy) query.case_study = caseStudy;
-    setItems(await base44.entities.Resource.filter(query, '-created_date'));
-  }, [section, caseStudy]);
+    const list = await base44.entities.Resource.filter(query, '-created_date');
+    setItems(module ? list.filter((r) => !r.module || r.module === 'all' || r.module === module) : list);
+  }, [section, caseStudy, module]);
 
   useEffect(() => { load(); }, [load]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
     if (id) await base44.entities.Resource.update(id, data);
-    else await base44.entities.Resource.create({ ...data, section, case_study: caseStudy || 'all', is_student_submission: !isAdmin });
+    else {
+      const payload = { ...data, section, case_study: caseStudy || 'all', is_student_submission: !isAdmin };
+      if (module) payload.module = data.module || module;
+      await base44.entities.Resource.create(payload);
+    }
     setEditing(null);
     load();
   };
@@ -77,7 +82,7 @@ export default function ResourceLibrary({ section, caseStudy }) {
         </div>
       )}
 
-      <ResourceForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+      <ResourceForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} module={module} />
     </section>
   );
 }

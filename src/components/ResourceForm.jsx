@@ -3,13 +3,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAdmin } from '@/lib/AdminContext';
+import { UNITS } from '@/lib/perspectiveTopics';
 import ImageUploadField from './editor/ImageUploadField';
 
-export default function ResourceForm({ open, onOpenChange, initial, onSave }) {
+const MODULE_OPTIONS = [
+  { value: 'russian_revolution', label: UNITS.russian_revolution.label },
+  { value: 'cold_war', label: UNITS.cold_war.label },
+  { value: 'all', label: 'Both modules' },
+];
+
+export default function ResourceForm({ open, onOpenChange, initial, onSave, module }) {
   const { isAdmin } = useAdmin();
   const [draft, setDraft] = useState(initial || {});
-  useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
+  useEffect(() => { if (open) setDraft({ ...(initial || {}), module: module ? (initial?.module || module) : initial?.module }); }, [open, initial, module]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
 
   return (
@@ -24,6 +32,17 @@ export default function ResourceForm({ open, onOpenChange, initial, onSave }) {
           <Textarea value={draft.description || ''} onChange={(e) => set('description', e.target.value)} placeholder="Why is this useful?" rows={3} />
           {!isAdmin && (
             <Input value={draft.submitted_by || ''} onChange={(e) => set('submitted_by', e.target.value)} placeholder="Your name" />
+          )}
+          {module && (
+            <div className="space-y-1.5">
+              <p className="chrono-eyebrow">Module</p>
+              <Select value={draft.module || 'all'} onValueChange={(v) => set('module', v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {MODULE_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
           )}
           <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} label="Image (optional)" />
         </div>

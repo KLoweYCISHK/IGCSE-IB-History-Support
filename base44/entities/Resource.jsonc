@@ -10,6 +10,16 @@
       "type": "string",
       "description": "hitler | castro | chiang | all"
     },
+    "module": {
+      "type": "string",
+      "enum": [
+        "russian_revolution",
+        "cold_war",
+        "all"
+      ],
+      "default": "all",
+      "description": "paper3 module filter (russian_revolution | cold_war | all)"
+    },
     "title": {
       "type": "string"
     },
