@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import ResizableImage from './ResizableImage';
 import { Pencil, Trash2, Plus, Type, Table2, ImageIcon, Link2, ExternalLink, GripVertical } from 'lucide-react';
 import ArchiveTable from './ArchiveTable';
+import LinkCredentials from './LinkCredentials';
 import BlockForm from './editor/BlockForm';
 import { makeDroppableId } from '@/lib/blockDnd';
 import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
@@ -141,6 +142,7 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
                         {b.title || b.link_url}
                         <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
                       </a>
+                      <LinkCredentials username={b.link_username} password={b.link_password} />
                     </div>
                   )}
 

@@ -75,6 +75,14 @@
       "type": "string",
       "description": "URL for link blocks"
     },
+    "link_username": {
+      "type": "string",
+      "description": "Optional login username for subscription links"
+    },
+    "link_password": {
+      "type": "string",
+      "description": "Optional login password for subscription links"
+    },
     "order": {
       "type": "number",
       "default": 0

@@ -47,6 +47,17 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
                 <p className="chrono-eyebrow">Description (optional)</p>
                 <Input value={draft.caption || ''} onChange={(e) => set('caption', e.target.value)} placeholder="e.g. Use the linked question generator to help formulate your question." />
               </div>
+              <div className="rounded-sm border border-dashed border-border p-3 space-y-3">
+                <p className="chrono-eyebrow">School subscription login (optional)</p>
+                <div className="space-y-2">
+                  <p className="font-mono text-[11px] text-muted-foreground">Username</p>
+                  <Input value={draft.link_username || ''} onChange={(e) => set('link_username', e.target.value)} placeholder="School login username" />
+                </div>
+                <div className="space-y-2">
+                  <p className="font-mono text-[11px] text-muted-foreground">Password</p>
+                  <Input value={draft.link_password || ''} onChange={(e) => set('link_password', e.target.value)} placeholder="School login password" />
+                </div>
+              </div>
             </>
           )}
 
