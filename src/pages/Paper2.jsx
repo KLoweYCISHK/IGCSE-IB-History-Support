@@ -26,13 +26,12 @@ export default function Paper2() {
         <CaseStudyFilter value={caseStudy} onChange={setCaseStudy} />
       </div>
 
-      <SectionCanvas page="paper2" caseStudy={scope} />
+      <SectionCanvas page="paper2" />
 
       <ResourceLibrary section="paper2" caseStudy={scope} />
 
       <ExamVault
         section="paper2"
-        caseStudy={scope}
         title="The Exam Vault"
         description="Example questions, example answers, mark schemes and concept imagery."
       />
