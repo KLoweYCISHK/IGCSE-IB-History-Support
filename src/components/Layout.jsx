@@ -1,7 +1,9 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { DragDropContext } from '@hello-pangea/dnd';
 import Masthead from './Masthead';
 import AdminBar from './AdminBar';
+import { handleBlockDragEnd } from '@/lib/blockDnd';
 
 export default function Layout() {
   return (
@@ -10,7 +12,9 @@ export default function Layout() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
         <div className="relative md:pl-10">
           <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-border" />
-          <main><Outlet /></main>
+          <DragDropContext onDragEnd={handleBlockDragEnd}>
+            <main><Outlet /></main>
+          </DragDropContext>
         </div>
       </div>
       <footer className="mt-24 border-t border-border">

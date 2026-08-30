@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import RichTextEditor from './RichTextEditor';
 import TableEditor from './TableEditor';
 import ImageUploadField from './ImageUploadField';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 export default function BlockForm({ open, onOpenChange, initial, onSave }) {
   const [draft, setDraft] = useState(initial || {});
@@ -33,6 +34,23 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
           {draft.kind === 'image' && (
             <>
               <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} />
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Placement</p>
+                <Select value={draft.image_layout || 'full'} onValueChange={(v) => set('image_layout', v)}>
+                  <SelectTrigger className="w-full"><SelectValue placeholder="Full width" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="full">Full width</SelectItem>
+                    <SelectItem value="left">Image left, text right</SelectItem>
+                    <SelectItem value="right">Text left, image right</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {draft.image_layout && draft.image_layout !== 'full' && (
+                <div className="space-y-2">
+                  <p className="chrono-eyebrow">Text beside image</p>
+                  <RichTextEditor value={draft.html} onChange={(v) => set('html', v)} />
+                </div>
+              )}
               <Input value={draft.caption || ''} onChange={(e) => set('caption', e.target.value)} placeholder="Caption" />
             </>
           )}

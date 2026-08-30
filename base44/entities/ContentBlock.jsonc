@@ -41,6 +41,16 @@
     "image_url": {
       "type": "string"
     },
+    "image_layout": {
+      "type": "string",
+      "enum": [
+        "full",
+        "left",
+        "right"
+      ],
+      "default": "full",
+      "description": "full = standalone; left = image left with text right; right = text left with image right"
+    },
     "caption": {
       "type": "string"
     },
