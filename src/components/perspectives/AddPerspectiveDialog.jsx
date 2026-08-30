@@ -13,17 +13,20 @@ export default function AddPerspectiveDialog({ open, onOpenChange, unit, initial
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
 
+  const allowUnitSelect = !unit;
+  const effectiveUnit = draft.unit || unit;
+
   const submit = async () => {
     setSaving(true);
     const { id, ...data } = draft;
     if (id) await base44.entities.Perspective.update(id, data);
-    else await base44.entities.Perspective.create({ ...data, unit });
+    else await base44.entities.Perspective.create({ ...data, unit: effectiveUnit });
     setSaving(false);
     onOpenChange(false);
     onSaved();
   };
 
-  const valid = draft.name && draft.topic && draft.argument;
+  const valid = draft.name && draft.topic && draft.argument && effectiveUnit;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -31,11 +34,22 @@ export default function AddPerspectiveDialog({ open, onOpenChange, unit, initial
         <DialogHeader>
           <DialogTitle className="font-display text-3xl">{initial?.id ? 'Edit perspective' : 'Add a perspective'}</DialogTitle>
           <DialogDescription className="font-mono text-[11px] uppercase tracking-[0.2em]">
-            {UNITS[unit]?.label}
+            {allowUnitSelect ? 'Choose a unit & topic' : UNITS[effectiveUnit]?.label}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
+          {allowUnitSelect && (
+            <div className="space-y-1.5">
+              <p className="chrono-eyebrow">Unit</p>
+              <Select value={draft.unit || ''} onValueChange={(v) => set('unit', v)}>
+                <SelectTrigger><SelectValue placeholder="Choose a unit" /></SelectTrigger>
+                <SelectContent>
+                  {Object.keys(UNITS).map((k) => <SelectItem key={k} value={k}>{UNITS[k].label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className="space-y-1.5">
             <p className="chrono-eyebrow">Historian / school of thought</p>
             <Input value={draft.name || ''} onChange={(e) => set('name', e.target.value)} placeholder="e.g. Richard Pipes — Liberal school" />
@@ -45,7 +59,7 @@ export default function AddPerspectiveDialog({ open, onOpenChange, unit, initial
             <Select value={draft.topic || ''} onValueChange={(v) => set('topic', v)}>
               <SelectTrigger><SelectValue placeholder="Choose a topic" /></SelectTrigger>
               <SelectContent>
-                {(UNITS[unit]?.topics || []).map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                {(UNITS[effectiveUnit]?.topics || []).map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>

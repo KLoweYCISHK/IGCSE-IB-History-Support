@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SectionHeading from '@/components/SectionHeading';
 import SectionCanvas from '@/components/SectionCanvas';
 import QuickPerspectiveActions from '@/components/perspectives/QuickPerspectiveActions';
+import QuickAddPerspectiveButton from '@/components/perspectives/QuickAddPerspectiveButton';
 
 const INDEX = [
   { to: '/paper-1', label: 'Paper 1', note: 'Source-based prescribed subject' },
@@ -16,9 +17,14 @@ export default function Home() {
   return (
     <div className="pb-10">
       <section className="py-10 md:py-14 border-b border-border">
-        <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight max-w-4xl">
-          The IB History archive.
-        </h1>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight max-w-4xl">
+            The IB History archive.
+          </h1>
+          <div className="shrink-0 sm:pt-3">
+            <QuickAddPerspectiveButton />
+          </div>
+        </div>
       </section>
 
       <section className="py-16 md:py-20">
