@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeading from '@/components/SectionHeading';
+import SectionCanvas from '@/components/SectionCanvas';
 
 const INDEX = [
   { to: '/paper-1', label: 'Paper 1', note: 'Source-based prescribed subject' },
@@ -31,6 +32,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <SectionCanvas page="home" />
 
     </div>
   );

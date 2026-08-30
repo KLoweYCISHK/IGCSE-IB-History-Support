@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PageHero from '@/components/PageHero';
-import SectionHeading from '@/components/SectionHeading';
-import BlockCanvas from '@/components/BlockCanvas';
+import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
 import CaseStudyFilter, { CASE_STUDIES } from '@/components/CaseStudyFilter';
@@ -12,7 +11,6 @@ export default function Paper2() {
     CASE_STUDIES.some((c) => c.value === initial) ? initial : 'all'
   );
   const scope = caseStudy === 'all' ? undefined : caseStudy;
-  const label = CASE_STUDIES.find((c) => c.value === caseStudy)?.label;
 
   return (
     <div>
@@ -27,10 +25,7 @@ export default function Paper2() {
         <CaseStudyFilter value={caseStudy} onChange={setCaseStudy} />
       </div>
 
-      <section key={caseStudy} className="py-16 md:py-20 animate-in fade-in duration-700">
-        <SectionHeading eyebrow={`What we study · ${label}`} title="The Course" />
-        <BlockCanvas section="paper2" sub="study" caseStudy={scope} emptyLabel="Course content coming soon." />
-      </section>
+      <SectionCanvas page="paper2" caseStudy={scope} />
 
       <ResourceLibrary section="paper2" caseStudy={scope} />
 

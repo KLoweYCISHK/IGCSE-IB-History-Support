@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PageHero from '@/components/PageHero';
 import SectionHeading from '@/components/SectionHeading';
-import BlockCanvas from '@/components/BlockCanvas';
+import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
 import PerspectiveEngine from '@/components/perspectives/PerspectiveEngine';
@@ -22,10 +22,7 @@ export default function Paper3() {
         image="https://media.base44.com/images/public/6a9374897e9609e0d36beee4/a44af5825_generated_e31a9e03.png"
       />
 
-      <section className="py-16 md:py-20 border-t border-border">
-        <SectionHeading eyebrow="What we study" title="The Course" />
-        <BlockCanvas section="paper3" sub="study" emptyLabel="Course content coming soon." />
-      </section>
+      <SectionCanvas page="paper3" />
 
       <ResourceLibrary section="paper3" />
 

@@ -1,0 +1,83 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import { base44 } from '@/api/base44Client';
+import { useAdmin } from '@/lib/AdminContext';
+import { Button } from '@/components/ui/button';
+import { Pencil, Trash2, Plus, ArrowUp, ArrowDown } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import BlockCanvas from './BlockCanvas';
+import SectionForm from './editor/SectionForm';
+
+export default function SectionCanvas({ page, caseStudy, className = '' }) {
+  const { editMode } = useAdmin();
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(null);
+
+  const load = useCallback(async () => {
+    const list = await base44.entities.PageSection.filter({ page }, 'order');
+    setSections(list);
+    setLoading(false);
+  }, [page]);
+
+  useEffect(() => { setLoading(true); load(); }, [load]);
+
+  const save = async (draft) => {
+    const { id, ...data } = draft;
+    if (id) await base44.entities.PageSection.update(id, data);
+    else await base44.entities.PageSection.create({ ...data, page, order: sections.length });
+    setEditing(null);
+    load();
+  };
+
+  const move = async (index, dir) => {
+    const target = sections[index + dir];
+    if (!target) return;
+    const current = sections[index];
+    await base44.entities.PageSection.bulkUpdate([
+      { id: current.id, order: index + dir },
+      { id: target.id, order: index },
+    ]);
+    load();
+  };
+
+  const remove = async (s) => {
+    await base44.entities.ContentBlock.deleteMany({ section: page, sub: s.slug });
+    await base44.entities.PageSection.delete(s.id);
+    load();
+  };
+
+  if (loading) return <div className="h-24 animate-pulse bg-black/[0.04] rounded" />;
+
+  return (
+    <div className={className}>
+      {sections.map((s, i) => (
+        <section key={s.id} className="relative group py-16 md:py-20 border-t border-border">
+          {editMode && (
+            <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
+              <button onClick={() => move(i, -1)} className="p-1.5 hover:text-[#6F551A]"><ArrowUp className="w-4 h-4" /></button>
+              <button onClick={() => move(i, 1)} className="p-1.5 hover:text-[#6F551A]"><ArrowDown className="w-4 h-4" /></button>
+              <button onClick={() => setEditing(s)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
+              <button onClick={() => remove(s)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+            </div>
+          )}
+          <SectionHeading eyebrow={s.eyebrow} title={s.title} />
+          <BlockCanvas section={page} sub={s.slug} caseStudy={caseStudy} emptyLabel="No content here yet." />
+        </section>
+      ))}
+
+      {editMode && (
+        <div className="py-10 border-t border-dashed border-border">
+          <Button variant="outline" size="sm" onClick={() => setEditing({})}>
+            <Plus className="w-3.5 h-3.5 mr-1.5" /> Add section
+          </Button>
+        </div>
+      )}
+
+      {sections.length === 0 && !editMode && (
+        <p className="py-10 text-foreground/40 italic">Content coming soon.</p>
+      )}
+
+      <SectionForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+    </div>
+  );
+}

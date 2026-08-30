@@ -1,0 +1,47 @@
+{
+  "name": "PageSection",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "string",
+      "description": "paper1 | paper2 | paper3 | ia | ee | home"
+    },
+    "slug": {
+      "type": "string",
+      "description": "unique key within the page; used as the BlockCanvas sub"
+    },
+    "title": {
+      "type": "string"
+    },
+    "eyebrow": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "page",
+    "slug",
+    "title"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

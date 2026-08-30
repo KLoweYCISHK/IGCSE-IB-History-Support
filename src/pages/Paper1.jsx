@@ -1,7 +1,6 @@
 import React from 'react';
 import PageHero from '@/components/PageHero';
-import SectionHeading from '@/components/SectionHeading';
-import BlockCanvas from '@/components/BlockCanvas';
+import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
 
@@ -15,10 +14,7 @@ export default function Paper1() {
         image="https://media.base44.com/images/public/6a9374897e9609e0d36beee4/4e12252d0_generated_db98e7d4.png"
       />
 
-      <section className="py-16 md:py-20 border-t border-border">
-        <SectionHeading eyebrow="What we study" title="The Course" />
-        <BlockCanvas section="paper1" sub="study" emptyLabel="Course content coming soon." />
-      </section>
+      <SectionCanvas page="paper1" />
 
       <ResourceLibrary section="paper1" />
 

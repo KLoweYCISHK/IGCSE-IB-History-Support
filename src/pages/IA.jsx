@@ -2,6 +2,7 @@ import React from 'react';
 import PageHero from '@/components/PageHero';
 import SectionHeading from '@/components/SectionHeading';
 import Roadmap from '@/components/Roadmap';
+import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 
 const STAGES = [
@@ -24,6 +25,8 @@ export default function IA() {
         <SectionHeading eyebrow="The roadmap" title="Three steps" description="Click a step to open its guidance." />
         <Roadmap section="ia" stages={STAGES} />
       </section>
+
+      <SectionCanvas page="ia" />
 
       <ResourceLibrary section="ia" />
     </div>
