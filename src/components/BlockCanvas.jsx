@@ -132,17 +132,19 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
                   {b.kind === 'link' && b.link_url && (
                     <div className="space-y-3">
                       {b.caption && <p className="text-foreground/70">{b.caption}</p>}
-                      <a
-                        href={b.link_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent/10 hover:border-accent/40"
-                      >
-                        <Link2 className="w-4 h-4 text-muted-foreground" />
-                        {b.title || b.link_url}
-                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
-                      </a>
-                      <LinkCredentials username={b.link_username} password={b.link_password} />
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <a
+                          href={b.link_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent/10 hover:border-accent/40"
+                        >
+                          <Link2 className="w-4 h-4 text-muted-foreground" />
+                          {b.title || b.link_url}
+                          <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+                        </a>
+                        <LinkCredentials username={b.link_username} password={b.link_password} />
+                      </div>
                     </div>
                   )}
 
