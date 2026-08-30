@@ -7,7 +7,7 @@ import { ExternalLink, Pencil, Trash2, Plus } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import ResourceForm from './ResourceForm';
 
-export default function ResourceLibrary({ section, caseStudy, module }) {
+export default function ResourceLibrary({ section, caseStudy, module, title = 'The Resource Vault', description = "Curated documents, archives, videos and readings. Students may add a link they've found." }) {
   const { editMode, isAdmin } = useAdmin();
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -37,8 +37,8 @@ export default function ResourceLibrary({ section, caseStudy, module }) {
     <section className="py-16 md:py-24">
       <SectionHeading
         eyebrow="Useful resources"
-        title="The Resource Vault"
-        description="Curated documents, archives, videos and readings. Students may add a link they've found."
+        title={title}
+        description={description}
         right={
           <Button onClick={() => setEditing({})} className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]">
             <Plus className="w-4 h-4 mr-1.5" /> Add a resource

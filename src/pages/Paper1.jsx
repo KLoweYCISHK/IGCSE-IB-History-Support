@@ -17,7 +17,19 @@ export default function Paper1() {
 
       <SectionCanvas page="paper1" />
 
-      <ResourceLibrary section="paper1" />
+      <ResourceLibrary
+        section="paper1"
+        caseStudy="postwar_europe"
+        title="Post-war Displacement in Europe"
+        description="Resources, documents and readings for the Europe case study."
+      />
+
+      <ResourceLibrary
+        section="paper1"
+        caseStudy="indochina_refugee"
+        title="Indochina Refugee Crisis"
+        description="Resources, documents and readings for the Indochina case study."
+      />
 
       <ExamVault
         section="paper1"
