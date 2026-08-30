@@ -15,11 +15,16 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
 
   const load = useCallback(async () => {
     const list = await base44.entities.PageSection.filter({ page }, 'order');
-    setSections(list);
+    setSections(list.filter((s) => !s.is_deleted));
     setLoading(false);
   }, [page]);
 
-  useEffect(() => { setLoading(true); load(); }, [load]);
+  useEffect(() => {
+    setLoading(true); load();
+    const handler = () => load();
+    window.addEventListener('archive:reload', handler);
+    return () => window.removeEventListener('archive:reload', handler);
+  }, [load]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -41,8 +46,8 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
   };
 
   const remove = async (s) => {
-    await base44.entities.ContentBlock.deleteMany({ section: page, sub: s.slug });
-    await base44.entities.PageSection.delete(s.id);
+    await base44.entities.ContentBlock.updateMany({ section: page, sub: s.slug }, { $set: { is_deleted: true } });
+    await base44.entities.PageSection.update(s.id, { is_deleted: true });
     load();
   };
 

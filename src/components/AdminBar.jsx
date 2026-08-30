@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Lock, Unlock, LogOut } from 'lucide-react';
+import { Lock, Unlock, LogOut, Trash2 } from 'lucide-react';
+import TrashDialog from './TrashDialog';
 
 export default function AdminBar() {
   const { isAdmin, editMode, setEditMode, login, logout, loading } = useAdmin();
+  const [trashOpen, setTrashOpen] = useState(false);
   if (loading) return null;
 
   if (!isAdmin) {
@@ -18,6 +20,7 @@ export default function AdminBar() {
   }
 
   return (
+    <>
     <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 border border-border bg-[#FBF7EE]/95 backdrop-blur px-3 py-2 rounded-full shadow-2xl">
       <Button
         size="sm"
@@ -28,9 +31,14 @@ export default function AdminBar() {
         {editMode ? <Unlock className="w-3.5 h-3.5 mr-1.5" /> : <Lock className="w-3.5 h-3.5 mr-1.5" />}
         {editMode ? 'Editing' : 'Edit mode'}
       </Button>
+      <button onClick={() => setTrashOpen(true)} className="p-2 text-muted-foreground hover:text-[#6F551A]" title="Trash">
+        <Trash2 className="w-4 h-4" />
+      </button>
       <button onClick={logout} className="p-2 text-muted-foreground hover:text-[#6F551A]" title="Sign out">
         <LogOut className="w-4 h-4" />
       </button>
     </div>
+    <TrashDialog open={trashOpen} onOpenChange={setTrashOpen} onChanged={() => window.dispatchEvent(new Event('archive:reload'))} />
+    </>
   );
 }

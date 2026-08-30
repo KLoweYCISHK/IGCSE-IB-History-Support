@@ -17,11 +17,16 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
     const query = { section, sub };
     if (caseStudy) query.case_study = caseStudy;
     const list = await base44.entities.ContentBlock.filter(query, 'order');
-    setBlocks(list);
+    setBlocks(list.filter((b) => !b.is_deleted));
     setLoading(false);
   }, [section, sub, caseStudy]);
 
-  useEffect(() => { setLoading(true); load(); }, [load]);
+  useEffect(() => {
+    setLoading(true); load();
+    const handler = () => load();
+    window.addEventListener('archive:reload', handler);
+    return () => window.removeEventListener('archive:reload', handler);
+  }, [load]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -43,7 +48,7 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
   };
 
   const remove = async (id) => {
-    await base44.entities.ContentBlock.delete(id);
+    await base44.entities.ContentBlock.update(id, { is_deleted: true });
     load();
   };
 
