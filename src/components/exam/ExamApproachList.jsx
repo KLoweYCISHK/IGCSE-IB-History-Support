@@ -1,7 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, ChevronRight } from 'lucide-react';
+
+function ApproachBody({ item, editMode, onEdit, onDelete }) {
+  const [showExample, setShowExample] = useState(false);
+  return (
+    <div className="pb-10">
+      <div>
+        <p className="chrono-eyebrow mb-3">How to approach it</p>
+        <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.approach || '<p>—</p>' }} />
+      </div>
+
+      <Collapsible open={showExample} onOpenChange={setShowExample} className="mt-8 border-t border-border pt-6">
+        <CollapsibleTrigger asChild>
+          <button className="group inline-flex items-center gap-2 text-sm font-medium text-[#6F551A] hover:text-[#5A4514]">
+            <ChevronRight className={`w-4 h-4 transition-transform ${showExample ? 'rotate-90' : ''}`} />
+            {showExample ? 'Hide annotated example' : 'View annotated example'}
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-4 data-[state=open]:animate-in data-[state=open]:fade-in-0">
+          <p className="chrono-eyebrow mb-3">Annotated example</p>
+          <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.example || '<p>—</p>' }} />
+        </CollapsibleContent>
+      </Collapsible>
+
+      {editMode && (
+        <div className="mt-6 flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => onEdit(item)}><Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit</Button>
+          <Button size="sm" variant="ghost" onClick={() => onDelete(item.id)}><Trash2 className="w-3.5 h-3.5 mr-1.5" /> Delete</Button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ExamApproachList({ items, editMode, onEdit, onDelete }) {
   if (items.length === 0) return <p className="text-foreground/40 italic">No approach guidance added yet.</p>;
@@ -18,23 +51,8 @@ export default function ExamApproachList({ items, editMode, onEdit, onDelete }) 
               )}
             </span>
           </AccordionTrigger>
-          <AccordionContent className="pb-10">
-            <div className="grid md:grid-cols-2 gap-10">
-              <div>
-                <p className="chrono-eyebrow mb-3">How to approach it</p>
-                <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.approach || '<p>—</p>' }} />
-              </div>
-              <div className="md:border-l md:border-border md:pl-10">
-                <p className="chrono-eyebrow mb-3">Annotated example</p>
-                <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.example || '<p>—</p>' }} />
-              </div>
-            </div>
-            {editMode && (
-              <div className="mt-6 flex gap-2">
-                <Button size="sm" variant="outline" onClick={() => onEdit(item)}><Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit</Button>
-                <Button size="sm" variant="ghost" onClick={() => onDelete(item.id)}><Trash2 className="w-3.5 h-3.5 mr-1.5" /> Delete</Button>
-              </div>
-            )}
+          <AccordionContent>
+            <ApproachBody item={item} editMode={editMode} onEdit={onEdit} onDelete={onDelete} />
           </AccordionContent>
         </AccordionItem>
       ))}
