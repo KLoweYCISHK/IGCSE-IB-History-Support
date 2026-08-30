@@ -128,4 +128,19 @@
   .prose-archive th, .prose-archive td { border: 1px solid hsl(var(--border)); padding: 0.5em 0.75em; vertical-align: top; text-align: left; }
   .prose-archive th { background: hsl(var(--secondary)); font-weight: 600; }
   .prose-archive td:empty::before { content: '\00a0'; }
+
+  /* Approach card blocks — shared by editor and rendered page */
+  .arc-card { border: 1px solid hsl(var(--border)); border-radius: 8px; padding: 14px 18px; margin: 1em 0; background: hsl(var(--card)); }
+  .arc-card[data-variant="info"] { border-left: 4px solid #446ad0; }
+  .arc-card[data-variant="warning"] { border-left: 4px solid #f69145; background: #fff7ec; }
+  .arc-card[data-variant="callout"] { background: #eef4ff; border-left: 4px solid #446ad0; }
+  .arc-card[data-variant="support"] { border-top: 4px solid #2e8540; }
+  .arc-card[data-variant="challenge"] { border-top: 4px solid #d13438; }
+  .arc-card[data-variant="cols2"], .arc-card[data-variant="cols3"] { display: flex; gap: 16px; padding: 0; background: transparent; border: 0; }
+  .arc-card[data-variant="cols2"] > .arc-card, .arc-card[data-variant="cols3"] > .arc-card { flex: 1 1 0; margin: 0; min-width: 0; }
+  .arc-card[data-variant="cols2"] > .arc-card:empty::before,
+  .arc-card[data-variant="cols3"] > .arc-card:empty::before { content: '\00a0'; }
+  @media (max-width: 700px) {
+    .arc-card[data-variant="cols2"], .arc-card[data-variant="cols3"] { flex-direction: column; }
+  }
 }
