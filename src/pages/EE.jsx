@@ -6,12 +6,6 @@ import SectionCanvas from '@/components/SectionCanvas';
 import BlockCanvas from '@/components/BlockCanvas';
 import DocumentSection from '@/components/DocumentSection';
 
-const STAGES = [
-  { key: 'preparing', label: 'Preparing for the EE', description: 'Topic, research question, supervisor meetings and reading.' },
-  { key: 'writing', label: 'Writing the EE', description: 'Structure, argument, sources and the 4,000 words.' },
-  { key: 'reflection', label: '500 word reflection', description: 'The three reflections and how to make them count.' },
-];
-
 export default function EE() {
   return (
     <div>
@@ -24,8 +18,8 @@ export default function EE() {
       />
 
       <section className="py-12 md:py-16 border-t border-border">
-        <SectionHeading eyebrow="The roadmap" title="Three steps" description="Click a step to open its guidance." />
-        <Roadmap section="ee" stages={STAGES} />
+        <SectionHeading eyebrow="The roadmap" title="Step by step" description="Click a step to open its guidance." />
+        <Roadmap section="ee" />
       </section>
 
       <section className="py-12 md:py-16 border-t border-border">

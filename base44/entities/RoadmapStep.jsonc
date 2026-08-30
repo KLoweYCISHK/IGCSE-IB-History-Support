@@ -1,0 +1,53 @@
+{
+  "name": "RoadmapStep",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "string",
+      "description": "ia | ee"
+    },
+    "title": {
+      "type": "string",
+      "description": "Step title shown after 'Step N \u2013 '"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Short line shown above the step title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Unique key within the page; used as the BlockCanvas sub"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "is_deleted": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "page",
+    "title",
+    "slug"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

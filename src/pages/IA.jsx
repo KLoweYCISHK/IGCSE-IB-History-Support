@@ -5,12 +5,6 @@ import Roadmap from '@/components/Roadmap';
 import SectionCanvas from '@/components/SectionCanvas';
 import DocumentSection from '@/components/DocumentSection';
 
-const STAGES = [
-  { key: 'preparing', label: 'Preparing for the IA', description: 'Choosing a question, finding sources, and getting the scope right.' },
-  { key: 'writing', label: 'Writing the IA', description: 'Section by section, from identification of question to evaluation.' },
-  { key: 'markscheme', label: 'Mark scheme', description: 'Exactly what the examiner rewards, criterion by criterion.' },
-];
-
 export default function IA() {
   return (
     <div>
@@ -23,8 +17,8 @@ export default function IA() {
       />
 
       <section className="py-12 md:py-16 border-t border-border">
-        <SectionHeading eyebrow="The roadmap" title="Three steps" description="Click a step to open its guidance." />
-        <Roadmap section="ia" stages={STAGES} />
+        <SectionHeading eyebrow="The roadmap" title="Step by step" description="Click a step to open its guidance." />
+        <Roadmap section="ia" />
       </section>
 
       <SectionCanvas page="ia" />
