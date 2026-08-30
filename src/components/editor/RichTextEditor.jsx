@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -12,11 +12,35 @@ const modules = {
     ['blockquote', 'link'],
     ['clean'],
   ],
+  clipboard: {
+    // strip visual artifacts copied from Word/Google Docs
+    matchVisual: false,
+  },
 };
 
 export default function RichTextEditor({ value, onChange, placeholder }) {
+  const quillRef = useRef(null);
+
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor?.();
+    if (!quill) return;
+    // Strip background highlight and inline color from pasted content so it
+    // adopts the site's own typography instead of the source's styling.
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+      delta.ops = delta.ops.map((op) => {
+        if (op.attributes) {
+          delete op.attributes.background;
+          delete op.attributes.color;
+        }
+        return op;
+      });
+      return delta;
+    });
+  }, []);
+
   return (
     <ReactQuill
+      ref={quillRef}
       theme="snow"
       value={value || ''}
       onChange={onChange}

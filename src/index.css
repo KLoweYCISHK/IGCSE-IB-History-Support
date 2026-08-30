@@ -92,6 +92,9 @@
   .prose-archive blockquote {
     @apply border-l-2 border-[#6F551A] pl-4 italic text-foreground/70 my-4;
   }
+  /* Strip pasted background highlights so content adopts the site palette */
+  .prose-archive [style*="background"] { background-color: transparent !important; }
+  .prose-archive [style*="background-color"] { background-color: transparent !important; }
 
   /* Quill light theme */
   .ql-toolbar.ql-snow {
