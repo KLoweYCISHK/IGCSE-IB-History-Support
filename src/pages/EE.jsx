@@ -3,7 +3,6 @@ import PageHero from '@/components/PageHero';
 import SectionHeading from '@/components/SectionHeading';
 import Roadmap from '@/components/Roadmap';
 import SectionCanvas from '@/components/SectionCanvas';
-import ResourceLibrary from '@/components/ResourceLibrary';
 import DocumentSection from '@/components/DocumentSection';
 
 const STAGES = [
@@ -30,9 +29,7 @@ export default function EE() {
 
       <SectionCanvas page="ee" />
 
-      <DocumentSection section="ee" title="Documents" description="Handouts, templates and exemplars — click to download." />
-
-      <ResourceLibrary section="ee" />
+      <DocumentSection section="ee" title="Example" description="Add a PDF or Word document for students to download." />
     </div>
   );
 }
