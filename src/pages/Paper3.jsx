@@ -27,23 +27,15 @@ export default function Paper3() {
     if (didScrollToPerspectives.current) return;
     if (window.location.hash !== '#perspectives') return;
     didScrollToPerspectives.current = true;
-    let lastTop = Infinity;
-    let stable = 0;
-    let timer;
-    const started = Date.now();
-    const tick = () => {
-      const node = document.getElementById('perspectives');
-      if (!node) { timer = window.setTimeout(tick, 120); return; }
-      // instant re-align keeps the section pinned while content above streams in
-      node.scrollIntoView({ block: 'start' });
-      const top = node.getBoundingClientRect().top;
-      if (Math.abs(top - lastTop) < 2) stable += 1; else stable = 0;
-      lastTop = top;
-      if (stable >= 4 || Date.now() - started > 4000) return;
-      timer = window.setTimeout(tick, 120);
-    };
-    tick();
-    return () => window.clearTimeout(timer);
+    const node = document.getElementById('perspectives');
+    if (!node) return;
+    const align = () => node.scrollIntoView({ block: 'start' });
+    align();
+    // re-pin whenever the page height changes — late-loading content above would otherwise push the section back below the fold
+    const ro = new ResizeObserver(() => align());
+    ro.observe(document.body);
+    const stop = window.setTimeout(() => ro.disconnect(), 3000);
+    return () => { ro.disconnect(); window.clearTimeout(stop); };
   }, []);
 
   return (
