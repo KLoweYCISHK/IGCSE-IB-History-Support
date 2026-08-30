@@ -27,9 +27,22 @@ export default function Paper3() {
     if (didScrollToPerspectives.current) return;
     if (window.location.hash !== '#perspectives') return;
     didScrollToPerspectives.current = true;
-    const el = document.getElementById('perspectives');
-    if (!el) return;
-    const timer = window.setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    let lastTop = Infinity;
+    let stable = 0;
+    let timer;
+    const started = Date.now();
+    const tick = () => {
+      const node = document.getElementById('perspectives');
+      if (!node) { timer = window.setTimeout(tick, 120); return; }
+      // instant re-align keeps the section pinned while content above streams in
+      node.scrollIntoView({ block: 'start' });
+      const top = node.getBoundingClientRect().top;
+      if (Math.abs(top - lastTop) < 2) stable += 1; else stable = 0;
+      lastTop = top;
+      if (stable >= 4 || Date.now() - started > 4000) return;
+      timer = window.setTimeout(tick, 120);
+    };
+    tick();
     return () => window.clearTimeout(timer);
   }, []);
 
