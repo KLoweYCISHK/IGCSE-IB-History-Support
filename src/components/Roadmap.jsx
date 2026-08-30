@@ -63,17 +63,19 @@ export default function Roadmap({ section, stages }) {
 
   return (
     <div className="py-8">
-      <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
-        {stages.map((s, i) => (
-          <button
-            key={s.key}
-            onClick={() => setActiveStage(s.key)}
-            className={`px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${i === stages.length - 1 ? '' : 'border-r border-border'} ${activeStage === s.key ? 'bg-[#6F551A] text-[#F4EFE3]' : 'text-foreground/60 hover:bg-black/[0.04]'}`}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      {stages.length > 1 && (
+        <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
+          {stages.map((s, i) => (
+            <button
+              key={s.key}
+              onClick={() => setActiveStage(s.key)}
+              className={`px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${i === stages.length - 1 ? '' : 'border-r border-border'} ${activeStage === s.key ? 'bg-[#6F551A] text-[#F4EFE3]' : 'text-foreground/60 hover:bg-black/[0.04]'}`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="space-y-16">
         {stageSteps.map((s, i) => (

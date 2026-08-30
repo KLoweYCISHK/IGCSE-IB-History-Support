@@ -10,6 +10,7 @@ export default function DocumentSection({
   section,
   title = 'Documents',
   description = 'Downloadable handouts and templates.',
+  embedded = false,
 }) {
   const { editMode } = useAdmin();
   const [items, setItems] = useState([]);
@@ -35,8 +36,11 @@ export default function DocumentSection({
     load();
   };
 
+  const Wrapper = embedded ? 'div' : 'section';
+  const wrapperClass = embedded ? '' : 'py-16 md:py-24 border-t border-border';
+
   return (
-    <section className="py-16 md:py-24 border-t border-border">
+    <Wrapper className={wrapperClass}>
       <SectionHeading
         eyebrow="Downloads"
         title={title}
@@ -90,7 +94,7 @@ export default function DocumentSection({
       )}
 
       <DocumentForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} />
-    </section>
+    </Wrapper>
   );
 }
 
