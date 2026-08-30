@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAdmin } from '@/lib/AdminContext';
 import { UNITS } from '@/lib/perspectiveTopics';
-import ImageUploadField from './editor/ImageUploadField';
-
 const MODULE_OPTIONS = [
   { value: 'russian_revolution', label: UNITS.russian_revolution.label },
   { value: 'cold_war', label: UNITS.cold_war.label },
@@ -44,7 +42,6 @@ export default function ResourceForm({ open, onOpenChange, initial, onSave, modu
               </Select>
             </div>
           )}
-          <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} label="Image (optional)" />
           {isAdmin && (
             <div className="rounded-sm border border-dashed border-border p-3 space-y-3">
               <p className="chrono-eyebrow">Website login (optional)</p>

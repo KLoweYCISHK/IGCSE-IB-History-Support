@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Image } from '@/components/ui/image';
 import { ExternalLink, Pencil, Trash2, Plus } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import ResourceForm from './ResourceForm';
@@ -53,9 +52,6 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((r) => (
             <div key={r.id} className="glassine group relative border border-border rounded-sm overflow-hidden bg-card">
-              {r.image_url && (
-                <Image src={r.image_url} alt={r.title} className="w-full h-40" />
-              )}
               <div className="p-5">
                 <h4 className="font-display text-xl leading-snug">{r.title}</h4>
                 {r.description && <p className="mt-2 text-sm text-foreground/60 leading-relaxed">{r.description}</p>}
