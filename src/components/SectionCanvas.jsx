@@ -16,7 +16,7 @@ export default function SectionCanvas({ page, caseStudy, module, className = '' 
   const load = useCallback(async () => {
     const list = await base44.entities.PageSection.filter({ page }, 'order');
     const visible = module
-      ? list.filter((s) => !s.is_deleted && ((s.module || 'all') === 'all' || s.module === module))
+      ? list.filter((s) => !s.is_deleted && s.module === module)
       : list.filter((s) => !s.is_deleted);
     setSections(visible);
     setLoading(false);

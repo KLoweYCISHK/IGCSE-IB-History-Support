@@ -86,10 +86,9 @@ export default function ExamItemForm({ open, onOpenChange, initial, onSave, sect
               {section === 'paper3' && (
                 <div className="space-y-2">
                   <Label className="chrono-eyebrow">Unit</Label>
-                  <Select value={draft.module || module || 'all'} onValueChange={(v) => set('module', v)}>
+                  <Select value={draft.module || module || 'russian_revolution'} onValueChange={(v) => set('module', v)}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All units</SelectItem>
                       <SelectItem value="russian_revolution">Russian Revolution</SelectItem>
                       <SelectItem value="cold_war">Cold War</SelectItem>
                     </SelectContent>

@@ -42,10 +42,9 @@ export default function SectionForm({ open, onOpenChange, initial, onSave, page,
           {page === 'paper3' && (
             <div className="space-y-2">
               <p className="chrono-eyebrow">Unit</p>
-              <Select value={draft.module || module || 'all'} onValueChange={(v) => set('module', v)}>
+              <Select value={draft.module || module || 'russian_revolution'} onValueChange={(v) => set('module', v)}>
                 <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All units (shared)</SelectItem>
                   <SelectItem value="russian_revolution">Russian Revolution</SelectItem>
                   <SelectItem value="cold_war">Cold War</SelectItem>
                 </SelectContent>

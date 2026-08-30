@@ -68,7 +68,7 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
     if (caseStudy) query.case_study = caseStudy;
     const list = await base44.entities.ContentBlock.filter(query, 'order');
     const visible = module
-      ? list.filter((b) => !b.is_deleted && ((b.module || 'all') === 'all' || b.module === module))
+      ? list.filter((b) => !b.is_deleted && b.module === module)
       : list.filter((b) => !b.is_deleted);
     setBlocks(visible);
     setLoading(false);

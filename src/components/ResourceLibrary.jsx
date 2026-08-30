@@ -16,7 +16,7 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
     const query = { section };
     if (caseStudy) query.case_study = caseStudy;
     const list = await base44.entities.Resource.filter(query, '-created_date');
-    setItems(module ? list.filter((r) => !r.module || r.module === 'all' || r.module === module) : list);
+    setItems(module ? list.filter((r) => r.module === module) : list);
   }, [section, caseStudy, module]);
 
   useEffect(() => { load(); }, [load]);

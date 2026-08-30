@@ -41,8 +41,7 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
   const byCat = (c) => items.filter((i) => {
     if ((i.category || 'question') !== c) return false;
     if (c === 'question' && module) {
-      const m = i.module || 'all';
-      return m === 'all' || m === module;
+      return i.module === module;
     }
     return true;
   });

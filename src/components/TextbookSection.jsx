@@ -22,7 +22,7 @@ export default function TextbookSection({
     const query = { section };
     if (caseStudy) query.case_study = caseStudy;
     const list = await base44.entities.Textbook.filter(query, 'order');
-    setItems(module ? list.filter((t) => !t.module || t.module === 'all' || t.module === module) : list);
+    setItems(module ? list.filter((t) => t.module === module) : list);
   }, [section, caseStudy, module]);
 
   useEffect(() => { load(); }, [load]);
