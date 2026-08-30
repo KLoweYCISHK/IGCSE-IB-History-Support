@@ -66,6 +66,7 @@
   /* Rich text rendering */
   .prose-archive {
     @apply text-[17px] leading-[1.7] text-foreground;
+    overflow-wrap: anywhere;
   }
   .prose-archive h1,
   .prose-archive h2,

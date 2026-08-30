@@ -3,6 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2, ChevronRight } from 'lucide-react';
+import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
 
 function ApproachBody({ item, editMode, onEdit, onDelete }) {
   const [showExample, setShowExample] = useState(false);
@@ -10,7 +11,7 @@ function ApproachBody({ item, editMode, onEdit, onDelete }) {
     <div className="pb-10">
       <div>
         <p className="chrono-eyebrow mb-3">How to approach it</p>
-        <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.approach || '<p>—</p>' }} />
+        <div className="prose-archive break-words" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(item.approach) || '<p>—</p>' }} />
       </div>
 
       <Collapsible open={showExample} onOpenChange={setShowExample} className="mt-8 border-t border-border pt-6">
@@ -22,7 +23,7 @@ function ApproachBody({ item, editMode, onEdit, onDelete }) {
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-4 data-[state=open]:animate-in data-[state=open]:fade-in-0">
           <p className="chrono-eyebrow mb-3">Annotated example</p>
-          <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.example || '<p>—</p>' }} />
+          <div className="prose-archive break-words" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(item.example) || '<p>—</p>' }} />
         </CollapsibleContent>
       </Collapsible>
 
