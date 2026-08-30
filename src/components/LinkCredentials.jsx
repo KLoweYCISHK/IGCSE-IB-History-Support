@@ -18,7 +18,7 @@ export default function LinkCredentials({ username, password }) {
         {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
       </button>
       {show && (
-        <div className="w-full rounded-sm border border-dashed border-border bg-secondary/40 p-3 space-y-1.5">
+        <div className="w-60 rounded-sm border border-dashed border-border bg-secondary/40 p-3 space-y-1.5">
           {username && (
             <div className="flex items-center gap-2 font-mono text-xs">
               <User className="w-3.5 h-3.5 text-muted-foreground shrink-0" />

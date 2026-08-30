@@ -4,9 +4,10 @@ import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import ResizableImage from './ResizableImage';
-import { Pencil, Trash2, Plus, Type, Table2, ImageIcon, Link2, ExternalLink, GripVertical } from 'lucide-react';
+import { Plus, Type, Table2, ImageIcon, Link2 } from 'lucide-react';
 import ArchiveTable from './ArchiveTable';
-import LinkCredentials from './LinkCredentials';
+import LinkPill from './LinkPill';
+import BlockToolbar from './BlockToolbar';
 import BlockForm from './editor/BlockForm';
 import { makeDroppableId } from '@/lib/blockDnd';
 import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
@@ -93,6 +94,16 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
 
   const droppableId = makeDroppableId(section, sub, caseStudy, module);
 
+  // Group consecutive link blocks into compact flow clusters
+  const groups = [];
+  blocks.forEach((b, i) => {
+    const isLink = b.kind === 'link' && b.link_url;
+    const last = groups[groups.length - 1];
+    if (isLink && last && last.type === 'links') last.items.push({ b, i });
+    else if (isLink) groups.push({ type: 'links', items: [{ b, i }] });
+    else groups.push({ type: 'single', b, i });
+  });
+
   return (
     <Droppable droppableId={droppableId} isDropDisabled={!editMode}>
       {(provided) => (
@@ -101,60 +112,44 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
             <p className="text-foreground/40 italic">{emptyLabel}</p>
           )}
 
-          {blocks.map((b, i) => (
-            <Draggable key={b.id} draggableId={b.id} index={i} isDragDisabled={!editMode}>
-              {(prov) => (
-                <article
-                  ref={prov.innerRef}
-                  {...prov.draggableProps}
-                  className="relative group"
-                >
-                  {editMode && (
-                    <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
-                      <span
-                        {...prov.dragHandleProps}
-                        title="Drag to reorder or move section"
-                        className="p-1.5 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-[#6F551A]"
-                      >
-                        <GripVertical className="w-4 h-4" />
-                      </span>
-                      <button onClick={() => setEditing(b)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
-                      <button onClick={() => remove(b.id)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
-                    </div>
-                  )}
+          {groups.map((g) => {
+            if (g.type === 'links') {
+              return (
+                <div key={`links-${g.items[0].i}`} className="flex flex-wrap gap-3 items-start">
+                  {g.items.map(({ b, i }) => (
+                    <Draggable key={b.id} draggableId={b.id} index={i} isDragDisabled={!editMode}>
+                      {(prov) => (
+                        <div ref={prov.innerRef} {...prov.draggableProps} className="relative group">
+                          {editMode && <BlockToolbar dragHandleProps={prov.dragHandleProps} onEdit={() => setEditing(b)} onRemove={() => remove(b.id)} />}
+                          <LinkPill b={b} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                </div>
+              );
+            }
+            const { b, i } = g;
+            return (
+              <Draggable key={b.id} draggableId={b.id} index={i} isDragDisabled={!editMode}>
+                {(prov) => (
+                  <article ref={prov.innerRef} {...prov.draggableProps} className="relative group">
+                    {editMode && <BlockToolbar dragHandleProps={prov.dragHandleProps} onEdit={() => setEditing(b)} onRemove={() => remove(b.id)} />}
 
-                  {b.title && b.kind !== 'link' && <h3 className="font-display text-2xl md:text-3xl mb-4">{b.title}</h3>}
+                    {b.title && b.kind !== 'link' && <h3 className="font-display text-2xl md:text-3xl mb-4">{b.title}</h3>}
 
-                  {b.kind === 'table' && <ArchiveTable rows={b.rows} />}
+                    {b.kind === 'table' && <ArchiveTable rows={b.rows} />}
 
-                  {b.kind === 'image' && b.image_url && <ImageBlock b={b} />}
+                    {b.kind === 'image' && b.image_url && <ImageBlock b={b} />}
 
-                  {b.kind === 'link' && b.link_url && (
-                    <div className="space-y-3">
-                      {b.caption && <p className="text-foreground/70">{b.caption}</p>}
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <a
-                          href={b.link_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent/10 hover:border-accent/40"
-                        >
-                          <Link2 className="w-4 h-4 text-muted-foreground" />
-                          {b.title || b.link_url}
-                          <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
-                        </a>
-                        <LinkCredentials username={b.link_username} password={b.link_password} />
-                      </div>
-                    </div>
-                  )}
-
-                  {(!b.kind || b.kind === 'text') && (
-                    <div className="prose-archive" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html || '') }} />
-                  )}
-                </article>
-              )}
-            </Draggable>
-          ))}
+                    {(!b.kind || b.kind === 'text') && (
+                      <div className="prose-archive" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html || '') }} />
+                    )}
+                  </article>
+                )}
+              </Draggable>
+            );
+          })}
 
           {provided.placeholder}
 
