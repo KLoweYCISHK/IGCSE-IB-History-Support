@@ -59,6 +59,7 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
                   <SelectTrigger className="w-full"><SelectValue placeholder="Full width" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="full">Full width</SelectItem>
+                    <SelectItem value="top">Image top, text bottom</SelectItem>
                     <SelectItem value="left">Image left, text right</SelectItem>
                     <SelectItem value="right">Text left, image right</SelectItem>
                   </SelectContent>

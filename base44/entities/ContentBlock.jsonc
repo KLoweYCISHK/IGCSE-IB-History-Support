@@ -57,10 +57,11 @@
       "enum": [
         "full",
         "left",
-        "right"
+        "right",
+        "top"
       ],
       "default": "full",
-      "description": "full = standalone; left = image left with text right; right = text left with image right"
+      "description": "full = standalone; left = image left with text right; right = text left with image right; top = image on top with text below"
     },
     "caption": {
       "type": "string"

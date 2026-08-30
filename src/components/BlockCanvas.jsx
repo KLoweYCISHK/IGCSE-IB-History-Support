@@ -14,6 +14,23 @@ function ImageBlock({ b }) {
   const layout = b.image_layout || 'full';
   const hasText = !!b.html && b.html.replace(/<[^>]*>/g, '').trim().length > 0;
 
+  if (layout === 'top' && hasText) {
+    return (
+      <div className="space-y-8 md:space-y-10">
+        <figure className="glassine overflow-hidden rounded-sm border border-border">
+          <Image
+            src={b.image_url}
+            alt={b.caption || b.title || ''}
+            className="w-full h-[300px] md:h-[460px]"
+            fittingType="fit"
+          />
+          {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
+        </figure>
+        <div className="prose-archive min-w-0" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html) }} />
+      </div>
+    );
+  }
+
   if (layout === 'full' || !hasText) {
     return (
       <figure className="glassine">
