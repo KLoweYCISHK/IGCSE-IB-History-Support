@@ -3,15 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 const NAV = [
   { to: '/paper-1', label: 'Paper 1' },
-  { to: '/paper-2', label: 'Paper 2', preview: [
-      { to: '/paper-2?case=hitler', label: 'Hitler' },
-      { to: '/paper-2?case=castro', label: 'Castro' },
-      { to: '/paper-2?case=chiang', label: 'Chiang Kai-shek' },
-    ] },
-  { to: '/paper-3', label: 'Paper 3', preview: [
-      { to: '/paper-3#russian_revolution', label: 'Russian Revolution' },
-      { to: '/paper-3#cold_war', label: 'Cold War' },
-    ] },
+  { to: '/paper-2', label: 'Paper 2' },
+  { to: '/paper-3', label: 'Paper 3' },
   { to: '/ia', label: 'IA' },
   { to: '/ee', label: 'EE' },
 ];
