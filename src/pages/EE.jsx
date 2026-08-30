@@ -3,6 +3,7 @@ import PageHero from '@/components/PageHero';
 import SectionHeading from '@/components/SectionHeading';
 import Roadmap from '@/components/Roadmap';
 import SectionCanvas from '@/components/SectionCanvas';
+import BlockCanvas from '@/components/BlockCanvas';
 import DocumentSection from '@/components/DocumentSection';
 
 const STAGES = [
@@ -25,6 +26,11 @@ export default function EE() {
       <section className="py-12 md:py-16 border-t border-border">
         <SectionHeading eyebrow="The roadmap" title="Three steps" description="Click a step to open its guidance." />
         <Roadmap section="ee" stages={STAGES} />
+      </section>
+
+      <section className="py-12 md:py-16 border-t border-border">
+        <SectionHeading eyebrow="Assessment" title="Student-friendly mark scheme" description="The assessment criteria explained in plain language." />
+        <BlockCanvas section="ee" sub="student_markscheme" emptyLabel="No mark scheme added yet." />
       </section>
 
       <SectionCanvas page="ee" />

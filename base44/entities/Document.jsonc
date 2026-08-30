@@ -20,27 +20,27 @@
     },
     "mark_1": {
       "type": "number",
-      "description": "IA section 1: Identification & evaluation of sources (out of 6)"
+      "description": "IA Section A: Historical Inquiry Question (out of 6)"
     },
     "reason_1": {
       "type": "string",
-      "description": "Why this mark was awarded for section 1"
+      "description": "Why this mark was awarded for Section A"
     },
     "mark_2": {
       "type": "number",
-      "description": "IA section 2: Investigation (out of 15)"
+      "description": "IA Section B: Sources & perspective (out of 6)"
     },
     "reason_2": {
       "type": "string",
-      "description": "Why this mark was awarded for section 2"
+      "description": "Why this mark was awarded for Section B"
     },
     "mark_3": {
       "type": "number",
-      "description": "IA section 3: Reflection (out of 4)"
+      "description": "IA Section C: Synthesis & evaluation (out of 15)"
     },
     "reason_3": {
       "type": "string",
-      "description": "Why this mark was awarded for section 3"
+      "description": "Why this mark was awarded for Section C"
     },
     "order": {
       "type": "number",

@@ -65,9 +65,9 @@ export default function DocumentSection({
                 {section === 'ia' && (d.mark_1 != null || d.mark_2 != null || d.mark_3 != null) && (
                   <div className="mt-3 space-y-2 border-t border-border pt-3">
                     {[
-                      { label: 'Sources', max: 6, mark: d.mark_1, reason: d.reason_1 },
-                      { label: 'Investigation', max: 15, mark: d.mark_2, reason: d.reason_2 },
-                      { label: 'Reflection', max: 4, mark: d.mark_3, reason: d.reason_3 },
+                      { label: 'Historical Inquiry Question', max: 6, mark: d.mark_1, reason: d.reason_1 },
+                      { label: 'Sources & perspective', max: 6, mark: d.mark_2, reason: d.reason_2 },
+                      { label: 'Synthesis & evaluation', max: 15, mark: d.mark_3, reason: d.reason_3 },
                     ].map((s) => (
                       <div key={s.label} className="text-sm">
                         <div className="flex items-baseline justify-between gap-3">
