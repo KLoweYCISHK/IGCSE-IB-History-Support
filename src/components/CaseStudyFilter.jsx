@@ -9,7 +9,7 @@ export const CASE_STUDIES = [
 
 export default function CaseStudyFilter({ value, onChange, options = CASE_STUDIES }) {
   return (
-    <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden">
+    <div className="flex flex-wrap max-w-full border border-border rounded-sm overflow-hidden">
       {options.map((c) => (
         <button
           key={c.value}
