@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeading from '@/components/SectionHeading';
 import SectionCanvas from '@/components/SectionCanvas';
+import QuickPerspectiveActions from '@/components/perspectives/QuickPerspectiveActions';
 
 const INDEX = [
   { to: '/paper-1', label: 'Paper 1', note: 'Source-based prescribed subject' },
@@ -32,6 +33,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <QuickPerspectiveActions />
 
       <SectionCanvas page="home" />
 
