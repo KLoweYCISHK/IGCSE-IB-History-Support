@@ -46,7 +46,7 @@ export default function PageHero({ page, eyebrow, title, lede, image }) {
       )}
       <p className="chrono-eyebrow mb-5">{eEyebrow}</p>
       <h1 className="font-display text-6xl md:text-8xl leading-[0.92] tracking-tight max-w-4xl">{eTitle}</h1>
-      {eLede && <div className="prose-archive mt-6 max-w-2xl text-lg text-foreground/70 leading-relaxed" dangerouslySetInnerHTML={{ __html: eLede }} />}
+      {eLede && <div className="prose-archive mt-6 max-w-2xl text-lg text-foreground/70 leading-relaxed" dangerouslySetInnerHTML={{ __html: (eLede || '').replace(/&nbsp;|\u00A0/g, ' ') }} />}
 
       {editMode && (
         <button
