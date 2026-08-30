@@ -1,0 +1,29 @@
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Masthead from './Masthead';
+import AdminBar from './AdminBar';
+
+export default function Layout() {
+  return (
+    <div className="min-h-screen bg-[#0F1215]">
+      <Masthead />
+      <div className="mx-auto max-w-[1400px] px-6 md:px-10">
+        <div className="relative md:pl-10">
+          <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-border" />
+          <main><Outlet /></main>
+        </div>
+      </div>
+      <footer className="mt-24 border-t border-border">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-10 flex flex-wrap justify-between gap-4">
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            IB History — by Ms Lowe
+          </p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            The Chronos Archive
+          </p>
+        </div>
+      </footer>
+      <AdminBar />
+    </div>
+  );
+}

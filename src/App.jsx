@@ -6,7 +6,14 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
-// Add page imports here
+import { AdminProvider } from '@/lib/AdminContext';
+import Layout from '@/components/Layout';
+import Home from '@/pages/Home';
+import Paper1 from '@/pages/Paper1';
+import Paper2 from '@/pages/Paper2';
+import Paper3 from '@/pages/Paper3';
+import IA from '@/pages/IA';
+import EE from '@/pages/EE';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -34,7 +41,14 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/paper-1" element={<Paper1 />} />
+        <Route path="/paper-2" element={<Paper2 />} />
+        <Route path="/paper-3" element={<Paper3 />} />
+        <Route path="/ia" element={<IA />} />
+        <Route path="/ee" element={<EE />} />
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -48,7 +62,9 @@ function App() {
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <ScrollToTop />
-          <AuthenticatedApp />
+          <AdminProvider>
+            <AuthenticatedApp />
+          </AdminProvider>
         </Router>
         <Toaster />
       </QueryClientProvider>

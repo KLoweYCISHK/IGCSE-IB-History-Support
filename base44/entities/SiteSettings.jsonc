@@ -1,0 +1,35 @@
+{
+  "name": "SiteSettings",
+  "type": "object",
+  "properties": {
+    "logo_url": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "default": "IB History"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "by Ms Lowe"
+    }
+  },
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

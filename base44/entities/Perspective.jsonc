@@ -1,0 +1,66 @@
+{
+  "name": "Perspective",
+  "type": "object",
+  "properties": {
+    "unit": {
+      "type": "string",
+      "enum": [
+        "russian_revolution",
+        "cold_war"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Historian name / school of thought"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Part of the unit it links to"
+    },
+    "argument": {
+      "type": "string"
+    },
+    "source_text": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "unit",
+    "name",
+    "topic",
+    "argument"
+  ],
+  "rls": {
+    "read": {},
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "name": "ContentBlock",
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string",
+      "description": "paper1 | paper2 | paper3 | ia | ee | home"
+    },
+    "sub": {
+      "type": "string",
+      "description": "study | preparing | writing | markscheme | reflection | perspectives_intro"
+    },
+    "case_study": {
+      "type": "string",
+      "description": "hitler | castro | chiang | all"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "text",
+        "table",
+        "image"
+      ],
+      "default": "text"
+    },
+    "title": {
+      "type": "string"
+    },
+    "html": {
+      "type": "string"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "caption": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "section"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

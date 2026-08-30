@@ -1,0 +1,50 @@
+{
+  "name": "Resource",
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string",
+      "description": "paper1 | paper2 | paper3 | ia | ee"
+    },
+    "case_study": {
+      "type": "string",
+      "description": "hitler | castro | chiang | all"
+    },
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "submitted_by": {
+      "type": "string"
+    },
+    "is_student_submission": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "section",
+    "title"
+  ],
+  "rls": {
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

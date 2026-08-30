@@ -1,0 +1,32 @@
+import React from 'react';
+import PageHero from '@/components/PageHero';
+import SectionHeading from '@/components/SectionHeading';
+import BlockCanvas from '@/components/BlockCanvas';
+import ResourceLibrary from '@/components/ResourceLibrary';
+import ExamVault from '@/components/ExamVault';
+
+export default function Paper1() {
+  return (
+    <div>
+      <PageHero
+        eyebrow="Prescribed subject · Source paper"
+        title="Paper 1"
+        lede="The source booklet, the four questions, and the discipline of using evidence well."
+        image="https://media.base44.com/images/public/6a9374897e9609e0d36beee4/4e12252d0_generated_db98e7d4.png"
+      />
+
+      <section className="py-16 md:py-20 border-t border-border">
+        <SectionHeading eyebrow="What we study" title="The Course" />
+        <BlockCanvas section="paper1" sub="study" emptyLabel="Course content coming soon." />
+      </section>
+
+      <ResourceLibrary section="paper1" />
+
+      <ExamVault
+        section="paper1"
+        title="The Exam Vault"
+        description="Each question type, how to approach it, and an annotated example."
+      />
+    </div>
+  );
+}
