@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import RichTextEditor from './editor/RichTextEditor';
+import TableEditor from './editor/TableEditor';
 import ImageUploadField from './editor/ImageUploadField';
 
 const CATEGORIES = [
@@ -74,10 +75,10 @@ export default function ExamItemForm({ open, onOpenChange, initial, onSave, sect
           )}
 
           {cat === 'mark_scheme' && (
-            <div className="space-y-2">
-              <p className="chrono-eyebrow">Mark scheme</p>
-              <RichTextEditor value={draft.mark_scheme} onChange={(v) => set('mark_scheme', v)} />
-            </div>
+            <TableEditor
+              rows={draft.mark_scheme_rows && draft.mark_scheme_rows.length ? draft.mark_scheme_rows : [['Marks', 'Level descriptor'], ['', '']]}
+              onChange={(rows) => set('mark_scheme_rows', rows)}
+            />
           )}
 
           {cat === 'question' && (

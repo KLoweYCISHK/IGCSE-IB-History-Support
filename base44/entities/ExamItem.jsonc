@@ -49,9 +49,15 @@
       "type": "string",
       "description": "rich text html"
     },
-    "mark_scheme": {
-      "type": "string",
-      "description": "rich text html"
+    "mark_scheme_rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "Mark scheme as a table (first row is the header). Edited with the table editor."
     },
     "image_url": {
       "type": "string"

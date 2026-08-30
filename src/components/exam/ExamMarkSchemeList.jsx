@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
+import ArchiveTable from '@/components/ArchiveTable';
 
 export default function ExamMarkSchemeList({ items, editMode, onEdit, onDelete }) {
   if (items.length === 0) return <p className="text-foreground/40 italic">No mark schemes added yet.</p>;
@@ -16,7 +17,9 @@ export default function ExamMarkSchemeList({ items, editMode, onEdit, onDelete }
             </span>
           </AccordionTrigger>
           <AccordionContent className="pb-10">
-            <div className="prose-archive" dangerouslySetInnerHTML={{ __html: item.mark_scheme || '<p>—</p>' }} />
+            {item.mark_scheme_rows?.length
+              ? <ArchiveTable rows={item.mark_scheme_rows} />
+              : <p className="text-foreground/40 italic">No mark scheme yet.</p>}
             {editMode && (
               <div className="mt-6 flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => onEdit(item)}><Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit</Button>
