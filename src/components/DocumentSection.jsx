@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { FileText, Download, Pencil, Trash2, Plus } from 'lucide-react';
+import { FileText, Download, Pencil, Trash2, Plus, Eye, EyeOff } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import DocumentForm from './DocumentForm';
 
@@ -63,21 +63,7 @@ export default function DocumentSection({
                 <h4 className="font-display text-xl leading-snug">{d.title}</h4>
                 {d.description && <p className="mt-1 text-sm text-foreground/60 leading-relaxed">{d.description}</p>}
                 {section === 'ia' && (d.mark_1 != null || d.mark_2 != null || d.mark_3 != null) && (
-                  <div className="mt-3 space-y-2 border-t border-border pt-3">
-                    {[
-                      { label: 'Historical Inquiry Question', max: 6, mark: d.mark_1, reason: d.reason_1 },
-                      { label: 'Sources & perspective', max: 6, mark: d.mark_2, reason: d.reason_2 },
-                      { label: 'Synthesis & evaluation', max: 12, mark: d.mark_3, reason: d.reason_3 },
-                    ].map((s) => (
-                      <div key={s.label} className="text-sm">
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span className="text-foreground/70">{s.label}</span>
-                          <span className="font-mono text-xs text-[#6F551A]">{s.mark != null ? `${s.mark} / ${s.max}` : `— / ${s.max}`}</span>
-                        </div>
-                        {s.reason && <p className="text-foreground/55 leading-relaxed">{s.reason}</p>}
-                      </div>
-                    ))}
-                  </div>
+                  <IaMarks doc={d} />
                 )}
                 {d.file_name && <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground truncate">{d.file_name}</p>}
                 {d.file_url && (
@@ -105,5 +91,39 @@ export default function DocumentSection({
 
       <DocumentForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} />
     </section>
+  );
+}
+
+function IaMarks({ doc }) {
+  const [open, setOpen] = useState(false);
+  const rows = [
+    { label: 'Historical Inquiry Question', max: 6, mark: doc.mark_1, reason: doc.reason_1 },
+    { label: 'Sources & perspective', max: 6, mark: doc.mark_2, reason: doc.reason_2 },
+    { label: 'Synthesis & evaluation', max: 12, mark: doc.mark_3, reason: doc.reason_3 },
+  ];
+  return (
+    <div className="mt-3 border-t border-border pt-3">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-[#6F551A] hover:text-[#5A4514]"
+      >
+        {open ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+        {open ? 'Hide marks' : 'View marks'}
+      </button>
+      {open && (
+        <div className="mt-2 space-y-2">
+          {rows.map((s) => (
+            <div key={s.label} className="text-sm">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-foreground/70">{s.label}</span>
+                <span className="font-mono text-xs text-[#6F551A]">{s.mark != null ? `${s.mark} / ${s.max}` : `— / ${s.max}`}</span>
+              </div>
+              {s.reason && <p className="text-foreground/55 leading-relaxed">{s.reason}</p>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
