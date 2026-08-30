@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import '@/lib/quillTable';
-import { insertTable } from '@/lib/quillTable';
 
 const modules = {
   toolbar: {
@@ -18,7 +16,8 @@ const modules = {
     ],
     handlers: {
       table() {
-        insertTable(this.quill, 4, 2);
+        const table = this.quill.getModule('table');
+        if (table) table.insertTable(4, 2);
       },
     },
   },
@@ -26,6 +25,7 @@ const modules = {
     // strip visual artifacts copied from Word/Google Docs
     matchVisual: false,
   },
+  table: true,
 };
 
 const TABLE_ICON =
