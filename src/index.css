@@ -108,4 +108,9 @@
   .ql-snow .ql-picker-label, .ql-snow .ql-picker-item { color: #4a4338; }
   .ql-snow .ql-picker-options { background: #FBF7EE; }
   .ql-editor.ql-blank::before { color: #8a8275; font-style: normal; }
+
+  /* Compact Quill editor for table cells */
+  .cell-editor .ql-toolbar.ql-snow { padding: 4px 6px; }
+  .cell-editor .ql-container.ql-snow { border: 0; }
+  .cell-editor .ql-editor { min-height: 70px; padding: 6px 10px; font-size: 14px; }
 }

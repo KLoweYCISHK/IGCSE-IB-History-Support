@@ -20,7 +20,7 @@ export default function ArchiveTable({ rows = [] }) {
             <tr key={r} className={r % 2 ? 'bg-black/[0.03]' : ''}>
               {head.map((_, c) => (
                 <td key={c} className="px-4 py-3 align-top text-[15px] text-foreground/85 border-b border-border/60">
-                  {row[c] ?? ''}
+                  <div className="prose-archive" dangerouslySetInnerHTML={{ __html: row[c] ?? '' }} />
                 </td>
               ))}
             </tr>

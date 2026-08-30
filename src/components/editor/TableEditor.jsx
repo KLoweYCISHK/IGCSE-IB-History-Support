@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
+import CellEditor from './CellEditor';
 
 export default function TableEditor({ rows, onChange }) {
   const grid = rows?.length ? rows : [['Column A', 'Column B'], ['', '']];
@@ -14,19 +15,23 @@ export default function TableEditor({ rows, onChange }) {
 
   return (
     <div className="space-y-3">
-      <p className="chrono-eyebrow">Table — first row is the header</p>
+      <p className="chrono-eyebrow">Table — first row is the header (body cells support bullets)</p>
       <div className="overflow-x-auto">
         <table className="border-collapse">
           <tbody>
             {grid.map((row, r) => (
               <tr key={r}>
                 {Array.from({ length: cols }).map((_, c) => (
-                  <td key={c} className="border border-border p-0">
-                    <input
-                      value={row[c] ?? ''}
-                      onChange={(e) => setCell(r, c, e.target.value)}
-                      className={`bg-transparent px-3 py-2 min-w-[160px] outline-none focus:bg-secondary/40 ${r === 0 ? 'font-mono text-xs uppercase tracking-wider' : 'text-sm'}`}
-                    />
+                  <td key={c} className="border border-border p-0 align-top">
+                    {r === 0 ? (
+                      <input
+                        value={row[c] ?? ''}
+                        onChange={(e) => setCell(r, c, e.target.value)}
+                        className="bg-transparent px-3 py-2 min-w-[160px] outline-none focus:bg-secondary/40 font-mono text-xs uppercase tracking-wider"
+                      />
+                    ) : (
+                      <CellEditor value={row[c] ?? ''} onChange={(v) => setCell(r, c, v)} />
+                    )}
                   </td>
                 ))}
                 <td className="pl-1">
