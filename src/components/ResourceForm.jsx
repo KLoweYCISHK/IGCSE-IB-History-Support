@@ -45,6 +45,14 @@ export default function ResourceForm({ open, onOpenChange, initial, onSave, modu
             </div>
           )}
           <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} label="Image (optional)" />
+          {isAdmin && (
+            <div className="rounded-sm border border-dashed border-border p-3 space-y-3">
+              <p className="chrono-eyebrow">Website login (optional)</p>
+              <Input value={draft.link_username || ''} onChange={(e) => set('link_username', e.target.value)} placeholder="Username" />
+              <Input value={draft.link_password || ''} onChange={(e) => set('link_password', e.target.value)} placeholder="Password" />
+              <p className="font-mono text-[11px] text-muted-foreground/70">For books on subscription sites — students reveal it with the eye icon.</p>
+            </div>
+          )}
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>

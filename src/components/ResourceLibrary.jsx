@@ -6,6 +6,7 @@ import { Image } from '@/components/ui/image';
 import { ExternalLink, Pencil, Trash2, Plus } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import ResourceForm from './ResourceForm';
+import LinkCredentials from './LinkCredentials';
 
 export default function ResourceLibrary({ section, caseStudy, module, title = 'The Resource Vault', description = "Curated documents, archives, videos and readings. Students may add a link they've found." }) {
   const { editMode, isAdmin } = useAdmin();
@@ -58,12 +59,15 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
               <div className="p-5">
                 <h4 className="font-display text-xl leading-snug">{r.title}</h4>
                 {r.description && <p className="mt-2 text-sm text-foreground/60 leading-relaxed">{r.description}</p>}
-                <div className="mt-4 flex items-center justify-between">
-                  {r.url ? (
-                    <a href={r.url} target="_blank" rel="noreferrer" className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#6F551A] inline-flex items-center gap-1.5">
-                      Open <ExternalLink className="w-3 h-3" />
-                    </a>
-                  ) : <span />}
+                <div className="mt-4 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    {r.url && (
+                      <a href={r.url} target="_blank" rel="noreferrer" className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#6F551A] inline-flex items-center gap-1.5">
+                        Open <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                    <LinkCredentials username={r.link_username} password={r.link_password} />
+                  </div>
                   {r.is_student_submission && (
                     <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                       added by {r.submitted_by || 'a student'}

@@ -32,6 +32,14 @@
     "image_url": {
       "type": "string"
     },
+    "link_username": {
+      "type": "string",
+      "description": "Optional login username for subscription/restricted resources"
+    },
+    "link_password": {
+      "type": "string",
+      "description": "Optional login password for subscription/restricted resources"
+    },
     "submitted_by": {
       "type": "string"
     },
