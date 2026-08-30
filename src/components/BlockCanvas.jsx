@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import ResizableImage from './ResizableImage';
-import { Plus, Type, Table2, ImageIcon, Link2 } from 'lucide-react';
+import { Plus, Type, Table2, ImageIcon, Link2, FileDown } from 'lucide-react';
 import ArchiveTable from './ArchiveTable';
 import LinkPill from './LinkPill';
 import BlockToolbar from './BlockToolbar';
@@ -136,11 +136,27 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
                   <article ref={prov.innerRef} {...prov.draggableProps} className="relative group">
                     {editMode && <BlockToolbar dragHandleProps={prov.dragHandleProps} onEdit={() => setEditing(b)} onRemove={() => remove(b.id)} />}
 
-                    {b.title && b.kind !== 'link' && <h3 className="font-display text-2xl md:text-3xl mb-4">{b.title}</h3>}
+                    {b.title && b.kind !== 'link' && b.kind !== 'file' && <h3 className="font-display text-2xl md:text-3xl mb-4">{b.title}</h3>}
 
                     {b.kind === 'table' && <ArchiveTable rows={b.rows} />}
 
                     {b.kind === 'image' && b.image_url && <ImageBlock b={b} />}
+
+                    {b.kind === 'file' && b.file_url && (
+                      <div className="space-y-2">
+                        <a
+                          href={b.file_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          download={b.file_name || undefined}
+                          className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent/10 hover:border-accent/40"
+                        >
+                          <FileDown className="w-4 h-4 text-muted-foreground" />
+                          {b.title || b.file_name || 'Download document'}
+                        </a>
+                        {b.caption && <p className="text-foreground/70 text-sm">{b.caption}</p>}
+                      </div>
+                    )}
 
                     {(!b.kind || b.kind === 'text') && (
                       <div className="prose-archive" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html || '') }} />
@@ -166,6 +182,9 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
               </Button>
               <Button variant="outline" size="sm" onClick={() => setEditing({ kind: 'link' })}>
                 <Link2 className="w-3.5 h-3.5 mr-1.5" /> Link
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setEditing({ kind: 'file' })}>
+                <FileDown className="w-3.5 h-3.5 mr-1.5" /> File
               </Button>
               <span className="chrono-eyebrow self-center ml-2 flex items-center gap-1"><Plus className="w-3 h-3" /> add a block · drag the handle to place it</span>
             </div>

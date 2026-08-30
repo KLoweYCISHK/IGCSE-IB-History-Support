@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import RichTextEditor from './RichTextEditor';
 import TableEditor from './TableEditor';
 import ImageUploadField from './ImageUploadField';
+import FileUploadField from './FileUploadField';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 export default function BlockForm({ open, onOpenChange, initial, onSave }) {
@@ -99,6 +100,25 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
                 </div>
               )}
               <Input value={draft.caption || ''} onChange={(e) => set('caption', e.target.value)} placeholder="Caption" />
+            </>
+          )}
+
+          {draft.kind === 'file' && (
+            <>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Button label (optional)</p>
+                <Input value={draft.title || ''} onChange={(e) => set('title', e.target.value)} placeholder="e.g. EE Proposal template" />
+              </div>
+              <FileUploadField
+                value={draft.file_url}
+                fileName={draft.file_name}
+                onChange={(v) => set('file_url', v)}
+                onFileNameChange={(v) => set('file_name', v)}
+              />
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Description (optional)</p>
+                <Input value={draft.caption || ''} onChange={(e) => set('caption', e.target.value)} placeholder="What students should do with this document." />
+              </div>
             </>
           )}
 

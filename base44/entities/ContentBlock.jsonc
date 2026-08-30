@@ -30,7 +30,8 @@
         "text",
         "table",
         "image",
-        "link"
+        "link",
+        "file"
       ],
       "default": "text"
     },
@@ -82,6 +83,14 @@
     "link_password": {
       "type": "string",
       "description": "Optional login password for subscription links"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Uploaded document URL for file blocks (Word/PDF)"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Original filename of the uploaded document"
     },
     "order": {
       "type": "number",
