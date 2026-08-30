@@ -19,7 +19,7 @@ const PAPER2_TYPES = [
   { value: '15_marker', label: '15 Marker' },
 ];
 
-export default function ExamItemForm({ open, onOpenChange, initial, onSave, section }) {
+export default function ExamItemForm({ open, onOpenChange, initial, onSave, section, module }) {
   const [draft, setDraft] = useState(initial || {});
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
@@ -81,7 +81,22 @@ export default function ExamItemForm({ open, onOpenChange, initial, onSave, sect
           )}
 
           {cat === 'question' && (
-            <Input value={draft.topic || ''} onChange={(e) => set('topic', e.target.value)} placeholder="Topic (e.g. emergence, Tsarist policies)" />
+            <div className="space-y-4">
+              <Input value={draft.topic || ''} onChange={(e) => set('topic', e.target.value)} placeholder="Topic (e.g. emergence, Tsarist policies)" />
+              {section === 'paper3' && (
+                <div className="space-y-2">
+                  <Label className="chrono-eyebrow">Unit</Label>
+                  <Select value={draft.module || module || 'all'} onValueChange={(v) => set('module', v)}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All units</SelectItem>
+                      <SelectItem value="russian_revolution">Russian Revolution</SelectItem>
+                      <SelectItem value="cold_war">Cold War</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
           )}
 
           <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} label="Concept image (optional)" />

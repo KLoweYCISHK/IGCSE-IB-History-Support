@@ -61,7 +61,7 @@ export default function Paper3() {
 
       <ResourceLibrary section="paper3" module={unit} />
 
-      <ExamVault section="paper3" description="Essay questions, how to structure a response, examples and mark schemes." />
+      <ExamVault section="paper3" module={unit} description="Essay questions, how to structure a response, examples and mark schemes." />
 
       <section id="perspectives" className="py-16 md:py-24 border-t border-border">
         <SectionHeading

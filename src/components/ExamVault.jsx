@@ -15,7 +15,7 @@ const TABS = [
   { key: 'question', label: 'Question Bank' },
 ];
 
-export default function ExamVault({ section, caseStudy, title = 'The Exam Vault', description }) {
+export default function ExamVault({ section, caseStudy, module, title = 'The Exam Vault', description }) {
   const { editMode } = useAdmin();
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -38,7 +38,14 @@ export default function ExamVault({ section, caseStudy, title = 'The Exam Vault'
   };
 
   const del = async (id) => { await base44.entities.ExamItem.delete(id); load(); };
-  const byCat = (c) => items.filter((i) => (i.category || 'question') === c);
+  const byCat = (c) => items.filter((i) => {
+    if ((i.category || 'question') !== c) return false;
+    if (c === 'question' && module) {
+      const m = i.module || 'all';
+      return m === 'all' || m === module;
+    }
+    return true;
+  });
 
   return (
     <section className="py-16 md:py-24 border-t border-border">
@@ -47,7 +54,7 @@ export default function ExamVault({ section, caseStudy, title = 'The Exam Vault'
         title={title}
         description={description || 'How to approach each question, mark schemes, and a bank of practice questions.'}
         right={editMode ? (
-          <Button variant="outline" onClick={() => setEditing({ category: tab })}>
+          <Button variant="outline" onClick={() => setEditing({ category: tab, ...(module && tab === 'question' ? { module } : {}) })}>
             <Plus className="w-4 h-4 mr-1.5" /> Add {TABS.find((t) => t.key === tab)?.label.toLowerCase().replace('the ', '')}
           </Button>
         ) : null}
@@ -69,7 +76,7 @@ export default function ExamVault({ section, caseStudy, title = 'The Exam Vault'
       {tab === 'mark_scheme' && <ExamMarkSchemeList items={byCat('mark_scheme')} editMode={editMode} onEdit={setEditing} onDelete={del} />}
       {tab === 'question' && <ExamQuestionBank items={byCat('question')} section={section} editMode={editMode} onEdit={setEditing} onDelete={del} />}
 
-      <ExamItemForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} />
+      <ExamItemForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} module={module} />
     </section>
   );
 }

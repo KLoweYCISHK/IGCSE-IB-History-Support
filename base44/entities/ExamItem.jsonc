@@ -10,6 +10,16 @@
       "type": "string",
       "description": "hitler | castro | chiang | all"
     },
+    "module": {
+      "type": "string",
+      "enum": [
+        "russian_revolution",
+        "cold_war",
+        "all"
+      ],
+      "default": "all",
+      "description": "paper3 unit filter for the question bank (russian_revolution | cold_war | all). Approach & mark schemes are always shared."
+    },
     "category": {
       "type": "string",
       "enum": [
