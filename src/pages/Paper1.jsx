@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageHero from '@/components/PageHero';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
+import CaseStudyFilter from '@/components/CaseStudyFilter';
+
+const PAPER1_CASES = [
+  { value: 'all', label: 'All case studies' },
+  { value: 'postwar_europe', label: 'Post-war Europe' },
+  { value: 'indochina_refugee', label: 'Indochina Refugee Crisis' },
+];
 
 export default function Paper1() {
+  const initial = new URLSearchParams(window.location.search).get('case') || 'all';
+  const [caseStudy, setCaseStudy] = useState(
+    PAPER1_CASES.some((c) => c.value === initial) ? initial : 'all'
+  );
+  const isAll = caseStudy === 'all';
+
   return (
     <div>
       <PageHero
@@ -15,27 +28,25 @@ export default function Paper1() {
         image="https://media.base44.com/images/public/6a9374897e9609e0d36beee4/4e12252d0_generated_db98e7d4.png"
       />
 
-      <SectionCanvas page="paper1" />
+      <div className="sticky top-[92px] z-30 -mx-6 md:mx-0 px-6 md:px-0 py-4 bg-[#F4EFE3]/90 backdrop-blur border-y border-border">
+        <CaseStudyFilter value={caseStudy} onChange={setCaseStudy} options={PAPER1_CASES} />
+      </div>
 
-      <ResourceLibrary
-        section="paper1"
-        caseStudy="postwar_europe"
-        title="Post-war Displacement in Europe"
-        description="Resources, documents and readings for the Europe case study."
-      />
+      {isAll ? (
+        <>
+          <SectionCanvas page="paper1" />
 
-      <ResourceLibrary
-        section="paper1"
-        caseStudy="indochina_refugee"
-        title="Indochina Refugee Crisis"
-        description="Resources, documents and readings for the Indochina case study."
-      />
+          <ExamVault
+            section="paper1"
+            title="The Exam Vault"
+            description="Each question type, how to approach it, and an annotated example."
+          />
 
-      <ExamVault
-        section="paper1"
-        title="The Exam Vault"
-        description="Each question type, how to approach it, and an annotated example."
-      />
+          <ResourceLibrary section="paper1" caseStudy="all" />
+        </>
+      ) : (
+        <ResourceLibrary section="paper1" caseStudy={caseStudy} />
+      )}
     </div>
   );
 }

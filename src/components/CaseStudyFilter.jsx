@@ -7,10 +7,10 @@ export const CASE_STUDIES = [
   { value: 'chiang', label: 'Chiang Kai-shek' },
 ];
 
-export default function CaseStudyFilter({ value, onChange }) {
+export default function CaseStudyFilter({ value, onChange, options = CASE_STUDIES }) {
   return (
     <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden">
-      {CASE_STUDIES.map((c) => (
+      {options.map((c) => (
         <button
           key={c.value}
           onClick={() => onChange(c.value)}
