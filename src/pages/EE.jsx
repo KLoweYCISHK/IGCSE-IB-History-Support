@@ -44,11 +44,14 @@ export default function EE() {
           </TabsContent>
           <TabsContent value="markscheme" className="mt-8">
             <BlockCanvas section="ee" sub="student_markscheme" emptyLabel="No mark scheme added yet." />
+            <div className="mt-12">
+              <SectionCanvas page="ee" filterFn={(s) => s.slug.startsWith('criteria_')} />
+            </div>
           </TabsContent>
         </Tabs>
       </section>
 
-      <SectionCanvas page="ee" />
+      <SectionCanvas page="ee" filterFn={(s) => !s.slug.startsWith('criteria_')} />
     </div>
   );
 }

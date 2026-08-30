@@ -7,7 +7,7 @@ import SectionHeading from './SectionHeading';
 import BlockCanvas from './BlockCanvas';
 import SectionForm from './editor/SectionForm';
 
-export default function SectionCanvas({ page, caseStudy, module, className = '' }) {
+export default function SectionCanvas({ page, caseStudy, module, className = '', filterFn }) {
   const { editMode } = useAdmin();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,9 +15,10 @@ export default function SectionCanvas({ page, caseStudy, module, className = '' 
 
   const load = useCallback(async () => {
     const list = await base44.entities.PageSection.filter({ page }, 'order');
-    const visible = module
+    const visible = (module
       ? list.filter((s) => !s.is_deleted && s.module === module)
-      : list.filter((s) => !s.is_deleted);
+      : list.filter((s) => !s.is_deleted)
+    ).filter((s) => (filterFn ? filterFn(s) : true));
     setSections(visible);
     setLoading(false);
   }, [page, module]);
