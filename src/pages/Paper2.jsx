@@ -10,7 +10,7 @@ export default function Paper2() {
   const [caseStudy, setCaseStudy] = useState(
     CASE_STUDIES.some((c) => c.value === initial) ? initial : 'all'
   );
-  const scope = caseStudy === 'all' ? undefined : caseStudy;
+  const isAll = caseStudy === 'all';
 
   return (
     <div>
@@ -26,15 +26,21 @@ export default function Paper2() {
         <CaseStudyFilter value={caseStudy} onChange={setCaseStudy} />
       </div>
 
-      <SectionCanvas page="paper2" />
+      {isAll ? (
+        <>
+          <SectionCanvas page="paper2" />
 
-      <ResourceLibrary section="paper2" caseStudy={scope} />
+          <ExamVault
+            section="paper2"
+            title="The Exam Vault"
+            description="Example questions, example answers, mark schemes and concept imagery."
+          />
 
-      <ExamVault
-        section="paper2"
-        title="The Exam Vault"
-        description="Example questions, example answers, mark schemes and concept imagery."
-      />
+          <ResourceLibrary section="paper2" caseStudy="all" />
+        </>
+      ) : (
+        <ResourceLibrary section="paper2" caseStudy={caseStudy} />
+      )}
     </div>
   );
 }
