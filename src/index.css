@@ -95,6 +95,7 @@
   /* Strip pasted background highlights so content adopts the site palette */
   .prose-archive [style*="background"] { background-color: transparent !important; }
   .prose-archive [style*="background-color"] { background-color: transparent !important; }
+  .prose-archive span[style*="color"] { color: inherit !important; }
 
   /* Quill light theme */
   .ql-toolbar.ql-snow {

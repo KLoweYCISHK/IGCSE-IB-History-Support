@@ -32,6 +32,10 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           delete op.attributes.background;
           delete op.attributes.color;
         }
+        // collapse non-breaking spaces so pasted text wraps naturally
+        if (typeof op.insert === 'string') {
+          op.insert = op.insert.replace(/\u00A0/g, ' ');
+        }
         return op;
       });
       return delta;

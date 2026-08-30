@@ -8,6 +8,7 @@ import { Pencil, Trash2, Plus, Type, Table2, ImageIcon, GripVertical } from 'luc
 import ArchiveTable from './ArchiveTable';
 import BlockForm from './editor/BlockForm';
 import { makeDroppableId } from '@/lib/blockDnd';
+import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
 
 function ImageBlock({ b }) {
   const layout = b.image_layout || 'full';
@@ -38,7 +39,7 @@ function ImageBlock({ b }) {
       {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
     </figure>
   );
-  const textEl = <div className="prose-archive min-w-0" dangerouslySetInnerHTML={{ __html: b.html }} />;
+  const textEl = <div className="prose-archive min-w-0" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html) }} />;
 
   return (
     <div className={`grid gap-8 md:gap-10 items-start overflow-hidden ${layout === 'left' ? 'md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]' : 'md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'}`}>
@@ -135,7 +136,7 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
                   {b.kind === 'image' && b.image_url && <ImageBlock b={b} />}
 
                   {(!b.kind || b.kind === 'text') && (
-                    <div className="prose-archive" dangerouslySetInnerHTML={{ __html: b.html || '' }} />
+                    <div className="prose-archive" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html || '') }} />
                   )}
                 </article>
               )}
