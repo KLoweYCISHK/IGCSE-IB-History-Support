@@ -1,0 +1,92 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import { base44 } from '@/api/base44Client';
+import { useAdmin } from '@/lib/AdminContext';
+import { Button } from '@/components/ui/button';
+import { FileText, Download, Pencil, Trash2, Plus } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import DocumentForm from './DocumentForm';
+
+export default function DocumentSection({
+  section,
+  title = 'Documents',
+  description = 'Downloadable handouts and templates.',
+}) {
+  const { editMode } = useAdmin();
+  const [items, setItems] = useState([]);
+  const [editing, setEditing] = useState(null);
+
+  const load = useCallback(async () => {
+    const list = await base44.entities.Document.filter({ section }, 'order');
+    setItems(list);
+  }, [section]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const save = async (draft) => {
+    const { id, ...data } = draft;
+    if (id) await base44.entities.Document.update(id, data);
+    else await base44.entities.Document.create({ ...data, section });
+    setEditing(null);
+    load();
+  };
+
+  const remove = async (d) => {
+    await base44.entities.Document.delete(d.id);
+    load();
+  };
+
+  return (
+    <section className="py-16 md:py-24 border-t border-border">
+      <SectionHeading
+        eyebrow="Downloads"
+        title={title}
+        description={description}
+        right={
+          editMode ? (
+            <Button onClick={() => setEditing({})} className="bg-[#6F551A] hover:bg-[#5A4514] text-[#F4EFE3]">
+              <Plus className="w-4 h-4 mr-1.5" /> Add a document
+            </Button>
+          ) : null
+        }
+      />
+
+      {items.length === 0 ? (
+        <p className="text-foreground/40 italic">No documents yet.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-5">
+          {items.map((d) => (
+            <div key={d.id} className="glassine group relative border border-border rounded-sm bg-card p-5 flex items-start gap-4">
+              <div className="shrink-0 w-12 h-12 rounded-sm bg-secondary flex items-center justify-center text-[#6F551A]">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h4 className="font-display text-xl leading-snug">{d.title}</h4>
+                {d.description && <p className="mt-1 text-sm text-foreground/60 leading-relaxed">{d.description}</p>}
+                {d.file_name && <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground truncate">{d.file_name}</p>}
+                {d.file_url && (
+                  <a
+                    href={d.file_url}
+                    download={d.file_name || undefined}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-[#6F551A] hover:text-[#5A4514]"
+                  >
+                    <Download className="w-3.5 h-3.5" /> Download
+                  </a>
+                )}
+              </div>
+              {editMode && (
+                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition bg-card/90 border border-border rounded">
+                  <button onClick={() => setEditing(d)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
+                  <button onClick={() => remove(d)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <DocumentForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+    </section>
+  );
+}

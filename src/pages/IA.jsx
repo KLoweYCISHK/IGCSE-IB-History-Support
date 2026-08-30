@@ -4,6 +4,7 @@ import SectionHeading from '@/components/SectionHeading';
 import Roadmap from '@/components/Roadmap';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
+import DocumentSection from '@/components/DocumentSection';
 
 const STAGES = [
   { key: 'preparing', label: 'Preparing for the IA', description: 'Choosing a question, finding sources, and getting the scope right.' },
@@ -28,6 +29,8 @@ export default function IA() {
       </section>
 
       <SectionCanvas page="ia" />
+
+      <DocumentSection section="ia" title="Documents" description="Handouts, templates and exemplars — click to download." />
 
       <ResourceLibrary section="ia" />
     </div>

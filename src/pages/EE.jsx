@@ -4,6 +4,7 @@ import SectionHeading from '@/components/SectionHeading';
 import Roadmap from '@/components/Roadmap';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
+import DocumentSection from '@/components/DocumentSection';
 
 const STAGES = [
   { key: 'preparing', label: 'Preparing for the EE', description: 'Topic, research question, supervisor meetings and reading.' },
@@ -28,6 +29,8 @@ export default function EE() {
       </section>
 
       <SectionCanvas page="ee" />
+
+      <DocumentSection section="ee" title="Documents" description="Handouts, templates and exemplars — click to download." />
 
       <ResourceLibrary section="ee" />
     </div>
