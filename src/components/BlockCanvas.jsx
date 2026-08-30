@@ -3,80 +3,48 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Image } from '@/components/ui/image';
+import ResizableImage from './ResizableImage';
 import { Pencil, Trash2, Plus, Type, Table2, ImageIcon, Link2, ExternalLink, GripVertical } from 'lucide-react';
 import ArchiveTable from './ArchiveTable';
 import BlockForm from './editor/BlockForm';
 import { makeDroppableId } from '@/lib/blockDnd';
 import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
 
-const SIZE_CLASSES = {
-  small: 'max-w-sm h-[160px] md:h-[220px]',
-  medium: 'max-w-2xl h-[240px] md:h-[340px]',
-  large: 'max-w-4xl h-[300px] md:h-[460px]',
-  full: 'w-full h-[300px] md:h-[460px]',
-};
-
 function ImageBlock({ b }) {
   const layout = b.image_layout || 'full';
   const hasText = !!b.html && b.html.replace(/<[^>]*>/g, '').trim().length > 0;
-  const sizeClass = SIZE_CLASSES[b.image_size] || SIZE_CLASSES.full;
+  const widthPct = b.image_width ?? 100;
+
+  const figure = (w) => (
+    <ResizableImage src={b.image_url} alt={b.caption || b.title || ''} caption={b.caption} widthPct={w} />
+  );
 
   if (layout === 'top' && hasText) {
     return (
       <div className="space-y-8 md:space-y-10">
-        <figure className={`glassine overflow-hidden rounded-sm border border-border mx-auto ${sizeClass}`}>
-          <Image
-            src={b.image_url}
-            alt={b.caption || b.title || ''}
-            className="w-full h-full"
-            fittingType="fit"
-          />
-          {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
-        </figure>
+        {figure(widthPct)}
         <div className="prose-archive min-w-0" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html) }} />
       </div>
     );
   }
 
   if (layout === 'full' || !hasText) {
-    return (
-      <figure className={`glassine mx-auto ${sizeClass}`}>
-        <Image
-          src={b.image_url}
-          alt={b.caption || b.title || ''}
-          className="w-full h-full rounded-sm border border-border"
-          fittingType="fit"
-        />
-        {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
-      </figure>
-    );
+    return figure(widthPct);
   }
 
-  const imageEl = (
-    <figure className="glassine overflow-hidden rounded-sm border border-border">
-      <Image
-        src={b.image_url}
-        alt={b.caption || b.title || ''}
-        className="w-full h-full min-h-[260px]"
-        fittingType="fit"
-      />
-      {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
-    </figure>
-  );
   const textEl = <div className="prose-archive min-w-0" dangerouslySetInnerHTML={{ __html: stripPasteArtifacts(b.html) }} />;
 
   return (
     <div className={`grid gap-8 md:gap-10 items-start overflow-hidden ${layout === 'left' ? 'md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]' : 'md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'}`}>
       {layout === 'left' ? (
         <>
-          {imageEl}
+          {figure(100)}
           {textEl}
         </>
       ) : (
         <>
           {textEl}
-          {imageEl}
+          {figure(100)}
         </>
       )}
     </div>

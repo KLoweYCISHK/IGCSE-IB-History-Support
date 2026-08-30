@@ -63,16 +63,10 @@
       "default": "full",
       "description": "full = standalone; left = image left with text right; right = text left with image right; top = image on top with text below"
     },
-    "image_size": {
-      "type": "string",
-      "enum": [
-        "small",
-        "medium",
-        "large",
-        "full"
-      ],
-      "default": "full",
-      "description": "Display size for the image (applies to full and top layouts). full = full container width."
+    "image_width": {
+      "type": "number",
+      "default": 100,
+      "description": "Display width as a percentage of the container (15-100). Image keeps its natural aspect ratio."
     },
     "caption": {
       "type": "string"
