@@ -41,7 +41,7 @@ function ImageBlock({ b }) {
   const textEl = <div className="prose-archive" dangerouslySetInnerHTML={{ __html: b.html }} />;
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
+    <div className={`grid gap-8 md:gap-10 items-start ${layout === 'left' ? 'md:grid-cols-[2fr_3fr]' : 'md:grid-cols-[3fr_2fr]'}`}>
       {layout === 'left' ? (
         <>
           {imageEl}
