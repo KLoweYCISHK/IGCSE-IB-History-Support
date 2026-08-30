@@ -7,7 +7,7 @@ import SectionHeading from './SectionHeading';
 import BlockCanvas from './BlockCanvas';
 import SectionForm from './editor/SectionForm';
 
-export default function SectionCanvas({ page, caseStudy, className = '' }) {
+export default function SectionCanvas({ page, caseStudy, module, className = '' }) {
   const { editMode } = useAdmin();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,9 +15,12 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
 
   const load = useCallback(async () => {
     const list = await base44.entities.PageSection.filter({ page }, 'order');
-    setSections(list.filter((s) => !s.is_deleted));
+    const visible = module
+      ? list.filter((s) => !s.is_deleted && ((s.module || 'all') === 'all' || s.module === module))
+      : list.filter((s) => !s.is_deleted);
+    setSections(visible);
     setLoading(false);
-  }, [page]);
+  }, [page, module]);
 
   useEffect(() => {
     setLoading(true); load();
@@ -29,7 +32,7 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
   const save = async (draft) => {
     const { id, ...data } = draft;
     if (id) await base44.entities.PageSection.update(id, data);
-    else await base44.entities.PageSection.create({ ...data, page, order: sections.length });
+    else await base44.entities.PageSection.create({ ...data, page, module: data.module || module || 'all', order: sections.length });
     setEditing(null);
     load();
   };
@@ -66,7 +69,7 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
             </div>
           )}
           <SectionHeading eyebrow={s.eyebrow} title={s.title} />
-          <BlockCanvas section={page} sub={s.slug} caseStudy={caseStudy} emptyLabel="No content here yet." />
+          <BlockCanvas section={page} sub={s.slug} caseStudy={caseStudy} module={module} emptyLabel="No content here yet." />
         </section>
       ))}
 
@@ -82,7 +85,7 @@ export default function SectionCanvas({ page, caseStudy, className = '' }) {
         <p className="py-10 text-foreground/40 italic">Content coming soon.</p>
       )}
 
-      <SectionForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+      <SectionForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} page={page} module={module} />
     </div>
   );
 }

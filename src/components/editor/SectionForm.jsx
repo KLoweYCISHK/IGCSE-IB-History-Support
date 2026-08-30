@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 const slugify = (s) =>
   (s || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
 
-export default function SectionForm({ open, onOpenChange, initial, onSave }) {
+export default function SectionForm({ open, onOpenChange, initial, onSave, page, module }) {
   const [draft, setDraft] = useState(initial || {});
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
@@ -36,6 +37,19 @@ export default function SectionForm({ open, onOpenChange, initial, onSave }) {
             <div className="space-y-2">
               <p className="chrono-eyebrow">Slug (auto from title)</p>
               <Input value={draft.slug || ''} onChange={(e) => set('slug', slugify(e.target.value))} placeholder="the_course" />
+            </div>
+          )}
+          {page === 'paper3' && (
+            <div className="space-y-2">
+              <p className="chrono-eyebrow">Unit</p>
+              <Select value={draft.module || module || 'all'} onValueChange={(v) => set('module', v)}>
+                <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All units (shared)</SelectItem>
+                  <SelectItem value="russian_revolution">Russian Revolution</SelectItem>
+                  <SelectItem value="cold_war">Cold War</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
         </div>

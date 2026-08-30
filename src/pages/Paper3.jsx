@@ -55,7 +55,7 @@ export default function Paper3() {
         </div>
       </section>
 
-      <SectionCanvas page="paper3" />
+      <SectionCanvas page="paper3" module={unit} />
 
       <TextbookSection section="paper3" module={unit} />
 

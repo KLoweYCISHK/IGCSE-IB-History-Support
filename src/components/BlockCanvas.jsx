@@ -57,7 +57,7 @@ function ImageBlock({ b }) {
   );
 }
 
-export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Nothing here yet.' }) {
+export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabel = 'Nothing here yet.' }) {
   const { editMode } = useAdmin();
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,9 +67,12 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
     const query = { section, sub };
     if (caseStudy) query.case_study = caseStudy;
     const list = await base44.entities.ContentBlock.filter(query, 'order');
-    setBlocks(list.filter((b) => !b.is_deleted));
+    const visible = module
+      ? list.filter((b) => !b.is_deleted && ((b.module || 'all') === 'all' || b.module === module))
+      : list.filter((b) => !b.is_deleted);
+    setBlocks(visible);
     setLoading(false);
-  }, [section, sub, caseStudy]);
+  }, [section, sub, caseStudy, module]);
 
   useEffect(() => {
     setLoading(true); load();
@@ -81,7 +84,7 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
   const save = async (draft) => {
     const { id, ...data } = draft;
     if (id) await base44.entities.ContentBlock.update(id, data);
-    else await base44.entities.ContentBlock.create({ ...data, section, sub, case_study: caseStudy || 'all', order: blocks.length });
+    else await base44.entities.ContentBlock.create({ ...data, section, sub, case_study: caseStudy || 'all', module: module || 'all', order: blocks.length });
     setEditing(null);
     load();
   };
@@ -93,7 +96,7 @@ export default function BlockCanvas({ section, sub, caseStudy, emptyLabel = 'Not
 
   if (loading) return <div className="h-24 animate-pulse bg-black/[0.04] rounded" />;
 
-  const droppableId = makeDroppableId(section, sub, caseStudy);
+  const droppableId = makeDroppableId(section, sub, caseStudy, module);
 
   return (
     <Droppable droppableId={droppableId} isDropDisabled={!editMode}>

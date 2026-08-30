@@ -1,25 +1,33 @@
 import { base44 } from '@/api/base44Client';
 
-export const makeDroppableId = (section, sub, caseStudy) =>
-  `${section}__${sub || ''}__${caseStudy || 'all'}`;
+export const makeDroppableId = (section, sub, caseStudy, module) =>
+  `${section}__${sub || ''}__${caseStudy || 'all'}__${module || 'all'}`;
 
 export const parseDroppableId = (id) => {
-  const [section, sub, caseStudy] = (id || '').split('__');
-  return { section, sub, caseStudy: caseStudy === 'all' ? undefined : caseStudy };
+  const [section, sub, caseStudy, module] = (id || '').split('__');
+  return {
+    section,
+    sub,
+    caseStudy: caseStudy === 'all' ? undefined : caseStudy,
+    module: module === 'all' ? undefined : module,
+  };
 };
 
-const loadOrdered = async ({ section, sub, caseStudy }) => {
+const loadOrdered = async ({ section, sub, caseStudy, module }) => {
   const query = { section, sub };
   if (caseStudy) query.case_study = caseStudy;
   const list = await base44.entities.ContentBlock.filter(query, 'order');
-  return list.filter((b) => !b.is_deleted);
+  const visible = module
+    ? list.filter((b) => !b.is_deleted && ((b.module || 'all') === 'all' || b.module === module))
+    : list.filter((b) => !b.is_deleted);
+  return visible;
 };
 
 const reindex = (list) =>
   base44.entities.ContentBlock.bulkUpdate(list.map((b, i) => ({ id: b.id, order: i })));
 
 // Handles both within-section reorder and cross-section block moves.
-// droppableId encodes section/sub/caseStudy; draggableId is the block id.
+// droppableId encodes section/sub/caseStudy/module; draggableId is the block id.
 export const handleBlockDragEnd = async (result) => {
   const { source, destination, draggableId } = result;
   if (!destination || !draggableId) return;
@@ -35,11 +43,12 @@ export const handleBlockDragEnd = async (result) => {
     list.splice(destination.index, 0, moved);
     await reindex(list);
   } else {
-    // Reassign the block to the destination section/sub/case, then fix ordering on both sides.
+    // Reassign the block to the destination section/sub/case/module, then fix ordering on both sides.
     await base44.entities.ContentBlock.update(draggableId, {
       section: dst.section,
       sub: dst.sub,
       case_study: dst.caseStudy || 'all',
+      module: dst.module || 'all',
     });
     const dList = (await loadOrdered(dst)).filter((b) => b.id !== draggableId);
     dList.splice(destination.index, 0, { id: draggableId });

@@ -16,6 +16,16 @@
     "eyebrow": {
       "type": "string"
     },
+    "module": {
+      "type": "string",
+      "enum": [
+        "russian_revolution",
+        "cold_war",
+        "all"
+      ],
+      "default": "all",
+      "description": "paper3 unit filter (russian_revolution | cold_war | all). Untagged sections are shared across both units."
+    },
     "order": {
       "type": "number",
       "default": 0
