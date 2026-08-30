@@ -62,6 +62,23 @@ export default function DocumentSection({
               <div className="min-w-0 flex-1">
                 <h4 className="font-display text-xl leading-snug">{d.title}</h4>
                 {d.description && <p className="mt-1 text-sm text-foreground/60 leading-relaxed">{d.description}</p>}
+                {section === 'ia' && (d.mark_1 != null || d.mark_2 != null || d.mark_3 != null) && (
+                  <div className="mt-3 space-y-2 border-t border-border pt-3">
+                    {[
+                      { label: 'Sources', max: 6, mark: d.mark_1, reason: d.reason_1 },
+                      { label: 'Investigation', max: 15, mark: d.mark_2, reason: d.reason_2 },
+                      { label: 'Reflection', max: 4, mark: d.mark_3, reason: d.reason_3 },
+                    ].map((s) => (
+                      <div key={s.label} className="text-sm">
+                        <div className="flex items-baseline justify-between gap-3">
+                          <span className="text-foreground/70">{s.label}</span>
+                          <span className="font-mono text-xs text-[#6F551A]">{s.mark != null ? `${s.mark} / ${s.max}` : `— / ${s.max}`}</span>
+                        </div>
+                        {s.reason && <p className="text-foreground/55 leading-relaxed">{s.reason}</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {d.file_name && <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground truncate">{d.file_name}</p>}
                 {d.file_url && (
                   <a
@@ -86,7 +103,7 @@ export default function DocumentSection({
         </div>
       )}
 
-      <DocumentForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+      <DocumentForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} />
     </section>
   );
 }

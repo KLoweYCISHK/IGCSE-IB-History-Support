@@ -18,6 +18,30 @@
     "description": {
       "type": "string"
     },
+    "mark_1": {
+      "type": "number",
+      "description": "IA section 1: Identification & evaluation of sources (out of 6)"
+    },
+    "reason_1": {
+      "type": "string",
+      "description": "Why this mark was awarded for section 1"
+    },
+    "mark_2": {
+      "type": "number",
+      "description": "IA section 2: Investigation (out of 15)"
+    },
+    "reason_2": {
+      "type": "string",
+      "description": "Why this mark was awarded for section 2"
+    },
+    "mark_3": {
+      "type": "number",
+      "description": "IA section 3: Reflection (out of 4)"
+    },
+    "reason_3": {
+      "type": "string",
+      "description": "Why this mark was awarded for section 3"
+    },
     "order": {
       "type": "number",
       "default": 0

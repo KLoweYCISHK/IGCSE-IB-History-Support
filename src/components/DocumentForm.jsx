@@ -6,7 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Loader2, Upload, X, FileText } from 'lucide-react';
 
-export default function DocumentForm({ open, onOpenChange, initial, onSave }) {
+const IA_SECTIONS = [
+  { key: '1', label: 'Section 1 · Sources', max: 6 },
+  { key: '2', label: 'Section 2 · Investigation', max: 15 },
+  { key: '3', label: 'Section 3 · Reflection', max: 4 },
+];
+
+export default function DocumentForm({ open, onOpenChange, initial, onSave, section }) {
   const [draft, setDraft] = useState(initial || {});
   const [busy, setBusy] = useState(false);
   useEffect(() => { if (open) setDraft({ ...(initial || {}) }); }, [open, initial]);
@@ -34,6 +40,33 @@ export default function DocumentForm({ open, onOpenChange, initial, onSave }) {
         <div className="space-y-4 py-2">
           <Input value={draft.title || ''} onChange={(e) => set('title', e.target.value)} placeholder="Title" />
           <Textarea value={draft.description || ''} onChange={(e) => set('description', e.target.value)} placeholder="Short description (optional)" rows={2} />
+          {section === 'ia' && (
+            <div className="space-y-4 border-t border-border pt-4">
+              <p className="chrono-eyebrow">IA marks breakdown</p>
+              {IA_SECTIONS.map((s) => (
+                <div key={s.key} className="space-y-1.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-foreground/70 flex-1">{s.label}</span>
+                    <Input
+                      type="number"
+                      min="0"
+                      max={s.max}
+                      value={draft[`mark_${s.key}`] ?? ''}
+                      onChange={(e) => set(`mark_${s.key}`, e.target.value === '' ? '' : Number(e.target.value))}
+                      placeholder={`/ ${s.max}`}
+                      className="w-20"
+                    />
+                  </div>
+                  <Textarea
+                    value={draft[`reason_${s.key}`] || ''}
+                    onChange={(e) => set(`reason_${s.key}`, e.target.value)}
+                    placeholder={`Why it earned this mark`}
+                    rows={2}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
           <div className="space-y-2">
             <p className="chrono-eyebrow">File (PDF or Word)</p>
             {draft.file_url ? (
