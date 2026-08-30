@@ -24,12 +24,31 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
         </DialogHeader>
 
         <div className="space-y-5 py-2">
-          <div className="space-y-2">
-            <p className="chrono-eyebrow">Title (optional)</p>
-            <Input value={draft.title || ''} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Unit 1 — Authoritarian States" />
-          </div>
+          {draft.kind !== 'link' && (
+            <div className="space-y-2">
+              <p className="chrono-eyebrow">Title (optional)</p>
+              <Input value={draft.title || ''} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Unit 1 — Authoritarian States" />
+            </div>
+          )}
 
           {draft.kind === 'table' && <TableEditor rows={draft.rows} onChange={(rows) => set('rows', rows)} />}
+
+          {draft.kind === 'link' && (
+            <>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Button label</p>
+                <Input value={draft.title || ''} onChange={(e) => set('title', e.target.value)} placeholder="e.g. EE Question generator" />
+              </div>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Link URL</p>
+                <Input value={draft.link_url || ''} onChange={(e) => set('link_url', e.target.value)} placeholder="https://…" />
+              </div>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Description (optional)</p>
+                <Input value={draft.caption || ''} onChange={(e) => set('caption', e.target.value)} placeholder="e.g. Use the linked question generator to help formulate your question." />
+              </div>
+            </>
+          )}
 
           {draft.kind === 'image' && (
             <>

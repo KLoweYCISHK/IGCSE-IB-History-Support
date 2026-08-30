@@ -29,7 +29,8 @@
       "enum": [
         "text",
         "table",
-        "image"
+        "image",
+        "link"
       ],
       "default": "text"
     },
@@ -63,6 +64,10 @@
     },
     "caption": {
       "type": "string"
+    },
+    "link_url": {
+      "type": "string",
+      "description": "URL for link blocks"
     },
     "order": {
       "type": "number",
