@@ -36,7 +36,7 @@
     },
     "mark_3": {
       "type": "number",
-      "description": "IA Section C: Synthesis & evaluation (out of 15)"
+      "description": "IA Section C: Synthesis & evaluation (out of 12)"
     },
     "reason_3": {
       "type": "string",

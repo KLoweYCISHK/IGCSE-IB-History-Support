@@ -67,7 +67,7 @@ export default function DocumentSection({
                     {[
                       { label: 'Historical Inquiry Question', max: 6, mark: d.mark_1, reason: d.reason_1 },
                       { label: 'Sources & perspective', max: 6, mark: d.mark_2, reason: d.reason_2 },
-                      { label: 'Synthesis & evaluation', max: 15, mark: d.mark_3, reason: d.reason_3 },
+                      { label: 'Synthesis & evaluation', max: 12, mark: d.mark_3, reason: d.reason_3 },
                     ].map((s) => (
                       <div key={s.label} className="text-sm">
                         <div className="flex items-baseline justify-between gap-3">

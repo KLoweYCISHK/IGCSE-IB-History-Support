@@ -9,7 +9,7 @@ import { Loader2, Upload, X, FileText } from 'lucide-react';
 const IA_SECTIONS = [
   { key: '1', label: 'Section A · Historical Inquiry Question', max: 6 },
   { key: '2', label: 'Section B · Sources & perspective', max: 6 },
-  { key: '3', label: 'Section C · Synthesis & evaluation', max: 15 },
+  { key: '3', label: 'Section C · Synthesis & evaluation', max: 12 },
 ];
 
 export default function DocumentForm({ open, onOpenChange, initial, onSave, section }) {
