@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -16,9 +17,21 @@ const UNIT_KEYS = ['russian_revolution', 'cold_war'];
 
 export default function Paper3() {
   const { user } = useAdmin();
-  const hash = window.location.hash.replace('#', '');
-  const [unit, setUnit] = useState(UNIT_KEYS.includes(hash) ? hash : 'russian_revolution');
+  const [searchParams] = useSearchParams();
+  const unitParam = searchParams.get('unit');
+  const [unit, setUnit] = useState(UNIT_KEYS.includes(unitParam) ? unitParam : 'russian_revolution');
   const [adding, setAdding] = useState(false);
+  const didScrollToPerspectives = useRef(false);
+
+  useEffect(() => {
+    if (didScrollToPerspectives.current) return;
+    if (window.location.hash !== '#perspectives') return;
+    didScrollToPerspectives.current = true;
+    const el = document.getElementById('perspectives');
+    if (!el) return;
+    const timer = window.setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <div>
@@ -63,7 +76,7 @@ export default function Paper3() {
 
       <ExamVault section="paper3" module={unit} description="Essay questions, how to structure a response, examples and mark schemes." />
 
-      <section id="perspectives" className="py-16 md:py-24 border-t border-border">
+      <section id="perspectives" className="py-16 md:py-24 border-t border-border scroll-mt-28">
         <SectionHeading
           eyebrow="Built by the class"
           title="Historical Perspectives"
