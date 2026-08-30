@@ -10,6 +10,24 @@
       "type": "string",
       "description": "hitler | castro | chiang | all"
     },
+    "category": {
+      "type": "string",
+      "enum": [
+        "approach",
+        "mark_scheme",
+        "question"
+      ],
+      "default": "question",
+      "description": "approach = how to approach + example; mark_scheme = mark scheme; question = bank of exam questions"
+    },
+    "question_type": {
+      "type": "string",
+      "description": "paper2: 6_marker | 4_marker | 15_marker"
+    },
+    "topic": {
+      "type": "string",
+      "description": "question bank topic filter, e.g. emergence, Tsarist policies"
+    },
     "question": {
       "type": "string"
     },

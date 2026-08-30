@@ -2,34 +2,88 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import RichTextEditor from './editor/RichTextEditor';
 import ImageUploadField from './editor/ImageUploadField';
 
-export default function ExamItemForm({ open, onOpenChange, initial, onSave }) {
+const CATEGORIES = [
+  { value: 'approach', label: 'How to Approach' },
+  { value: 'mark_scheme', label: 'Mark Scheme' },
+  { value: 'question', label: 'Exam Question' },
+];
+
+const PAPER2_TYPES = [
+  { value: '6_marker', label: '6 Marker' },
+  { value: '4_marker', label: '4 Marker' },
+  { value: '15_marker', label: '15 Marker' },
+];
+
+export default function ExamItemForm({ open, onOpenChange, initial, onSave, section }) {
   const [draft, setDraft] = useState(initial || {});
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
+  const cat = draft.category || 'question';
+  const titlePlaceholder =
+    cat === 'approach' ? 'Question type / title (e.g. 6-marker)'
+    : cat === 'mark_scheme' ? 'Mark scheme title (e.g. 6-marker)'
+    : 'Exam question';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[88vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-display text-3xl">{initial?.id ? 'Edit question' : 'New exam question'}</DialogTitle>
+          <DialogTitle className="font-display text-3xl">{initial?.id ? 'Edit' : 'New'} {CATEGORIES.find((c) => c.value === cat)?.label}</DialogTitle>
         </DialogHeader>
         <div className="space-y-5 py-2">
-          <Input value={draft.question || ''} onChange={(e) => set('question', e.target.value)} placeholder="Question / question type" />
-          <div className="space-y-2">
-            <p className="chrono-eyebrow">How to approach it</p>
-            <RichTextEditor value={draft.approach} onChange={(v) => set('approach', v)} />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="chrono-eyebrow">Category</Label>
+              <Select value={cat} onValueChange={(v) => set('category', v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            {section === 'paper2' && (
+              <div className="space-y-2">
+                <Label className="chrono-eyebrow">Question type</Label>
+                <Select value={draft.question_type || ''} onValueChange={(v) => set('question_type', v)}>
+                  <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
+                  <SelectContent>
+                    {PAPER2_TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
-          <div className="space-y-2">
-            <p className="chrono-eyebrow">Example answer</p>
-            <RichTextEditor value={draft.example} onChange={(v) => set('example', v)} />
-          </div>
-          <div className="space-y-2">
-            <p className="chrono-eyebrow">Mark scheme (optional)</p>
-            <RichTextEditor value={draft.mark_scheme} onChange={(v) => set('mark_scheme', v)} />
-          </div>
+          <Input value={draft.question || ''} onChange={(e) => set('question', e.target.value)} placeholder={titlePlaceholder} />
+
+          {cat === 'approach' && (
+            <>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">How to approach it</p>
+                <RichTextEditor value={draft.approach} onChange={(v) => set('approach', v)} />
+              </div>
+              <div className="space-y-2">
+                <p className="chrono-eyebrow">Annotated example</p>
+                <RichTextEditor value={draft.example} onChange={(v) => set('example', v)} />
+              </div>
+            </>
+          )}
+
+          {cat === 'mark_scheme' && (
+            <div className="space-y-2">
+              <p className="chrono-eyebrow">Mark scheme</p>
+              <RichTextEditor value={draft.mark_scheme} onChange={(v) => set('mark_scheme', v)} />
+            </div>
+          )}
+
+          {cat === 'question' && (
+            <Input value={draft.topic || ''} onChange={(e) => set('topic', e.target.value)} placeholder="Topic (e.g. emergence, Tsarist policies)" />
+          )}
+
           <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} label="Concept image (optional)" />
         </div>
         <DialogFooter>
