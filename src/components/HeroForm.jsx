@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import RichTextEditor from './editor/RichTextEditor';
 
 export default function HeroForm({ open, onOpenChange, initial, onSave }) {
   const [draft, setDraft] = useState(initial || {});
@@ -11,6 +11,7 @@ export default function HeroForm({ open, onOpenChange, initial, onSave }) {
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
 
   const set = (k) => (e) => setDraft((d) => ({ ...d, [k]: e.target.value }));
+  const setVal = (k) => (v) => setDraft((d) => ({ ...d, [k]: v }));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -29,7 +30,7 @@ export default function HeroForm({ open, onOpenChange, initial, onSave }) {
           </div>
           <div className="space-y-1.5">
             <Label>Description</Label>
-            <Textarea rows={3} value={draft.description || ''} onChange={set('description')} />
+            <RichTextEditor value={draft.description || ''} onChange={setVal('description')} />
           </div>
           <div className="space-y-1.5">
             <Label>Image URL</Label>
