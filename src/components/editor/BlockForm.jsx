@@ -54,6 +54,18 @@ export default function BlockForm({ open, onOpenChange, initial, onSave }) {
             <>
               <ImageUploadField value={draft.image_url} onChange={(v) => set('image_url', v)} />
               <div className="space-y-2">
+                <p className="chrono-eyebrow">Size</p>
+                <Select value={draft.image_size || 'full'} onValueChange={(v) => set('image_size', v)}>
+                  <SelectTrigger className="w-full"><SelectValue placeholder="Full width" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="small">Small</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="large">Large</SelectItem>
+                    <SelectItem value="full">Full width</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
                 <p className="chrono-eyebrow">Placement</p>
                 <Select value={draft.image_layout || 'full'} onValueChange={(v) => set('image_layout', v)}>
                   <SelectTrigger className="w-full"><SelectValue placeholder="Full width" /></SelectTrigger>

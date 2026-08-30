@@ -10,18 +10,26 @@ import BlockForm from './editor/BlockForm';
 import { makeDroppableId } from '@/lib/blockDnd';
 import { stripPasteArtifacts } from '@/lib/sanitizeHtml';
 
+const SIZE_CLASSES = {
+  small: 'max-w-sm h-[160px] md:h-[220px]',
+  medium: 'max-w-2xl h-[240px] md:h-[340px]',
+  large: 'max-w-4xl h-[300px] md:h-[460px]',
+  full: 'w-full h-[300px] md:h-[460px]',
+};
+
 function ImageBlock({ b }) {
   const layout = b.image_layout || 'full';
   const hasText = !!b.html && b.html.replace(/<[^>]*>/g, '').trim().length > 0;
+  const sizeClass = SIZE_CLASSES[b.image_size] || SIZE_CLASSES.full;
 
   if (layout === 'top' && hasText) {
     return (
       <div className="space-y-8 md:space-y-10">
-        <figure className="glassine overflow-hidden rounded-sm border border-border">
+        <figure className={`glassine overflow-hidden rounded-sm border border-border mx-auto ${sizeClass}`}>
           <Image
             src={b.image_url}
             alt={b.caption || b.title || ''}
-            className="w-full h-[300px] md:h-[460px]"
+            className="w-full h-full"
             fittingType="fit"
           />
           {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
@@ -33,11 +41,11 @@ function ImageBlock({ b }) {
 
   if (layout === 'full' || !hasText) {
     return (
-      <figure className="glassine">
+      <figure className={`glassine mx-auto ${sizeClass}`}>
         <Image
           src={b.image_url}
           alt={b.caption || b.title || ''}
-          className="w-full h-[300px] md:h-[460px] rounded-sm border border-border"
+          className="w-full h-full rounded-sm border border-border"
           fittingType="fit"
         />
         {b.caption && <figcaption className="mt-2 font-mono text-xs text-muted-foreground">{b.caption}</figcaption>}
