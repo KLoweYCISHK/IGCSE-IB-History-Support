@@ -64,6 +64,17 @@ export default function ExamItemForm({ open, onOpenChange, initial, onSave, sect
           {cat === 'approach' && (
             <>
               <div className="space-y-2">
+                <Label className="chrono-eyebrow">Suggested time (minutes)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={draft.time_minutes ?? ''}
+                  onChange={(e) => set('time_minutes', e.target.value === '' ? null : Number(e.target.value))}
+                  placeholder="e.g. 10"
+                />
+                <p className="text-xs text-foreground/50">Shown as a bubble next to the question.</p>
+              </div>
+              <div className="space-y-2">
                 <p className="chrono-eyebrow">How to approach it</p>
                 <RichTextEditor value={draft.approach} onChange={(v) => set('approach', v)} />
               </div>

@@ -41,6 +41,10 @@
     "question": {
       "type": "string"
     },
+    "time_minutes": {
+      "type": "number",
+      "description": "Suggested time to spend on this question (approach items). Shown as a bubble next to the question."
+    },
     "approach": {
       "type": "string",
       "description": "rich text html"

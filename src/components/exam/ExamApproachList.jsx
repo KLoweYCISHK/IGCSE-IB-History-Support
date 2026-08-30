@@ -13,6 +13,9 @@ export default function ExamApproachList({ items, editMode, onEdit, onDelete }) 
             <span className="flex items-baseline gap-4">
               <span className="font-mono text-xs text-[#6F551A]">{String(i + 1).padStart(2, '0')}</span>
               <span className="font-display text-2xl leading-snug">{item.question}</span>
+              {item.time_minutes != null && (
+                <span className="shrink-0 self-center whitespace-nowrap rounded-full border border-[#6F551A]/30 bg-[#6F551A]/10 px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wider text-[#6F551A]">{item.time_minutes} min</span>
+              )}
             </span>
           </AccordionTrigger>
           <AccordionContent className="pb-10">

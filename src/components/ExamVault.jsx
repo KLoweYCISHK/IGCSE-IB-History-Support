@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Pencil } from 'lucide-react';
 import SectionHeading from './SectionHeading';
+import HeroForm from './HeroForm';
 import ExamItemForm from './ExamItemForm';
 import ExamApproachList from './exam/ExamApproachList';
 import ExamMarkSchemeList from './exam/ExamMarkSchemeList';
@@ -20,6 +21,10 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
   const [tab, setTab] = useState('approach');
+  const [meta, setMeta] = useState(null);
+  const [editingMeta, setEditingMeta] = useState(false);
+
+  const metaPage = `${section}_vault`;
 
   const load = useCallback(async () => {
     const query = { section };
@@ -27,7 +32,25 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
     setItems(await base44.entities.ExamItem.filter(query, 'order'));
   }, [section, caseStudy]);
 
-  useEffect(() => { load(); }, [load]);
+  const loadMeta = useCallback(async () => {
+    const list = await base44.entities.PageMeta.filter({ page: metaPage });
+    setMeta(list[0] || null);
+  }, [metaPage]);
+
+  useEffect(() => {
+    load();
+    loadMeta();
+    const handler = () => { load(); loadMeta(); };
+    window.addEventListener('archive:reload', handler);
+    return () => window.removeEventListener('archive:reload', handler);
+  }, [load, loadMeta]);
+
+  const saveMeta = async (draft) => {
+    if (meta?.id) await base44.entities.PageMeta.update(meta.id, draft);
+    else await base44.entities.PageMeta.create({ page: metaPage, ...draft });
+    setEditingMeta(false);
+    loadMeta();
+  };
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -46,16 +69,25 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
     return true;
   });
 
+  const eEyebrow = meta?.eyebrow ?? 'Examination';
+  const eTitle = meta?.title ?? title;
+  const eDescription = meta?.description ?? (description || 'How to approach each question, mark schemes, and a bank of practice questions.');
+
   return (
     <section className="py-16 md:py-24 border-t border-border">
       <SectionHeading
-        eyebrow="Examination"
-        title={title}
-        description={description || 'How to approach each question, mark schemes, and a bank of practice questions.'}
+        eyebrow={eEyebrow}
+        title={eTitle}
+        description={eDescription}
         right={editMode ? (
-          <Button variant="outline" onClick={() => setEditing({ category: tab, ...(module && tab === 'question' ? { module } : {}) })}>
-            <Plus className="w-4 h-4 mr-1.5" /> Add {TABS.find((t) => t.key === tab)?.label.toLowerCase().replace('the ', '')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={() => setEditingMeta(true)}>
+              <Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit heading
+            </Button>
+            <Button variant="outline" onClick={() => setEditing({ category: tab, ...(module && tab === 'question' ? { module } : {}) })}>
+              <Plus className="w-4 h-4 mr-1.5" /> Add {TABS.find((t) => t.key === tab)?.label.toLowerCase().replace('the ', '')}
+            </Button>
+          </div>
         ) : null}
       />
 
@@ -76,6 +108,12 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
       {tab === 'question' && <ExamQuestionBank items={byCat('question')} section={section} editMode={editMode} onEdit={setEditing} onDelete={del} />}
 
       <ExamItemForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} section={section} module={module} />
+      <HeroForm
+        open={editingMeta}
+        onOpenChange={setEditingMeta}
+        initial={{ eyebrow: eEyebrow, title: eTitle, description: eDescription }}
+        onSave={saveMeta}
+      />
     </section>
   );
 }
