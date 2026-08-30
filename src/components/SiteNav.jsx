@@ -34,9 +34,9 @@ export default function SiteNav() {
           </Link>
           {item.preview && (
             <div className="absolute left-0 top-full pt-1 hidden group-hover:block z-40">
-              <div className="min-w-[190px] border border-border bg-[#12161a]/95 backdrop-blur rounded-sm py-2 shadow-2xl">
+              <div className="min-w-[190px] border border-border bg-popover/98 backdrop-blur rounded-sm py-2 shadow-2xl">
                 {item.preview.map((p) => (
-                  <Link key={p.to} to={p.to} className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-white/[0.04]">
+                  <Link key={p.to} to={p.to} className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-black/[0.05]">
                     {p.label}
                   </Link>
                 ))}
