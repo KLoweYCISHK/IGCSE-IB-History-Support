@@ -6,6 +6,10 @@
       "type": "string",
       "description": "ia | ee"
     },
+    "stage": {
+      "type": "string",
+      "description": "stage key within the page, e.g. preparing | writing | reflection | markscheme"
+    },
     "title": {
       "type": "string",
       "description": "Step title shown after 'Step N \u2013 '"
