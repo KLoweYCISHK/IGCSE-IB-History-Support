@@ -3,6 +3,7 @@ import PageHero from '@/components/PageHero';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
+import TextbookSection from '@/components/TextbookSection';
 import CaseStudyFilter from '@/components/CaseStudyFilter';
 
 const PAPER1_CASES = [
@@ -42,7 +43,7 @@ export default function Paper1() {
             description="Each question type, how to approach it, and an annotated example."
           />
 
-          <ResourceLibrary section="paper1" caseStudy="all" />
+          <TextbookSection section="paper1" caseStudy="all" />
         </>
       ) : (
         <ResourceLibrary section="paper1" caseStudy={caseStudy} />

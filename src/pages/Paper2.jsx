@@ -3,6 +3,7 @@ import PageHero from '@/components/PageHero';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
+import TextbookSection from '@/components/TextbookSection';
 import CaseStudyFilter, { CASE_STUDIES } from '@/components/CaseStudyFilter';
 
 export default function Paper2() {
@@ -36,7 +37,7 @@ export default function Paper2() {
             description="Example questions, example answers, mark schemes and concept imagery."
           />
 
-          <ResourceLibrary section="paper2" caseStudy="all" />
+          <TextbookSection section="paper2" caseStudy="all" />
         </>
       ) : (
         <ResourceLibrary section="paper2" caseStudy={caseStudy} />

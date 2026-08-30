@@ -7,6 +7,7 @@ import SectionHeading from '@/components/SectionHeading';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import ExamVault from '@/components/ExamVault';
+import TextbookSection from '@/components/TextbookSection';
 import PerspectiveEngine from '@/components/perspectives/PerspectiveEngine';
 import AddPerspectiveDialog from '@/components/perspectives/AddPerspectiveDialog';
 import { UNITS } from '@/lib/perspectiveTopics';
@@ -55,6 +56,8 @@ export default function Paper3() {
       </section>
 
       <SectionCanvas page="paper3" />
+
+      <TextbookSection section="paper3" module={unit} />
 
       <ResourceLibrary section="paper3" module={unit} />
 
