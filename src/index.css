@@ -117,4 +117,15 @@
   .cell-editor .ql-toolbar.ql-snow { padding: 4px 6px; }
   .cell-editor .ql-container.ql-snow { border: 0; }
   .cell-editor .ql-editor { min-height: 70px; padding: 6px 10px; font-size: 14px; }
+
+  /* Tables inside the rich-text editor */
+  .ql-editor table { border-collapse: collapse; width: 100%; margin: 0.5em 0; }
+  .ql-editor th, .ql-editor td { border: 1px solid #d1cec6; padding: 6px 10px; min-width: 40px; vertical-align: top; }
+  .ql-editor td:empty::before { content: '\00a0'; }
+
+  /* Tables on the rendered page */
+  .prose-archive table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  .prose-archive th, .prose-archive td { border: 1px solid hsl(var(--border)); padding: 0.5em 0.75em; vertical-align: top; text-align: left; }
+  .prose-archive th { background: hsl(var(--secondary)); font-weight: 600; }
+  .prose-archive td:empty::before { content: '\00a0'; }
 }
