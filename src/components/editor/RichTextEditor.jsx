@@ -53,7 +53,6 @@ export default function RichTextEditor({ value, onChange, placeholder, cards = t
       delta.ops = delta.ops.map((op) => {
         if (op.attributes) {
           delete op.attributes.background;
-          delete op.attributes.color;
         }
         if (typeof op.insert === 'string') {
           op.insert = op.insert.replace(/\u00A0/g, ' ');
