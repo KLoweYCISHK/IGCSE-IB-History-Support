@@ -13,7 +13,6 @@ export default function Roadmap({ section, stages }) {
   const [allSteps, setAllSteps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeStage, setActiveStage] = useState(stages[0]?.key);
-  const [activeStepId, setActiveStepId] = useState(null);
   const [editing, setEditing] = useState(null);
 
   const load = useCallback(async () => {
@@ -30,13 +29,6 @@ export default function Roadmap({ section, stages }) {
   }, [load]);
 
   const stageSteps = allSteps.filter((s) => s.stage === activeStage);
-
-  useEffect(() => {
-    if (stageSteps.length && !stageSteps.find((s) => s.id === activeStepId)) {
-      setActiveStepId(stageSteps[0].id);
-    }
-    if (!stageSteps.length && activeStepId) setActiveStepId(null);
-  }, [activeStage, stageSteps.length, activeStepId]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -69,12 +61,9 @@ export default function Roadmap({ section, stages }) {
 
   if (loading) return <div className="h-24 animate-pulse bg-black/[0.04] rounded" />;
 
-  const stepIndex = stageSteps.findIndex((s) => s.id === activeStepId);
-  const current = stageSteps[stepIndex];
-
   return (
     <div className="py-8">
-      <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-10">
+      <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
         {stages.map((s, i) => (
           <button
             key={s.key}
@@ -86,41 +75,32 @@ export default function Roadmap({ section, stages }) {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 mb-10">
+      <div className="space-y-16">
         {stageSteps.map((s, i) => (
-          <button
-            key={s.id}
-            onClick={() => setActiveStepId(s.id)}
-            className={`px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] border border-border rounded-sm transition-colors ${activeStepId === s.id ? 'bg-[#6F551A] text-[#F4EFE3]' : 'text-foreground/60 hover:bg-black/[0.04]'}`}
-          >
-            Step {i + 1}
-          </button>
+          <div key={s.id} className="relative group scroll-mt-24">
+            {editMode && (
+              <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
+                <button onClick={() => move(i, -1)} className="p-1.5 hover:text-[#6F551A]"><ArrowUp className="w-4 h-4" /></button>
+                <button onClick={() => move(i, 1)} className="p-1.5 hover:text-[#6F551A]"><ArrowDown className="w-4 h-4" /></button>
+                <button onClick={() => setEditing(s)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => remove(s)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            )}
+            {s.subtitle && <p className="max-w-2xl text-foreground/60 leading-relaxed mb-3">{s.subtitle}</p>}
+            <h2 className="font-display text-3xl md:text-4xl mb-8">Step {i + 1} – {s.title}</h2>
+            <BlockCanvas section={section} sub={s.slug} emptyLabel="Ms Lowe hasn't added guidance to this step yet." />
+          </div>
         ))}
-        {editMode && (
-          <Button variant="outline" size="sm" onClick={() => setEditing({})} className="ml-1">
-            <Plus className="w-3.5 h-3.5 mr-1.5" /> Add step
-          </Button>
-        )}
       </div>
-
-      {current && (
-        <div className="relative group">
-          {editMode && (
-            <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
-              <button onClick={() => move(stepIndex, -1)} className="p-1.5 hover:text-[#6F551A]"><ArrowUp className="w-4 h-4" /></button>
-              <button onClick={() => move(stepIndex, 1)} className="p-1.5 hover:text-[#6F551A]"><ArrowDown className="w-4 h-4" /></button>
-              <button onClick={() => setEditing(current)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
-              <button onClick={() => remove(current)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
-            </div>
-          )}
-          {current.subtitle && <p className="max-w-2xl text-foreground/60 leading-relaxed mb-3">{current.subtitle}</p>}
-          <h2 className="font-display text-3xl md:text-4xl mb-8">Step {stepIndex + 1} – {current.title}</h2>
-          <BlockCanvas section={section} sub={current.slug} emptyLabel="Ms Lowe hasn't added guidance to this step yet." />
-        </div>
-      )}
 
       {stageSteps.length === 0 && !editMode && (
         <p className="py-10 text-foreground/40 italic">Steps for this section coming soon.</p>
+      )}
+
+      {editMode && (
+        <Button variant="outline" size="sm" onClick={() => setEditing({})} className="mt-10">
+          <Plus className="w-3.5 h-3.5 mr-1.5" /> Add step
+        </Button>
       )}
 
       <StepForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
