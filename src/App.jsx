@@ -20,6 +20,8 @@ import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { TrackProvider } from '@/lib/TrackContext';
+import IgcseTopic from '@/pages/igcse/IgcseTopic';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -59,6 +61,7 @@ const AuthenticatedApp = () => {
         <Route path="/paper-3" element={<Paper3 />} />
         <Route path="/ia" element={<IA />} />
         <Route path="/ee" element={<EE />} />
+        <Route path="/igcse/:topic" element={<IgcseTopic />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -74,7 +77,9 @@ function App() {
         <Router>
           <ScrollToTop />
           <AdminProvider>
-            <AuthenticatedApp />
+            <TrackProvider>
+              <AuthenticatedApp />
+            </TrackProvider>
           </AdminProvider>
         </Router>
         <Toaster />
