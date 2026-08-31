@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash2, Plus, ArrowUp, ArrowDown } from 'lucide-react';
+import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, RotateCw } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import BlockCanvas from './BlockCanvas';
 import SectionForm from './editor/SectionForm';
@@ -11,16 +11,24 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
   const { editMode } = useAdmin();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [editing, setEditing] = useState(null);
 
   const load = useCallback(async () => {
-    const list = await base44.entities.PageSection.filter({ page }, 'order');
-    const visible = (module
-      ? list.filter((s) => !s.is_deleted && s.module === module)
-      : list.filter((s) => !s.is_deleted)
-    ).filter((s) => (filterFn ? filterFn(s) : true));
-    setSections(visible);
-    setLoading(false);
+    setLoading(true);
+    setError(null);
+    try {
+      const list = await base44.entities.PageSection.filter({ page }, 'order');
+      const visible = (module
+        ? list.filter((s) => !s.is_deleted && s.module === module)
+        : list.filter((s) => !s.is_deleted)
+      ).filter((s) => (filterFn ? filterFn(s) : true));
+      setSections(visible);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
   }, [page, module]);
 
   useEffect(() => {
@@ -56,6 +64,17 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
   };
 
   if (loading) return <div className="h-24 animate-pulse bg-black/[0.04] rounded" />;
+
+  if (error) {
+    return (
+      <div className="py-12 border-t border-border text-center">
+        <p className="text-foreground/60 mb-4">Couldn't load this section — please check your connection.</p>
+        <Button variant="outline" size="sm" onClick={load}>
+          <RotateCw className="w-3.5 h-3.5 mr-1.5" /> Retry
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className={className}>
