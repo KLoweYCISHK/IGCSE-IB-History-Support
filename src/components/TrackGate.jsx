@@ -1,5 +1,8 @@
 import React from 'react';
+import { Image } from '@/components/ui/image';
 import TrackLogo from './TrackLogo';
+
+const MISS_LOWE_LOGO = 'https://media.base44.com/images/public/6a9374897e9609e0d36beee4/d139d12f8_Screenshot2026-08-31at34609PM.png';
 
 export default function TrackGate({ onChoose }) {
   const Card = ({ value, eyebrow, title, note }) => (
@@ -21,6 +24,9 @@ export default function TrackGate({ onChoose }) {
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#F4EFE3] flex items-center justify-center px-6 overflow-y-auto py-16">
+      <div className="absolute top-6 right-6 w-24 md:w-28 shrink-0 pointer-events-none">
+        <Image src={MISS_LOWE_LOGO} alt="By Miss Lowe" fittingType="fit" className="w-full h-auto" />
+      </div>
       <div className="max-w-3xl w-full text-center">
         <p className="font-display text-3xl md:text-4xl mb-5">Welcome to Miss Lowe's History Support site</p>
         <p className="chrono-eyebrow mb-5">Welcome</p>

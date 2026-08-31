@@ -49,7 +49,7 @@ export default function Masthead() {
           )}
           <span>
             <span className="block font-display text-3xl md:text-4xl leading-none tracking-[0.02em]">
-              {settings?.title || 'IB History'}
+              {track === 'igcse' ? 'iGCSE History' : (settings?.title || 'IB History')}
             </span>
             <span className="block font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground mt-1.5">
               {settings?.subtitle || 'by Ms Lowe'}
