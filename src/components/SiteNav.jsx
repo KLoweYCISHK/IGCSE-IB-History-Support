@@ -29,7 +29,7 @@ export default function SiteNav() {
   const switchTrack = () => {
     const next = track === 'igcse' ? 'ib' : 'igcse';
     setTrack(next);
-    navigate(next === 'igcse' ? '/igcse/core1' : '/');
+    navigate('/');
   };
 
   return (
