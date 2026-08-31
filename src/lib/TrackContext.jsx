@@ -9,18 +9,22 @@ const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password
 
 export function TrackProvider({ children }) {
   const [track, setTrackState] = useState(() => {
-    try { return localStorage.getItem(KEY); } catch { return null; }
+    try {
+      // Always start fresh — show the welcome gate on every new site visit.
+      sessionStorage.removeItem(KEY);
+      return null;
+    } catch { return null; }
   });
   const { pathname } = useLocation();
 
   const setTrack = useCallback((t) => {
     setTrackState(t);
-    try { localStorage.setItem(KEY, t); } catch {}
+    try { sessionStorage.setItem(KEY, t); } catch {}
   }, []);
 
   const clearTrack = useCallback(() => {
     setTrackState(null);
-    try { localStorage.removeItem(KEY); } catch {}
+    try { sessionStorage.removeItem(KEY); } catch {}
   }, []);
 
   const showGate = !track && !AUTH_ROUTES.some((r) => pathname.startsWith(r));
