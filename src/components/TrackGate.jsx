@@ -7,9 +7,13 @@ export default function TrackGate({ onChoose }) {
       onClick={() => onChoose(value)}
       className="glassine border border-border bg-card rounded-sm p-10 text-left hover:border-[#6F551A]"
     >
-      <TrackLogo track={value} size={56} className="mb-6" />
-      <p className="chrono-eyebrow text-[#6F551A] mb-3">{eyebrow}</p>
-      <p className="font-display text-4xl leading-none">{title}</p>
+      <div className="flex items-center gap-5 mb-6">
+        <div className="min-w-0">
+          <p className="chrono-eyebrow text-[#6F551A] mb-3">{eyebrow}</p>
+          <p className="font-display text-4xl leading-none">{title}</p>
+        </div>
+        <TrackLogo track={value} size={56} className="ml-auto shrink-0" />
+      </div>
       <p className="mt-4 text-sm text-foreground/55 leading-relaxed">{note}</p>
       <p className="mt-6 chrono-eyebrow text-[#6F551A]">Enter →</p>
     </button>
@@ -18,6 +22,7 @@ export default function TrackGate({ onChoose }) {
   return (
     <div className="fixed inset-0 z-[100] bg-[#F4EFE3] flex items-center justify-center px-6 overflow-y-auto py-16">
       <div className="max-w-3xl w-full text-center">
+        <p className="font-display text-3xl md:text-4xl mb-5">Welcome to Miss Lowe's History Support site</p>
         <p className="chrono-eyebrow mb-5">Welcome</p>
         <h1 className="font-display text-5xl md:text-6xl leading-[0.95] tracking-tight mb-3">
           Which course are you studying?
