@@ -9,9 +9,12 @@ import { Image } from '@/components/ui/image';
 import ImageUploadField from './editor/ImageUploadField';
 import SiteNav from './SiteNav';
 import { Landmark, Settings } from 'lucide-react';
+import { useTrack } from '@/lib/TrackContext';
+import TrackLogo from './TrackLogo';
 
 export default function Masthead() {
   const { editMode } = useAdmin();
+  const { track } = useTrack();
   const [settings, setSettings] = useState(null);
   const [draft, setDraft] = useState(null);
 
@@ -33,13 +36,17 @@ export default function Masthead() {
     <header className="sticky top-0 z-50 border-b border-border bg-[#F4EFE3]/92 backdrop-blur-md">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-5 flex flex-wrap items-center justify-between gap-5">
         <Link to="/" className="flex items-center gap-4 group">
-          <span className="flex items-center justify-center w-12 h-12 rounded-full border border-[#6F551A] overflow-hidden shrink-0">
-            {settings?.logo_url ? (
-              <Image src={settings.logo_url} alt="Logo" className="w-full h-full" />
-            ) : (
-              <Landmark className="w-5 h-5 text-[#6F551A]" />
-            )}
-          </span>
+          {track ? (
+            <TrackLogo track={track} size={48} />
+          ) : (
+            <span className="flex items-center justify-center w-12 h-12 rounded-full border border-[#6F551A] overflow-hidden shrink-0">
+              {settings?.logo_url ? (
+                <Image src={settings.logo_url} alt="Logo" className="w-full h-full" />
+              ) : (
+                <Landmark className="w-5 h-5 text-[#6F551A]" />
+              )}
+            </span>
+          )}
           <span>
             <span className="block font-display text-3xl md:text-4xl leading-none tracking-[0.02em]">
               {settings?.title || 'IB History'}

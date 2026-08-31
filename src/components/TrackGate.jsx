@@ -1,4 +1,5 @@
 import React from 'react';
+import TrackLogo from './TrackLogo';
 
 export default function TrackGate({ onChoose }) {
   const Card = ({ value, eyebrow, title, note }) => (
@@ -6,6 +7,7 @@ export default function TrackGate({ onChoose }) {
       onClick={() => onChoose(value)}
       className="glassine border border-border bg-card rounded-sm p-10 text-left hover:border-[#6F551A]"
     >
+      <TrackLogo track={value} size={56} className="mb-6" />
       <p className="chrono-eyebrow text-[#6F551A] mb-3">{eyebrow}</p>
       <p className="font-display text-4xl leading-none">{title}</p>
       <p className="mt-4 text-sm text-foreground/55 leading-relaxed">{note}</p>
