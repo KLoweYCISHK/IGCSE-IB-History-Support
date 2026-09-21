@@ -56,8 +56,13 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const [topic, setTopic] = useState('all');
   const [editing, setEditing] = useState(null);
 
+  const [focusUnits, setFocusUnits] = useState([]);
   const load = useCallback(async () => {
     setItems(await base44.entities.ExamItem.filter({ section }, 'order'));
+    try {
+      const list = await base44.entities.IgcseFocusUnit.list('order');
+      setFocusUnits(list);
+    } catch { setFocusUnits([]); }
     try {
       const list = await base44.entities.IgcseMarkSchemeTemplate.list();
       const t = {};
@@ -77,7 +82,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
   const approaches = items.filter((i) => i.category === 'approach' && (i.question_type || '') === qType);
   const questions = items.filter((i) => i.category === 'question' && (i.question_type || '') === qType);
-  const topics = useMemo(() => Array.from(new Set(questions.map((q) => q.topic).filter(Boolean))).sort(), [questions]);
+  const topics = useMemo(() => focusUnits.map((u) => u.focus_unit).filter(Boolean), [focusUnits]);
   const filtered = topic === 'all' ? questions : questions.filter((q) => q.topic === topic);
 
   const save = async (draft) => {
@@ -158,7 +163,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
       {editMode && <IgcseMarkSchemeTemplates />}
 
-      <IgcseExamForm key={editing ? (editing.id || `${editing.category}-${editing.question_type}`) : 'none'} open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} genericLevelsFor={genericFor} />
+      <IgcseExamForm key={editing ? (editing.id || `${editing.category}-${editing.question_type}`) : 'none'} open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} genericLevelsFor={genericFor} topics={topics} />
     </section>
   );
 }

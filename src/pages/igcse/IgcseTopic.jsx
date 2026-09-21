@@ -9,6 +9,7 @@ import Roadmap from '@/components/Roadmap';
 import DocumentSection from '@/components/DocumentSection';
 import IgcsePaper1Exam from '@/components/igcse/IgcsePaper1Exam';
 import IgcsePaper2Links from '@/components/igcse/IgcsePaper2Links';
+import IgcseFocusUnits from '@/components/igcse/IgcseFocusUnits';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const TOPICS = {
@@ -18,6 +19,7 @@ const TOPICS = {
     title: '1917–1939',
     lede: 'The shaping of the post-war world — from the Russian Revolution to the road to war.',
     hasTextbook: true,
+    hasFocusUnits: true,
   },
   core2: {
     page: 'igcse_core2',
@@ -25,6 +27,7 @@ const TOPICS = {
     title: '1945–1989',
     lede: 'The Cold War world — from Yalta and Potsdam to the collapse of the Soviet bloc.',
     hasTextbook: true,
+    hasFocusUnits: true,
   },
   depth: {
     page: 'igcse_depth',
@@ -32,6 +35,7 @@ const TOPICS = {
     title: 'Weimar & Nazi Germany',
     lede: 'Germany from the Weimar Republic to the Nazi state — collapse, consolidation, and control.',
     hasTextbook: true,
+    hasFocusUnits: true,
   },
   paper1: {
     page: 'igcse_paper1',
@@ -94,6 +98,10 @@ export default function IgcseTopic() {
             </TabsContent>
           </Tabs>
         </section>
+      )}
+
+      {cfg.hasFocusUnits && (
+        <IgcseFocusUnits page={cfg.page} title="Focus units" description="The inquiry questions and key points for this unit — these become the topics in the Paper 1 question bank." />
       )}
 
       <SectionCanvas page={cfg.page} />

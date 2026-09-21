@@ -13,13 +13,14 @@ const CATEGORIES = [
   { value: 'question', label: 'Exam Question' },
 ];
 
-export default function IgcseExamForm({ open, onOpenChange, initial, onSave, genericLevelsFor }) {
+export default function IgcseExamForm({ open, onOpenChange, initial, onSave, genericLevelsFor, topics = [] }) {
   const [draft, setDraft] = useState(initial || {});
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
   const cat = draft.category || 'question';
   const qType = draft.question_type || '6_marker';
   const genericFor = (type) => (genericLevelsFor || genericLevels)(type);
+  const topicOptions = Array.from(new Set([...topics, draft.topic].filter(Boolean))).sort();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -80,7 +81,19 @@ export default function IgcseExamForm({ open, onOpenChange, initial, onSave, gen
 
           {cat === 'question' && (
             <>
-              <Input value={draft.topic || ''} onChange={(e) => set('topic', e.target.value)} placeholder="Topic (e.g. Treaty of Versailles)" />
+              <div className="space-y-2">
+                <Label className="chrono-eyebrow">Focus unit (topic)</Label>
+                <Select value={draft.topic || ''} onValueChange={(v) => set('topic', v)}>
+                  <SelectTrigger><SelectValue placeholder="Choose a focus unit" /></SelectTrigger>
+                  <SelectContent>
+                    {topicOptions.length === 0 && (
+                      <SelectItem value={null} disabled>Add focus units on the topic pages first</SelectItem>
+                    )}
+                    {topicOptions.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-foreground/50">Topics come from the Focus units tables on the core & depth pages.</p>
+              </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="chrono-eyebrow">Mark scheme levels</p>
