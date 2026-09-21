@@ -108,8 +108,18 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.ExamItem.update(id, data);
-    else await base44.entities.ExamItem.create({ ...data, section, category: data.category || 'question', order: items.length });
+    if (id) {
+      await base44.entities.ExamItem.update(id, data);
+    } else {
+      if (data.category !== 'approach') {
+        const exists = items.some((it) => it.category !== 'approach' && (it.question || '').trim().toLowerCase() === (draft.question || '').trim().toLowerCase());
+        if (exists) {
+          alert('This question already exists in the question bank.');
+          return;
+        }
+      }
+      await base44.entities.ExamItem.create({ ...data, section, category: data.category || 'question', order: items.length });
+    }
     setEditing(null);
     load();
   };
