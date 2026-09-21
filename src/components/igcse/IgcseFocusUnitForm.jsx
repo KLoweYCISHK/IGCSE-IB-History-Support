@@ -12,6 +12,8 @@ export default function IgcseFocusUnitForm({ open, onOpenChange, initial, onSave
 
   const bullets = Array.isArray(draft.bullet_points) ? draft.bullet_points : [];
   const bulletsText = bullets.join('\n');
+  const specified = Array.isArray(draft.specified_content) ? draft.specified_content : [];
+  const specifiedText = specified.join('\n');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -34,6 +36,15 @@ export default function IgcseFocusUnitForm({ open, onOpenChange, initial, onSave
               value={bulletsText}
               onChange={(e) => set('bullet_points', e.target.value.split('\n').map((s) => s.trim()).filter((s, i, a) => s !== '' || i === a.length - 1))}
               placeholder={'Combat operations and allied victory\nPersecution and fear of reprisals\nEconomic factors'}
+              rows={6}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="chrono-eyebrow">Specified content (one per line)</Label>
+            <Textarea
+              value={specifiedText}
+              onChange={(e) => set('specified_content', e.target.value.split('\n').map((s) => s.trim()).filter((s, i, a) => s !== '' || i === a.length - 1))}
+              placeholder={'Treaty of Versailles terms\nReparations and war guilt\nImpact on German territory'}
               rows={6}
             />
           </div>

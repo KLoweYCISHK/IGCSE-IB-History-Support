@@ -17,6 +17,13 @@
       },
       "description": "Key bullet points for this focus unit (second column)"
     },
+    "specified_content": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Specified content items for this focus unit (third column)"
+    },
     "order": {
       "type": "number",
       "default": 0
