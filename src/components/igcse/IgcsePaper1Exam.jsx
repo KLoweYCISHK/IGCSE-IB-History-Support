@@ -8,7 +8,8 @@ import ExamApproachList from '@/components/exam/ExamApproachList';
 import ArchiveTable from '@/components/ArchiveTable';
 import IgcseExamForm from './IgcseExamForm';
 import IgcseMarkSchemeTemplates from './IgcseMarkSchemeTemplates';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
 import { QUESTION_TYPES, genericLevels } from '@/lib/igcseMarkSchemes';
 
 function QuestionCard({ q, i, editMode, onEdit, onDelete }) {
@@ -94,16 +95,16 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
     });
     return map;
   }, [focusUnits]);
-  const groupFocusUnits = useMemo(() => {
-    if (group === 'all') return focusUnits;
-    if (group === 'core') return focusUnits.filter((u) => u.page === 'igcse_core1' || u.page === 'igcse_core2');
-    return focusUnits.filter((u) => u.page === 'igcse_depth');
-  }, [focusUnits, group]);
+  const coreUnits = useMemo(() => focusUnits.filter((u) => u.page === 'igcse_core1' || u.page === 'igcse_core2'), [focusUnits]);
+  const depthUnits = useMemo(() => focusUnits.filter((u) => u.page === 'igcse_depth'), [focusUnits]);
   const filtered = useMemo(() => {
     const inGroup = group === 'all' ? questions : questions.filter((q) => topicGroup[q.topic] === group);
     if (selectedTopic === 'all') return inGroup;
     return inGroup.filter((q) => q.topic === selectedTopic);
   }, [questions, group, topicGroup, selectedTopic]);
+  const triggerLabel = selectedTopic !== 'all'
+    ? selectedTopic
+    : (group === 'core' ? 'Core 1 & Core 2' : group === 'depth' ? 'Depth Study' : 'All topics');
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -133,16 +134,41 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
       />
 
       <div className="mb-8">
-        <Select value={group} onValueChange={(v) => { setGroup(v); setSelectedTopic('all'); }}>
-          <SelectTrigger className="w-[260px] h-9 font-mono text-[11px] uppercase tracking-[0.18em]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All topics</SelectItem>
-            <SelectItem value="core">Core 1 & Core 2</SelectItem>
-            <SelectItem value="depth">Depth Study</SelectItem>
-          </SelectContent>
-        </Select>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="inline-flex items-center gap-2 w-[280px] h-9 px-3 border border-border rounded-sm bg-card font-mono text-[11px] uppercase tracking-[0.18em] text-left hover:bg-black/[0.03] transition-colors">
+              <span className="truncate flex-1">{triggerLabel}</span>
+              <ChevronDown className="w-4 h-4 opacity-60 shrink-0" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-[280px]">
+            <DropdownMenuItem onSelect={() => { setGroup('all'); setSelectedTopic('all'); }}>
+              All topics
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Core 1 & Core 2</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="max-h-[320px] overflow-auto w-[300px]">
+                <DropdownMenuItem onSelect={() => { setGroup('core'); setSelectedTopic('all'); }}>All</DropdownMenuItem>
+                {coreUnits.map((u) => (
+                  <DropdownMenuItem key={u.id || u.focus_unit} onSelect={() => { setGroup('core'); setSelectedTopic(u.focus_unit); }}>
+                    {u.focus_unit}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Depth Study</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="max-h-[320px] overflow-auto w-[300px]">
+                <DropdownMenuItem onSelect={() => { setGroup('depth'); setSelectedTopic('all'); }}>All</DropdownMenuItem>
+                {depthUnits.map((u) => (
+                  <DropdownMenuItem key={u.id || u.focus_unit} onSelect={() => { setGroup('depth'); setSelectedTopic(u.focus_unit); }}>
+                    {u.focus_unit}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
@@ -164,25 +190,6 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
       <div>
         <p className="chrono-eyebrow mb-4">Question bank</p>
-        {groupFocusUnits.length > 0 && (
-          <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-8">
-            <button
-              onClick={() => setSelectedTopic('all')}
-              className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] ${selectedTopic === 'all' ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
-            >
-              All
-            </button>
-            {groupFocusUnits.map((u) => (
-              <button
-                key={u.id || u.focus_unit}
-                onClick={() => setSelectedTopic(u.focus_unit)}
-                className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] border-l border-border ${selectedTopic === u.focus_unit ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
-              >
-                {u.focus_unit}
-              </button>
-            ))}
-          </div>
-        )}
         {filtered.length === 0 ? (
           <p className="text-foreground/40 italic">No questions added yet.</p>
         ) : (
