@@ -212,27 +212,32 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         <ExamApproachList items={approaches} editMode={editMode} onEdit={setEditing} onDelete={del} />
       </div>
 
-      <div>
-        <div className="flex items-center justify-between gap-4 mb-4">
-          <p className="chrono-eyebrow">Question bank</p>
-          {selectedTopic !== 'all' && (
-            <Button variant="outline" size="sm" onClick={handleGenerate} disabled={generating}>
-              <FileDown className="w-4 h-4 mr-1.5" /> {generating ? 'Generating…' : 'Generate paper'}
-            </Button>
+      {!(group === 'all' && selectedTopic === 'all') && (
+        <div>
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <p className="chrono-eyebrow">Question bank</p>
+            {selectedTopic !== 'all' && (
+              <Button variant="outline" size="sm" onClick={handleGenerate} disabled={generating}>
+                <FileDown className="w-4 h-4 mr-1.5" /> {generating ? 'Generating…' : 'Generate paper'}
+              </Button>
+            )}
+          </div>
+          {group === 'all' && selectedTopic === 'all' ? null : filtered.length === 0 ? (
+            <p className="text-foreground/40 italic">No questions added yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {filtered.map((q, i) => (
+                <QuestionCard key={q.id} q={q} i={i} editMode={editMode} onEdit={setEditing} onDelete={del} />
+              ))}
+            </div>
+          )}
+          {selectedTopic !== 'all' && filtered.length > 0 && (
+            <p className="mt-4 text-foreground/50 italic text-[14px]">
+              Use “Generate paper” to build your own Paper 1 — one random 4, 6 and 10-marker for this topic, with mark schemes included.
+            </p>
           )}
         </div>
-        {group === 'all' && selectedTopic === 'all' ? (
-          <p className="text-foreground/40 italic">Choose a topic above to see its questions.</p>
-        ) : filtered.length === 0 ? (
-          <p className="text-foreground/40 italic">No questions added yet.</p>
-        ) : (
-          <div className="space-y-4">
-            {filtered.map((q, i) => (
-              <QuestionCard key={q.id} q={q} i={i} editMode={editMode} onEdit={setEditing} onDelete={del} />
-            ))}
-          </div>
-        )}
-      </div>
+      )}
 
       {editMode && <IgcseMarkSchemeTemplates />}
 
