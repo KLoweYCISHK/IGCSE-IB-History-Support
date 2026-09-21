@@ -4,7 +4,6 @@ import PageHero from '@/components/PageHero';
 import SectionHeading from '@/components/SectionHeading';
 import SectionCanvas from '@/components/SectionCanvas';
 import ResourceLibrary from '@/components/ResourceLibrary';
-import ExamVault from '@/components/ExamVault';
 import TextbookSection from '@/components/TextbookSection';
 import Roadmap from '@/components/Roadmap';
 import DocumentSection from '@/components/DocumentSection';
@@ -18,8 +17,6 @@ const TOPICS = {
     eyebrow: 'Core content · Part 1',
     title: '1917–1939',
     lede: 'The shaping of the post-war world — from the Russian Revolution to the road to war.',
-    hasExam: true,
-    exam: 'vault',
     hasTextbook: true,
   },
   core2: {
@@ -27,8 +24,6 @@ const TOPICS = {
     eyebrow: 'Core content · Part 2',
     title: '1945–1989',
     lede: 'The Cold War world — from Yalta and Potsdam to the collapse of the Soviet bloc.',
-    hasExam: true,
-    exam: 'vault',
     hasTextbook: true,
   },
   depth: {
@@ -36,8 +31,6 @@ const TOPICS = {
     eyebrow: 'Depth study',
     title: 'Weimar & Nazi Germany',
     lede: 'Germany from the Weimar Republic to the Nazi state — collapse, consolidation, and control.',
-    hasExam: true,
-    exam: 'vault',
     hasTextbook: true,
   },
   paper1: {
@@ -119,14 +112,6 @@ export default function IgcseTopic() {
           description="The source-based paper — pick a topic, then open the paper and its mark scheme."
         />
       )}
-      {cfg.exam === 'vault' && (
-        <ExamVault
-          section={cfg.page}
-          title="The Exam Vault"
-          description="How to approach each question, mark schemes, and a bank of practice questions."
-        />
-      )}
-
       {cfg.exam !== 'paper1' && <ResourceLibrary section={cfg.page} />}
 
       {cfg.hasTextbook && <TextbookSection section={cfg.page} caseStudy="all" />}

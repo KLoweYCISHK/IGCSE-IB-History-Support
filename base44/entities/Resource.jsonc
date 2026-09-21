@@ -32,6 +32,32 @@
     "image_url": {
       "type": "string"
     },
+    "file_url": {
+      "type": "string",
+      "description": "Uploaded file (PDF/Word) for file-based resources"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Original filename of the uploaded file"
+    },
+    "links": {
+      "type": "array",
+      "description": "Additional resources and links attached to this resource (e.g. links nested within a file)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "link_username": {
       "type": "string",
       "description": "Optional login username for subscription/restricted resources"

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Pencil, Trash2, Plus } from 'lucide-react';
+import { ExternalLink, Pencil, Trash2, Plus, FileText, Download } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import ResourceForm from './ResourceForm';
 import LinkCredentials from './LinkCredentials';
@@ -55,6 +55,29 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
               <div className="p-5">
                 <h4 className="font-display text-xl leading-snug">{r.title}</h4>
                 {r.description && <p className="mt-2 text-sm text-foreground/60 leading-relaxed">{r.description}</p>}
+
+                {r.file_url && (
+                  <a href={r.file_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-sm border border-border bg-secondary/40 px-3 py-2 text-sm hover:bg-secondary/70">
+                    <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span className="break-all min-w-0">{r.file_name || 'Document'}</span>
+                    <Download className="w-3.5 h-3.5 text-[#6F551A] shrink-0" />
+                  </a>
+                )}
+
+                {Array.isArray(r.links) && r.links.filter((l) => l.url || l.title).length > 0 && (
+                  <div className="mt-3 space-y-1.5 border-t border-border pt-3">
+                    {r.links.filter((l) => l.url || l.title).map((l, i) => (
+                      <a key={i} href={l.url} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-sm text-[#6F551A] hover:underline">
+                        <ExternalLink className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                        <span className="min-w-0">
+                          <span className="break-all">{l.title || l.url}</span>
+                          {l.description && <span className="block text-foreground/50 text-xs">{l.description}</span>}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+
                 <div className="mt-4 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     {r.url && (
