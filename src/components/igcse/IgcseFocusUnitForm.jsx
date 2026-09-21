@@ -34,7 +34,7 @@ export default function IgcseFocusUnitForm({ open, onOpenChange, initial, onSave
             <Label className="chrono-eyebrow">Key bullet points (one per line)</Label>
             <Textarea
               value={bulletsText}
-              onChange={(e) => set('bullet_points', e.target.value.split('\n').map((s) => s.trim()).filter((s, i, a) => s !== '' || i === a.length - 1))}
+              onChange={(e) => set('bullet_points', e.target.value.split('\n'))}
               placeholder={'Combat operations and allied victory\nPersecution and fear of reprisals\nEconomic factors'}
               rows={6}
             />
@@ -43,7 +43,7 @@ export default function IgcseFocusUnitForm({ open, onOpenChange, initial, onSave
             <Label className="chrono-eyebrow">Specified content (one per line)</Label>
             <Textarea
               value={specifiedText}
-              onChange={(e) => set('specified_content', e.target.value.split('\n').map((s) => s.trim()).filter((s, i, a) => s !== '' || i === a.length - 1))}
+              onChange={(e) => set('specified_content', e.target.value.split('\n'))}
               placeholder={'Treaty of Versailles terms\nReparations and war guilt\nImpact on German territory'}
               rows={6}
             />
