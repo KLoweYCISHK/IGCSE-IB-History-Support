@@ -7,6 +7,7 @@ import SectionHeading from '@/components/SectionHeading';
 import ExamApproachList from '@/components/exam/ExamApproachList';
 import ArchiveTable from '@/components/ArchiveTable';
 import IgcseExamForm from './IgcseExamForm';
+import IgcseMarkSchemeTemplates from './IgcseMarkSchemeTemplates';
 import { QUESTION_TYPES, genericLevels } from '@/lib/igcseMarkSchemes';
 
 function QuestionCard({ q, i, editMode, onEdit, onDelete }) {
@@ -50,13 +51,22 @@ function QuestionCard({ q, i, editMode, onEdit, onDelete }) {
 export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Paper 1', description }) {
   const { editMode } = useAdmin();
   const [items, setItems] = useState([]);
+  const [templates, setTemplates] = useState({});
   const [qType, setQType] = useState('6_marker');
   const [topic, setTopic] = useState('all');
   const [editing, setEditing] = useState(null);
 
   const load = useCallback(async () => {
     setItems(await base44.entities.ExamItem.filter({ section }, 'order'));
+    try {
+      const list = await base44.entities.IgcseMarkSchemeTemplate.list();
+      const t = {};
+      list.forEach((r) => { if (r.rows?.length) t[r.question_type] = r.rows; });
+      setTemplates(t);
+    } catch { /* no templates yet */ }
   }, [section]);
+
+  const genericFor = (type) => templates[type] || genericLevels(type);
 
   useEffect(() => {
     load();
@@ -90,7 +100,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
             <Button variant="outline" size="sm" onClick={() => setEditing({ category: 'approach', question_type: qType })}>
               <Plus className="w-4 h-4 mr-1.5" /> Add how-to
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setEditing({ category: 'question', question_type: qType, mark_scheme_rows: genericLevels(qType) })}>
+            <Button variant="outline" size="sm" onClick={() => setEditing({ category: 'question', question_type: qType, mark_scheme_rows: genericFor(qType) })}>
               <Plus className="w-4 h-4 mr-1.5" /> Add question
             </Button>
           </div>
@@ -146,7 +156,9 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         )}
       </div>
 
-      <IgcseExamForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} />
+      {editMode && <IgcseMarkSchemeTemplates />}
+
+      <IgcseExamForm key={editing ? (editing.id || `${editing.category}-${editing.question_type}`) : 'none'} open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} genericLevelsFor={genericFor} />
     </section>
   );
 }

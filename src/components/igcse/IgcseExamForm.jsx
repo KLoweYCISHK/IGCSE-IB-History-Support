@@ -13,12 +13,13 @@ const CATEGORIES = [
   { value: 'question', label: 'Exam Question' },
 ];
 
-export default function IgcseExamForm({ open, onOpenChange, initial, onSave }) {
+export default function IgcseExamForm({ open, onOpenChange, initial, onSave, genericLevelsFor }) {
   const [draft, setDraft] = useState(initial || {});
   useEffect(() => { if (open) setDraft(initial || {}); }, [open, initial]);
   const set = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
   const cat = draft.category || 'question';
   const qType = draft.question_type || '6_marker';
+  const genericFor = (type) => (genericLevelsFor || genericLevels)(type);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,7 +40,7 @@ export default function IgcseExamForm({ open, onOpenChange, initial, onSave }) {
             </div>
             <div className="space-y-2">
               <Label className="chrono-eyebrow">Question type</Label>
-              <Select value={qType} onValueChange={(v) => set('question_type', v)}>
+              <Select value={qType} onValueChange={(v) => { set('question_type', v); if (cat === 'question' && !draft.id) set('mark_scheme_rows', genericFor(v)); }}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {QUESTION_TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
@@ -83,12 +84,12 @@ export default function IgcseExamForm({ open, onOpenChange, initial, onSave }) {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="chrono-eyebrow">Mark scheme levels</p>
-                  <Button type="button" size="sm" variant="ghost" onClick={() => set('mark_scheme_rows', genericLevels(qType))}>
+                  <Button type="button" size="sm" variant="ghost" onClick={() => set('mark_scheme_rows', genericFor(qType))}>
                     Insert generic levels
                   </Button>
                 </div>
                 <TableEditor
-                  rows={draft.mark_scheme_rows && draft.mark_scheme_rows.length ? draft.mark_scheme_rows : genericLevels(qType)}
+                  rows={draft.mark_scheme_rows && draft.mark_scheme_rows.length ? draft.mark_scheme_rows : genericFor(qType)}
                   onChange={(rows) => set('mark_scheme_rows', rows)}
                 />
                 <p className="text-xs text-foreground/50">Generic levels are pre-filled — edit each level to add the specific knowledge and examples for this question.</p>
