@@ -95,7 +95,10 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
     });
     return map;
   }, [focusUnits]);
-  const coreUnits = useMemo(() => focusUnits.filter((u) => u.page === 'igcse_core1' || u.page === 'igcse_core2'), [focusUnits]);
+  const coreUnits = useMemo(() => [
+    ...focusUnits.filter((u) => u.page === 'igcse_core1'),
+    ...focusUnits.filter((u) => u.page === 'igcse_core2'),
+  ], [focusUnits]);
   const depthUnits = useMemo(() => focusUnits.filter((u) => u.page === 'igcse_depth'), [focusUnits]);
   const filtered = useMemo(() => {
     const inGroup = group === 'all' ? questions : questions.filter((q) => topicGroup[q.topic] === group);
