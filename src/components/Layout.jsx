@@ -4,8 +4,11 @@ import { DragDropContext } from '@hello-pangea/dnd';
 import Masthead from './Masthead';
 import AdminBar from './AdminBar';
 import { handleBlockDragEnd } from '@/lib/blockDnd';
+import { useTrack } from '@/lib/TrackContext';
 
 export default function Layout() {
+  const { track } = useTrack();
+  const title = track === 'igcse' ? 'IGCSE History — By Ms Lowe' : 'IB History — by Ms Lowe';
   return (
     <div className="min-h-screen bg-[#F4EFE3]">
       <Masthead />
@@ -20,7 +23,7 @@ export default function Layout() {
       <footer className="mt-24 border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-10 flex flex-wrap justify-between gap-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-            IB History — by Ms Lowe
+            {title}
           </p>
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             The Chronos Archive

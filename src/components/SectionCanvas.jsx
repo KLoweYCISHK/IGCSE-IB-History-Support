@@ -101,10 +101,6 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
         </div>
       )}
 
-      {sections.length === 0 && !editMode && (
-        <p className="py-10 text-foreground/40 italic">Content coming soon.</p>
-      )}
-
       <SectionForm open={!!editing} onOpenChange={(o) => !o && setEditing(null)} initial={editing} onSave={save} page={page} module={module} />
     </div>
   );
