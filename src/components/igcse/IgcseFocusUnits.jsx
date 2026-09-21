@@ -80,53 +80,18 @@ export default function IgcseFocusUnits({ page, title = 'Focus units', descripti
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">Add your first focus unit — it will also appear as a topic in the Paper 1 question bank.</p>
         ) : null
       ) : (
-        <div className="border border-border rounded-sm overflow-hidden bg-card">
-          <div className="grid grid-cols-1 md:grid-cols-3 bg-secondary">
-            <div className="px-6 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground border-r border-border">Focus unit</div>
-            <div className="px-6 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground border-r border-border">Key points</div>
-            <div className="px-6 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Specified content</div>
-          </div>
+        <div className="border border-border rounded-sm overflow-hidden bg-card divide-y divide-border">
           {units.map((u, i) => (
-            <div key={u.id} className="group relative grid grid-cols-1 md:grid-cols-3 border-t border-border">
+            <div key={u.id} className="group relative px-6 py-5">
               {editMode && (
-                <div className="absolute -top-3 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
+                <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-card border border-border rounded px-1 py-1">
                   <button onClick={() => move(i, -1)} className="p-1.5 hover:text-[#6F551A]"><ArrowUp className="w-4 h-4" /></button>
                   <button onClick={() => move(i, 1)} className="p-1.5 hover:text-[#6F551A]"><ArrowDown className="w-4 h-4" /></button>
                   <button onClick={() => setEditing(u)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
                   <button onClick={() => remove(u.id)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
               )}
-              <div className="px-6 py-6 border-r border-border">
-                <p className="font-display text-xl leading-snug">{u.focus_unit}</p>
-              </div>
-              <div className="px-6 py-6 border-r border-border">
-                {Array.isArray(u.bullet_points) && u.bullet_points.length > 0 ? (
-                  <ul className="space-y-1.5">
-                    {u.bullet_points.map((b, j) => (
-                      <li key={j} className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85">
-                        <span className="text-[#6F551A] mt-2 w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-foreground/40 italic text-sm">No key points yet.</p>
-                )}
-              </div>
-              <div className="px-6 py-6">
-                {Array.isArray(u.specified_content) && u.specified_content.length > 0 ? (
-                  <ul className="space-y-1.5">
-                    {u.specified_content.map((c, j) => (
-                      <li key={j} className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85">
-                        <span className="text-[#6F551A] mt-2 w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-                        <span>{c}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-foreground/40 italic text-sm">No specified content yet.</p>
-                )}
-              </div>
+              <p className="font-display text-xl leading-snug pr-24">{u.focus_unit}</p>
             </div>
           ))}
         </div>
