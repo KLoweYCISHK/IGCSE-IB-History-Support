@@ -3,6 +3,7 @@ import { Image } from '@/components/ui/image';
 import TrackLogo from './TrackLogo';
 
 const MISS_LOWE_LOGO = 'https://media.base44.com/images/public/6a9374897e9609e0d36beee4/d139d12f8_Screenshot2026-08-31at34609PM.png';
+const HERO_ICON = 'https://media.base44.com/images/public/6a9374897e9609e0d36beee4/181a62443_Gemini_Generated_Image_w5bidsw5bidsw5bi.jpeg';
 
 export default function TrackGate({ onChoose }) {
   const Card = ({ value, eyebrow, title, note }) => (
@@ -28,8 +29,10 @@ export default function TrackGate({ onChoose }) {
         <Image src={MISS_LOWE_LOGO} alt="By Miss Lowe" fittingType="fit" className="w-full h-auto" />
       </div>
       <div className="max-w-3xl w-full text-center">
-        <p className="font-display text-3xl md:text-4xl mb-5">Welcome to Miss Lowe's History Support site</p>
-        <p className="chrono-eyebrow mb-5">Welcome</p>
+        <p className="font-display text-3xl md:text-4xl mb-5">Miss Lowe's History Support site</p>
+        <div className="mb-5 flex justify-center">
+          <Image src={HERO_ICON} alt="Miss Lowe" fittingType="fit" className="w-28 h-28 md:w-32 md:h-32 object-contain" />
+        </div>
         <h1 className="font-display text-5xl md:text-6xl leading-[0.95] tracking-tight mb-3">
           Which course are you studying?
         </h1>
