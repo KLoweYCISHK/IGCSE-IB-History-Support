@@ -8,6 +8,7 @@ import ExamApproachList from '@/components/exam/ExamApproachList';
 import ArchiveTable from '@/components/ArchiveTable';
 import IgcseExamForm from './IgcseExamForm';
 import IgcseMarkSchemeTemplates from './IgcseMarkSchemeTemplates';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { QUESTION_TYPES, genericLevels } from '@/lib/igcseMarkSchemes';
 
 function QuestionCard({ q, i, editMode, onEdit, onDelete }) {
@@ -53,7 +54,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const [items, setItems] = useState([]);
   const [templates, setTemplates] = useState({});
   const [qType, setQType] = useState('6_marker');
-  const [topic, setTopic] = useState('all');
+  const [group, setGroup] = useState('all');
   const [editing, setEditing] = useState(null);
 
   const [focusUnits, setFocusUnits] = useState([]);
@@ -83,7 +84,19 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const approaches = items.filter((i) => i.category === 'approach' && (i.question_type || '') === qType);
   const questions = items.filter((i) => i.category === 'question' && (i.question_type || '') === qType);
   const topics = useMemo(() => focusUnits.map((u) => u.focus_unit).filter(Boolean), [focusUnits]);
-  const filtered = topic === 'all' ? questions : questions.filter((q) => q.topic === topic);
+  const topicGroup = useMemo(() => {
+    const map = {};
+    focusUnits.forEach((u) => {
+      if (!u.focus_unit) return;
+      if (u.page === 'igcse_core1' || u.page === 'igcse_core2') map[u.focus_unit] = 'core';
+      else if (u.page === 'igcse_depth') map[u.focus_unit] = 'depth';
+    });
+    return map;
+  }, [focusUnits]);
+  const filtered = useMemo(() => {
+    if (group === 'all') return questions;
+    return questions.filter((q) => topicGroup[q.topic] === group);
+  }, [questions, group, topicGroup]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -112,11 +125,24 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         ) : null}
       />
 
+      <div className="mb-8">
+        <Select value={group} onValueChange={setGroup}>
+          <SelectTrigger className="w-[260px] h-9 font-mono text-[11px] uppercase tracking-[0.18em]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All topics</SelectItem>
+            <SelectItem value="core">Core 1 & Core 2</SelectItem>
+            <SelectItem value="depth">Depth Study</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
         {QUESTION_TYPES.map((t, i) => (
           <button
             key={t.value}
-            onClick={() => { setQType(t.value); setTopic('all'); }}
+            onClick={() => setQType(t.value)}
             className={`px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${i === QUESTION_TYPES.length - 1 ? '' : 'border-r border-border'} ${qType === t.value ? 'bg-[#6F551A] text-[#F4EFE3]' : 'text-foreground/60 hover:bg-black/[0.04]'}`}
           >
             {t.label}
@@ -131,25 +157,6 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
       <div>
         <p className="chrono-eyebrow mb-4">Question bank</p>
-        {topics.length > 0 && (
-          <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-8">
-            <button
-              onClick={() => setTopic('all')}
-              className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] ${topic === 'all' ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
-            >
-              All topics
-            </button>
-            {topics.map((t) => (
-              <button
-                key={t}
-                onClick={() => setTopic(t)}
-                className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] border-l border-border ${topic === t ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        )}
         {filtered.length === 0 ? (
           <p className="text-foreground/40 italic">No questions added yet.</p>
         ) : (
