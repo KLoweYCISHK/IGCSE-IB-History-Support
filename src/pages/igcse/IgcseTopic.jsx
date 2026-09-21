@@ -127,9 +127,9 @@ export default function IgcseTopic() {
           />
         </>
       )}
-      {cfg.exam !== 'paper1' && <ResourceLibrary section={cfg.page} />}
-
       {cfg.hasTextbook && <TextbookSection section={cfg.page} caseStudy="all" />}
+
+      {cfg.exam !== 'paper1' && <ResourceLibrary section={cfg.page} />}
     </div>
   );
 }
