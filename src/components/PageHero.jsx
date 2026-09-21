@@ -34,6 +34,7 @@ export default function PageHero({ page, eyebrow, title, lede, image }) {
   const eTitle = meta?.title ?? title;
   const eLede = meta?.description ?? lede;
   const eImage = meta?.image_url ?? image;
+  const eSideImage = meta?.side_image_url;
 
   return (
     <header className="relative pt-16 pb-14 md:pt-24 md:pb-20 overflow-hidden">
@@ -45,8 +46,17 @@ export default function PageHero({ page, eyebrow, title, lede, image }) {
         </div>
       )}
       <p className="chrono-eyebrow mb-5">{eEyebrow}</p>
-      <h1 className="font-display text-6xl md:text-8xl leading-[0.92] tracking-tight max-w-4xl">{eTitle}</h1>
-      {eLede && <div className="prose-archive mt-6 max-w-2xl text-lg text-foreground/70 leading-relaxed" dangerouslySetInnerHTML={{ __html: (eLede || '').replace(/&nbsp;|\u00A0/g, ' ') }} />}
+      <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+        <div className="flex-1 min-w-0">
+          <h1 className="font-display text-6xl md:text-8xl leading-[0.92] tracking-tight">{eTitle}</h1>
+          {eLede && <div className="prose-archive mt-6 max-w-2xl text-lg text-foreground/70 leading-relaxed" dangerouslySetInnerHTML={{ __html: (eLede || '').replace(/&nbsp;|\u00A0/g, ' ') }} />}
+        </div>
+        {eSideImage && (
+          <div className="w-full md:w-[38%] lg:w-[34%] shrink-0">
+            <Image src={eSideImage} alt="" className="w-full h-48 md:h-56 object-cover rounded-sm border border-border" />
+          </div>
+        )}
+      </div>
 
       {editMode && (
         <button
@@ -60,7 +70,7 @@ export default function PageHero({ page, eyebrow, title, lede, image }) {
       <HeroForm
         open={editing}
         onOpenChange={setEditing}
-        initial={{ eyebrow: eEyebrow, title: eTitle, description: eLede, image_url: eImage }}
+        initial={{ eyebrow: eEyebrow, title: eTitle, description: eLede, image_url: eImage, side_image_url: eSideImage }}
         onSave={save}
       />
     </header>

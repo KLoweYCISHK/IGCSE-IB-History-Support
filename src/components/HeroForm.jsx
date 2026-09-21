@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RichTextEditor from './editor/RichTextEditor';
+import ImageUploadField from './editor/ImageUploadField';
 
 export default function HeroForm({ open, onOpenChange, initial, onSave }) {
   const [draft, setDraft] = useState(initial || {});
@@ -33,9 +34,14 @@ export default function HeroForm({ open, onOpenChange, initial, onSave }) {
             <RichTextEditor value={draft.description || ''} onChange={setVal('description')} />
           </div>
           <div className="space-y-1.5">
-            <Label>Image URL</Label>
+            <Label>Background image URL</Label>
             <Input value={draft.image_url || ''} onChange={set('image_url')} />
           </div>
+          <ImageUploadField
+            label="Side image (shown to the right of the title)"
+            value={draft.side_image_url || ''}
+            onChange={setVal('side_image_url')}
+          />
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>

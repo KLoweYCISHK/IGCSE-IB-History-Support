@@ -4,7 +4,7 @@
   "properties": {
     "page": {
       "type": "string",
-      "description": "paper1 | paper2 | paper3 | ia | ee | home"
+      "description": "paper1 | paper2 | paper3 | ia | ee | home | igcse_*"
     },
     "eyebrow": {
       "type": "string"
@@ -17,6 +17,10 @@
     },
     "image_url": {
       "type": "string"
+    },
+    "side_image_url": {
+      "type": "string",
+      "description": "Optional image shown to the right of the hero title"
     }
   },
   "required": [
