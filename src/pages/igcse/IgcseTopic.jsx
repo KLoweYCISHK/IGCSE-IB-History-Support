@@ -9,6 +9,7 @@ import Roadmap from '@/components/Roadmap';
 import DocumentSection from '@/components/DocumentSection';
 import IgcsePaper1Exam from '@/components/igcse/IgcsePaper1Exam';
 import IgcsePaper2Links from '@/components/igcse/IgcsePaper2Links';
+import IgcsePaper2Focus from '@/components/igcse/IgcsePaper2Focus';
 import IgcseFocusUnits from '@/components/igcse/IgcseFocusUnits';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
@@ -114,11 +115,17 @@ export default function IgcseTopic() {
         />
       )}
       {cfg.exam === 'paper2' && (
-        <IgcsePaper2Links
-          section={cfg.page}
-          title="Paper 2"
-          description="The source-based paper — pick a topic, then open the paper and its mark scheme."
-        />
+        <>
+          <IgcsePaper2Focus
+            title="Topic focus by year"
+            description="The topic focus changes each year — the most recent year is shown at the top."
+          />
+          <IgcsePaper2Links
+            section={cfg.page}
+            title="Paper 2"
+            description="The source-based paper — pick a topic, then open the paper and its mark scheme."
+          />
+        </>
       )}
       {cfg.exam !== 'paper1' && <ResourceLibrary section={cfg.page} />}
 

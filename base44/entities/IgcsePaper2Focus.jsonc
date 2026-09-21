@@ -1,0 +1,36 @@
+{
+  "name": "IgcsePaper2Focus",
+  "type": "object",
+  "properties": {
+    "year": {
+      "type": "number",
+      "description": "Exam year this focus unit was the Paper 2 topic focus"
+    },
+    "focus_unit_id": {
+      "type": "string",
+      "description": "Reference to the IgcseFocusUnit (from core1 or core2) that was the Paper 2 focus for this year"
+    }
+  },
+  "required": [
+    "year",
+    "focus_unit_id"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
