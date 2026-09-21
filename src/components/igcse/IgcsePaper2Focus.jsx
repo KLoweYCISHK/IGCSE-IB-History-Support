@@ -90,35 +90,7 @@ export default function IgcsePaper2Focus({ title = 'Topic focus by year', descri
                   )}
                 </div>
                 {u ? (
-                  <>
-                    <h4 className="font-display text-xl leading-snug mb-3">{u.focus_unit}</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        {Array.isArray(u.bullet_points) && u.bullet_points.length > 0 ? (
-                          <ul className="space-y-1.5">
-                            {u.bullet_points.map((b, j) => (
-                              <li key={j} className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85">
-                                <span className="text-[#6F551A] mt-2 w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-                                <span>{b}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                      <div>
-                        {Array.isArray(u.specified_content) && u.specified_content.length > 0 ? (
-                          <ul className="space-y-1.5">
-                            {u.specified_content.map((c, j) => (
-                              <li key={j} className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85">
-                                <span className="text-[#6F551A] mt-2 w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-                                <span>{c}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                    </div>
-                  </>
+                  <h4 className="font-display text-xl leading-snug">{u.focus_unit}</h4>
                 ) : (
                   <p className="text-foreground/40 italic text-sm">Focus unit not found.</p>
                 )}
