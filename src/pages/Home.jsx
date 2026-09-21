@@ -18,8 +18,8 @@ const IGCSE_INDEX = [
   { to: '/igcse/core1', label: 'Core 1', note: 'Core content part 1 — 1917–1939' },
   { to: '/igcse/core2', label: 'Core 2', note: 'Core content part 2 — 1945–1989' },
   { to: '/igcse/depth', label: 'Depth Study', note: 'Weimar & Nazi Germany' },
-  { to: '/igcse/paper1', label: 'Paper 1', note: 'Source-based exam support' },
-  { to: '/igcse/paper2', label: 'Paper 2', note: 'Essay exam support' },
+  { to: '/igcse/paper1', label: 'Paper 1', note: 'Knowledge based exam support' },
+  { to: '/igcse/paper2', label: 'Paper 2', note: 'Source based exam support' },
   { to: '/igcse/coursework', label: 'Coursework', note: 'Step-by-step guidance & examples' },
 ];
 
