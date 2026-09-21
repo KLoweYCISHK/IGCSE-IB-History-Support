@@ -212,8 +212,12 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         <ExamApproachList items={approaches} editMode={editMode} onEdit={setEditing} onDelete={del} />
       </div>
 
-      {!(group === 'all' && selectedTopic === 'all') && (
-        <div>
+      {group === 'all' && selectedTopic === 'all' ? (
+        <p className="text-foreground/60 italic text-[16px]">
+          Choose a focus unit above to browse its practice questions and generate your own Paper 1 question paper.
+        </p>
+      ) : (
+      <div>
           <div className="flex items-center justify-between gap-4 mb-4">
             <p className="chrono-eyebrow">Question bank</p>
             {selectedTopic !== 'all' && (
