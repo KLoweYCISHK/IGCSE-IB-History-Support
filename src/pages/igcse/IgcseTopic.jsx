@@ -8,6 +8,8 @@ import ExamVault from '@/components/ExamVault';
 import TextbookSection from '@/components/TextbookSection';
 import Roadmap from '@/components/Roadmap';
 import DocumentSection from '@/components/DocumentSection';
+import IgcsePaper1Exam from '@/components/igcse/IgcsePaper1Exam';
+import IgcsePaper2Links from '@/components/igcse/IgcsePaper2Links';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const TOPICS = {
@@ -17,6 +19,7 @@ const TOPICS = {
     title: '1917–1939',
     lede: 'The shaping of the post-war world — from the Russian Revolution to the road to war.',
     hasExam: true,
+    exam: 'vault',
     hasTextbook: true,
   },
   core2: {
@@ -25,6 +28,7 @@ const TOPICS = {
     title: '1945–1989',
     lede: 'The Cold War world — from Yalta and Potsdam to the collapse of the Soviet bloc.',
     hasExam: true,
+    exam: 'vault',
     hasTextbook: true,
   },
   depth: {
@@ -33,31 +37,30 @@ const TOPICS = {
     title: 'Weimar & Nazi Germany',
     lede: 'Germany from the Weimar Republic to the Nazi state — collapse, consolidation, and control.',
     hasExam: true,
+    exam: 'vault',
     hasTextbook: true,
   },
   paper1: {
     page: 'igcse_paper1',
     eyebrow: 'Examination',
     title: 'Paper 1',
-    lede: 'The source paper — how to read evidence and answer with precision.',
-    hasExam: true,
-    hasTextbook: true,
+    lede: 'The knowledge-based paper — how to approach each question type and a bank of practice questions.',
+    exam: 'paper1',
+    hasTextbook: false,
   },
   paper2: {
     page: 'igcse_paper2',
     eyebrow: 'Examination',
     title: 'Paper 2',
-    lede: 'The essay paper — how to argue, structure, and use your knowledge.',
-    hasExam: true,
-    hasTextbook: true,
+    lede: 'The source-based paper — pick a topic, then open the paper and its mark scheme.',
+    exam: 'paper2',
+    hasTextbook: false,
   },
   coursework: {
     page: 'igcse_coursework',
     eyebrow: 'Coursework',
     title: 'Coursework',
     lede: 'An historical investigation of your own making. Follow the roadmap, step by step.',
-    hasExam: false,
-    hasTextbook: false,
     isCoursework: true,
   },
 };
@@ -102,7 +105,21 @@ export default function IgcseTopic() {
 
       <SectionCanvas page={cfg.page} />
 
-      {cfg.hasExam && (
+      {cfg.exam === 'paper1' && (
+        <IgcsePaper1Exam
+          section={cfg.page}
+          title="Paper 1"
+          description="The knowledge-based paper — how to approach each question type, a bank of practice questions, and reveal-the-mark-scheme study."
+        />
+      )}
+      {cfg.exam === 'paper2' && (
+        <IgcsePaper2Links
+          section={cfg.page}
+          title="Paper 2"
+          description="The source-based paper — pick a topic, then open the paper and its mark scheme."
+        />
+      )}
+      {cfg.exam === 'vault' && (
         <ExamVault
           section={cfg.page}
           title="The Exam Vault"

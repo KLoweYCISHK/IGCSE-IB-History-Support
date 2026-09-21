@@ -1,0 +1,52 @@
+{
+  "name": "IgcsePaper2Link",
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string",
+      "default": "igcse_paper2",
+      "description": "igcse_paper2"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic group, e.g. Treaty of Versailles, Weimar Republic"
+    },
+    "title": {
+      "type": "string",
+      "description": "Specific paper title shown on the card"
+    },
+    "paper_url": {
+      "type": "string",
+      "description": "Link to the source paper"
+    },
+    "mark_scheme_url": {
+      "type": "string",
+      "description": "Link to the mark scheme for this paper"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
