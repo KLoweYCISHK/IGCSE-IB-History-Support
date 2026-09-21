@@ -55,6 +55,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const [templates, setTemplates] = useState({});
   const [qType, setQType] = useState('6_marker');
   const [group, setGroup] = useState('all');
+  const [selectedTopic, setSelectedTopic] = useState('all');
   const [editing, setEditing] = useState(null);
 
   const [focusUnits, setFocusUnits] = useState([]);
@@ -93,10 +94,16 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
     });
     return map;
   }, [focusUnits]);
+  const groupFocusUnits = useMemo(() => {
+    if (group === 'all') return focusUnits;
+    if (group === 'core') return focusUnits.filter((u) => u.page === 'igcse_core1' || u.page === 'igcse_core2');
+    return focusUnits.filter((u) => u.page === 'igcse_depth');
+  }, [focusUnits, group]);
   const filtered = useMemo(() => {
-    if (group === 'all') return questions;
-    return questions.filter((q) => topicGroup[q.topic] === group);
-  }, [questions, group, topicGroup]);
+    const inGroup = group === 'all' ? questions : questions.filter((q) => topicGroup[q.topic] === group);
+    if (selectedTopic === 'all') return inGroup;
+    return inGroup.filter((q) => q.topic === selectedTopic);
+  }, [questions, group, topicGroup, selectedTopic]);
 
   const save = async (draft) => {
     const { id, ...data } = draft;
@@ -126,7 +133,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
       />
 
       <div className="mb-8">
-        <Select value={group} onValueChange={setGroup}>
+        <Select value={group} onValueChange={(v) => { setGroup(v); setSelectedTopic('all'); }}>
           <SelectTrigger className="w-[260px] h-9 font-mono text-[11px] uppercase tracking-[0.18em]">
             <SelectValue />
           </SelectTrigger>
@@ -157,6 +164,25 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
       <div>
         <p className="chrono-eyebrow mb-4">Question bank</p>
+        {groupFocusUnits.length > 0 && (
+          <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-8">
+            <button
+              onClick={() => setSelectedTopic('all')}
+              className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] ${selectedTopic === 'all' ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
+            >
+              All
+            </button>
+            {groupFocusUnits.map((u) => (
+              <button
+                key={u.id || u.focus_unit}
+                onClick={() => setSelectedTopic(u.focus_unit)}
+                className={`px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] border-l border-border ${selectedTopic === u.focus_unit ? 'bg-foreground text-background' : 'hover:bg-black/[0.04]'}`}
+              >
+                {u.focus_unit}
+              </button>
+            ))}
+          </div>
+        )}
         {filtered.length === 0 ? (
           <p className="text-foreground/40 italic">No questions added yet.</p>
         ) : (
