@@ -21,10 +21,7 @@ function QuestionCard({ q, i, editMode, onEdit, onDelete }) {
           <span className="font-mono text-xs text-[#6F551A]">{String(i + 1).padStart(2, '0')}</span>
           <h4 className="font-display text-xl leading-snug">{q.question}</h4>
         </div>
-        <div className="flex flex-wrap gap-2 shrink-0 justify-end items-center">
-          {q.topic && (
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground border border-border rounded px-2 py-1">{q.topic}</span>
-          )}
+        <div className="flex shrink-0 justify-end items-center">
           <button
             onClick={() => setShow((s) => !s)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-sm font-mono text-[10px] uppercase tracking-wider text-foreground/70 hover:text-[#6F551A] hover:border-[#6F551A] transition-colors"
@@ -193,7 +190,9 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
 
       <div>
         <p className="chrono-eyebrow mb-4">Question bank</p>
-        {filtered.length === 0 ? (
+        {group === 'all' && selectedTopic === 'all' ? (
+          <p className="text-foreground/40 italic">Choose a topic above to see its questions.</p>
+        ) : filtered.length === 0 ? (
           <p className="text-foreground/40 italic">No questions added yet.</p>
         ) : (
           <div className="space-y-4">
