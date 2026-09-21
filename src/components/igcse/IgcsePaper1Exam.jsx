@@ -157,7 +157,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         ) : null}
       />
 
-      <div className="mb-8">
+      <div className="mb-10 flex flex-wrap items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="inline-flex items-center gap-2 w-[280px] h-9 px-3 border border-border rounded-sm bg-card font-mono text-[11px] uppercase tracking-[0.18em] text-left hover:bg-black/[0.03] transition-colors">
@@ -193,6 +193,16 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
             </DropdownMenuSub>
           </DropdownMenuContent>
         </DropdownMenu>
+        {selectedTopic !== 'all' && (
+          <Button variant="outline" size="sm" onClick={handleGenerate} disabled={generating}>
+            <FileDown className="w-4 h-4 mr-1.5" /> {generating ? 'Generating…' : 'Generate paper'}
+          </Button>
+        )}
+        <p className="text-foreground/55 italic text-[14px] max-w-sm">
+          {selectedTopic !== 'all'
+            ? 'Build your own Paper 1 — one random 4, 6 and 10-marker for this topic, with mark schemes included.'
+            : 'Choose a focus unit to browse practice questions and generate your own Paper 1.'}
+        </p>
       </div>
 
       <div className="inline-flex flex-wrap border border-border rounded-sm overflow-hidden mb-12">
@@ -212,21 +222,10 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
         <ExamApproachList items={approaches} editMode={editMode} onEdit={setEditing} onDelete={del} />
       </div>
 
-      {group === 'all' && selectedTopic === 'all' ? (
-        <p className="text-foreground/60 italic text-[16px]">
-          Choose a focus unit above to browse its practice questions and generate your own Paper 1 question paper.
-        </p>
-      ) : (
-      <div>
-          <div className="flex items-center justify-between gap-4 mb-4">
-            <p className="chrono-eyebrow">Question bank</p>
-            {selectedTopic !== 'all' && (
-              <Button variant="outline" size="sm" onClick={handleGenerate} disabled={generating}>
-                <FileDown className="w-4 h-4 mr-1.5" /> {generating ? 'Generating…' : 'Generate paper'}
-              </Button>
-            )}
-          </div>
-          {group === 'all' && selectedTopic === 'all' ? null : filtered.length === 0 ? (
+      {group === 'all' && selectedTopic === 'all' ? null : (
+        <div>
+          <p className="chrono-eyebrow mb-4">Question bank</p>
+          {filtered.length === 0 ? (
             <p className="text-foreground/40 italic">No questions added yet.</p>
           ) : (
             <div className="space-y-4">
@@ -234,11 +233,6 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
                 <QuestionCard key={q.id} q={q} i={i} editMode={editMode} onEdit={setEditing} onDelete={del} />
               ))}
             </div>
-          )}
-          {selectedTopic !== 'all' && filtered.length > 0 && (
-            <p className="mt-4 text-foreground/50 italic text-[14px]">
-              Use “Generate paper” to build your own Paper 1 — one random 4, 6 and 10-marker for this topic, with mark schemes included.
-            </p>
           )}
         </div>
       )}
