@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
-import { Plus, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, FileDown } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
+import { generatePaperDoc } from '@/lib/igcsePaperDoc';
 import ExamApproachList from '@/components/exam/ExamApproachList';
 import ArchiveTable from '@/components/ArchiveTable';
 import IgcseExamForm from './IgcseExamForm';
@@ -55,6 +56,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const [group, setGroup] = useState('all');
   const [selectedTopic, setSelectedTopic] = useState('all');
   const [editing, setEditing] = useState(null);
+  const [generating, setGenerating] = useState(false);
 
   const [focusUnits, setFocusUnits] = useState([]);
   const load = useCallback(async () => {
@@ -124,6 +126,18 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
     load();
   };
   const del = async (id) => { await base44.entities.ExamItem.delete(id); load(); };
+
+  const handleGenerate = async () => {
+    if (selectedTopic === 'all') return;
+    setGenerating(true);
+    try {
+      await generatePaperDoc(selectedTopic, items);
+    } catch (e) {
+      alert('Could not generate the paper. Please try again.');
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   return (
     <section className="py-16 md:py-24 border-t border-border">
@@ -199,7 +213,14 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
       </div>
 
       <div>
-        <p className="chrono-eyebrow mb-4">Question bank</p>
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <p className="chrono-eyebrow">Question bank</p>
+          {selectedTopic !== 'all' && (
+            <Button variant="outline" size="sm" onClick={handleGenerate} disabled={generating}>
+              <FileDown className="w-4 h-4 mr-1.5" /> {generating ? 'Generating…' : 'Generate paper'}
+            </Button>
+          )}
+        </div>
         {group === 'all' && selectedTopic === 'all' ? (
           <p className="text-foreground/40 italic">Choose a topic above to see its questions.</p>
         ) : filtered.length === 0 ? (
