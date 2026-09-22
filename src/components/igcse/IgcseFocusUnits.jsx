@@ -91,7 +91,29 @@ export default function IgcseFocusUnits({ page, title = 'Focus units', descripti
                   <button onClick={() => remove(u.id)} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
               )}
-              <p className="font-display text-xl leading-snug pr-24">{u.focus_unit}</p>
+              <div className="pr-24">
+                <p className="font-display text-xl leading-snug">{u.focus_unit}</p>
+                {(u.bullet_points?.length > 0 || u.specified_content?.length > 0) && (
+                  <div className="mt-4 grid gap-6 md:grid-cols-2">
+                    {u.bullet_points?.length > 0 && (
+                      <div>
+                        <p className="chrono-eyebrow mb-2">Focus points</p>
+                        <ul className="space-y-1.5 list-disc pl-5 text-[15px] text-foreground/80">
+                          {u.bullet_points.map((b, bi) => <li key={bi}>{b}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {u.specified_content?.length > 0 && (
+                      <div>
+                        <p className="chrono-eyebrow mb-2">Specified content</p>
+                        <ul className="space-y-1.5 list-disc pl-5 text-[15px] text-foreground/80">
+                          {u.specified_content.map((c, ci) => <li key={ci}>{c}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
