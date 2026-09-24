@@ -1,4 +1,5 @@
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 
 export const makeDroppableId = (section, sub, caseStudy, module) =>
   `${section}__${sub || ''}__${caseStudy || 'all'}__${module || 'all'}`;
@@ -24,7 +25,7 @@ const loadOrdered = async ({ section, sub, caseStudy, module }) => {
 };
 
 const reindex = (list) =>
-  base44.entities.ContentBlock.bulkUpdate(list.map((b, i) => ({ id: b.id, order: i })));
+  editDb.ContentBlock.bulkUpdate(list.map((b, i) => ({ id: b.id, order: i })));
 
 // Handles both within-section reorder and cross-section block moves.
 // droppableId encodes section/sub/caseStudy/module; draggableId is the block id.
@@ -44,7 +45,7 @@ export const handleBlockDragEnd = async (result) => {
     await reindex(list);
   } else {
     // Reassign the block to the destination section/sub/case/module, then fix ordering on both sides.
-    await base44.entities.ContentBlock.update(draggableId, {
+    await editDb.ContentBlock.update(draggableId, {
       section: dst.section,
       sub: dst.sub,
       case_study: dst.caseStudy || 'all',
