@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { uploadFile } from '@/api/editor';
 import { Button } from '@/components/ui/button';
 import { Loader2, Upload, X, FileText } from 'lucide-react';
 
@@ -11,7 +11,7 @@ export default function FileUploadField({ value, fileName, onChange, onFileNameC
     if (!file) return;
     setBusy(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await uploadFile({ file });
       onChange(file_url);
       onFileNameChange?.(file.name);
     } finally {
