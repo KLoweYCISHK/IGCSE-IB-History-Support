@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -26,8 +27,8 @@ export default function Masthead() {
   useEffect(() => { load(); }, []);
 
   const save = async () => {
-    if (settings?.id) await base44.entities.SiteSettings.update(settings.id, draft);
-    else await base44.entities.SiteSettings.create(draft);
+    if (settings?.id) await editDb.SiteSettings.update(settings.id, draft);
+    else await editDb.SiteSettings.create(draft);
     setDraft(null);
     load();
   };

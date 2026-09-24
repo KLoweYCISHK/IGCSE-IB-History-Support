@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Image } from '@/components/ui/image';
 import { Pencil } from 'lucide-react';
@@ -24,8 +25,8 @@ export default function PageHero({ page, eyebrow, title, lede, image }) {
   }, [load]);
 
   const save = async (draft) => {
-    if (meta?.id) await base44.entities.PageMeta.update(meta.id, draft);
-    else await base44.entities.PageMeta.create({ page, ...draft });
+    if (meta?.id) await editDb.PageMeta.update(meta.id, draft);
+    else await editDb.PageMeta.create({ page, ...draft });
     setEditing(false);
     load();
   };

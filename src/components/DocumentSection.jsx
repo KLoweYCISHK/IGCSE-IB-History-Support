@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, Pencil, Trash2, Plus, Eye, EyeOff } from 'lucide-react';
@@ -25,14 +26,14 @@ export default function DocumentSection({
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.Document.update(id, data);
-    else await base44.entities.Document.create({ ...data, section });
+    if (id) await editDb.Document.update(id, data);
+    else await editDb.Document.create({ ...data, section });
     setEditing(null);
     load();
   };
 
   const remove = async (d) => {
-    await base44.entities.Document.delete(d.id);
+    await editDb.Document.delete(d.id);
     load();
   };
 

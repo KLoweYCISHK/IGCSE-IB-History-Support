@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { RotateCcw, Trash2 } from 'lucide-react';
@@ -26,27 +27,27 @@ export default function TrashDialog({ open, onOpenChange, onChanged }) {
   const notify = () => onChanged?.();
 
   const restoreSection = async (s) => {
-    await base44.entities.ContentBlock.updateMany(
+    await editDb.ContentBlock.updateMany(
       { section: s.page, sub: s.slug },
       { $set: { is_deleted: false } }
     );
-    await base44.entities.PageSection.update(s.id, { is_deleted: false });
+    await editDb.PageSection.update(s.id, { is_deleted: false });
     await load(); notify();
   };
 
   const restoreBlock = async (b) => {
-    await base44.entities.ContentBlock.update(b.id, { is_deleted: false });
+    await editDb.ContentBlock.update(b.id, { is_deleted: false });
     await load(); notify();
   };
 
   const purgeSection = async (s) => {
-    await base44.entities.ContentBlock.deleteMany({ section: s.page, sub: s.slug });
-    await base44.entities.PageSection.delete(s.id);
+    await editDb.ContentBlock.deleteMany({ section: s.page, sub: s.slug });
+    await editDb.PageSection.delete(s.id);
     await load(); notify();
   };
 
   const purgeBlock = async (b) => {
-    await base44.entities.ContentBlock.delete(b.id);
+    await editDb.ContentBlock.delete(b.id);
     await load(); notify();
   };
 

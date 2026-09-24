@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, RotateCw } from 'lucide-react';
@@ -40,8 +41,8 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.PageSection.update(id, data);
-    else await base44.entities.PageSection.create({ ...data, page, module: data.module || module || 'all', order: sections.length });
+    if (id) await editDb.PageSection.update(id, data);
+    else await editDb.PageSection.create({ ...data, page, module: data.module || module || 'all', order: sections.length });
     setEditing(null);
     load();
   };
@@ -50,7 +51,7 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
     const target = sections[index + dir];
     if (!target) return;
     const current = sections[index];
-    await base44.entities.PageSection.bulkUpdate([
+    await editDb.PageSection.bulkUpdate([
       { id: current.id, order: index + dir },
       { id: target.id, order: index },
     ]);
@@ -58,8 +59,8 @@ export default function SectionCanvas({ page, caseStudy, module, className = '',
   };
 
   const remove = async (s) => {
-    await base44.entities.ContentBlock.updateMany({ section: page, sub: s.slug }, { $set: { is_deleted: true } });
-    await base44.entities.PageSection.update(s.id, { is_deleted: true });
+    await editDb.ContentBlock.updateMany({ section: page, sub: s.slug }, { $set: { is_deleted: true } });
+    await editDb.PageSection.update(s.id, { is_deleted: true });
     load();
   };
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Pencil, Trash2, Plus, FileText, Download } from 'lucide-react';
@@ -23,11 +24,11 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.Resource.update(id, data);
+    if (id) await editDb.Resource.update(id, data);
     else {
       const payload = { ...data, section, case_study: caseStudy || 'all', is_student_submission: !isAdmin };
       if (module) payload.module = data.module || module;
-      await base44.entities.Resource.create(payload);
+      await (isAdmin ? editDb : base44.entities).Resource.create(payload);
     }
     setEditing(null);
     load();
@@ -97,7 +98,7 @@ export default function ResourceLibrary({ section, caseStudy, module, title = 'T
               {editMode && (
                 <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition bg-card/90 border border-border rounded">
                   <button onClick={() => setEditing(r)} className="p-1.5 hover:text-[#6F551A]"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={async () => { await base44.entities.Resource.delete(r.id); load(); }} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={async () => { await editDb.Resource.delete(r.id); load(); }} className="p-1.5 hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
               )}
             </div>

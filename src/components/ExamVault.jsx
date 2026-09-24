@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil } from 'lucide-react';
@@ -46,21 +47,21 @@ export default function ExamVault({ section, caseStudy, module, title = 'The Exa
   }, [load, loadMeta]);
 
   const saveMeta = async (draft) => {
-    if (meta?.id) await base44.entities.PageMeta.update(meta.id, draft);
-    else await base44.entities.PageMeta.create({ page: metaPage, ...draft });
+    if (meta?.id) await editDb.PageMeta.update(meta.id, draft);
+    else await editDb.PageMeta.create({ page: metaPage, ...draft });
     setEditingMeta(false);
     loadMeta();
   };
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.ExamItem.update(id, data);
-    else await base44.entities.ExamItem.create({ ...data, section, case_study: caseStudy || 'all', category: data.category || 'question', order: items.length });
+    if (id) await editDb.ExamItem.update(id, data);
+    else await editDb.ExamItem.create({ ...data, section, case_study: caseStudy || 'all', category: data.category || 'question', order: items.length });
     setEditing(null);
     load();
   };
 
-  const del = async (id) => { await base44.entities.ExamItem.delete(id); load(); };
+  const del = async (id) => { await editDb.ExamItem.delete(id); load(); };
   const byCat = (c) => items.filter((i) => {
     if ((i.category || 'question') !== c) return false;
     if (c === 'question' && module) {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2, Plus, ArrowUp, ArrowDown } from 'lucide-react';
@@ -33,11 +34,11 @@ export default function Roadmap({ section, stages }) {
   const save = async (draft) => {
     const { id, ...data } = draft;
     if (id) {
-      await base44.entities.RoadmapStep.update(id, data);
+      await editDb.RoadmapStep.update(id, data);
     } else {
       let slug = data.slug || slugify(data.title);
       if (allSteps.some((s) => s.slug === slug)) slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
-      await base44.entities.RoadmapStep.create({ ...data, page: section, stage: activeStage, slug, order: stageSteps.length });
+      await editDb.RoadmapStep.create({ ...data, page: section, stage: activeStage, slug, order: stageSteps.length });
     }
     setEditing(null);
     load();
@@ -47,7 +48,7 @@ export default function Roadmap({ section, stages }) {
     const target = stageSteps[index + dir];
     if (!target) return;
     const current = stageSteps[index];
-    await base44.entities.RoadmapStep.bulkUpdate([
+    await editDb.RoadmapStep.bulkUpdate([
       { id: current.id, order: index + dir },
       { id: target.id, order: index },
     ]);
@@ -55,7 +56,7 @@ export default function Roadmap({ section, stages }) {
   };
 
   const remove = async (s) => {
-    await base44.entities.RoadmapStep.update(s.id, { is_deleted: true });
+    await editDb.RoadmapStep.update(s.id, { is_deleted: true });
     load();
   };
 

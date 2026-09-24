@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
@@ -29,18 +30,18 @@ export default function TextbookSection({
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.Textbook.update(id, data);
+    if (id) await editDb.Textbook.update(id, data);
     else {
       const payload = { ...data, section, case_study: caseStudy || 'all' };
       if (module) payload.module = data.module || module;
-      await base44.entities.Textbook.create(payload);
+      await editDb.Textbook.create(payload);
     }
     setEditing(null);
     load();
   };
 
   const remove = async (t) => {
-    await base44.entities.Textbook.delete(t.id);
+    await editDb.Textbook.delete(t.id);
     load();
   };
 

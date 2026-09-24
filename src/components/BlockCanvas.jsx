@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import ResizableImage from './ResizableImage';
@@ -79,14 +80,14 @@ export default function BlockCanvas({ section, sub, caseStudy, module, emptyLabe
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.ContentBlock.update(id, data);
-    else await base44.entities.ContentBlock.create({ ...data, section, sub, case_study: caseStudy || 'all', module: module || 'all', order: blocks.length });
+    if (id) await editDb.ContentBlock.update(id, data);
+    else await editDb.ContentBlock.create({ ...data, section, sub, case_study: caseStudy || 'all', module: module || 'all', order: blocks.length });
     setEditing(null);
     load();
   };
 
   const remove = async (id) => {
-    await base44.entities.ContentBlock.update(id, { is_deleted: true });
+    await editDb.ContentBlock.update(id, { is_deleted: true });
     load();
   };
 
