@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb, getEditPassword } from '@/api/editor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -19,8 +20,9 @@ export default function AddPerspectiveDialog({ open, onOpenChange, unit, initial
   const submit = async () => {
     setSaving(true);
     const { id, ...data } = draft;
-    if (id) await base44.entities.Perspective.update(id, data);
-    else await base44.entities.Perspective.create({ ...data, unit: effectiveUnit });
+    const db = getEditPassword() ? editDb : base44.entities;
+    if (id) await db.Perspective.update(id, data);
+    else await db.Perspective.create({ ...data, unit: effectiveUnit });
     setSaving(false);
     onOpenChange(false);
     onSaved();

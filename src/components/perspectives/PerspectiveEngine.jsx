@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb, getEditPassword } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -76,7 +77,7 @@ export default function PerspectiveEngine({ unit }) {
               query={query}
               canManage={isAdmin || (user && item.created_by_id === user.id)}
               onEdit={() => setEditing(item)}
-              onDelete={async () => { await base44.entities.Perspective.delete(item.id); load(); }}
+              onDelete={async () => { await (getEditPassword() ? editDb : base44.entities).Perspective.delete(item.id); load(); }}
             />
           ))}
         </div>
