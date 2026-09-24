@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil, Trash2, Eye, EyeOff, FileDown } from 'lucide-react';
@@ -111,7 +112,7 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
   const save = async (draft) => {
     const { id, ...data } = draft;
     if (id) {
-      await base44.entities.ExamItem.update(id, data);
+      await editDb.ExamItem.update(id, data);
     } else {
       if (data.category !== 'approach') {
         const exists = items.some((it) => it.category !== 'approach' && (it.question || '').trim().toLowerCase() === (draft.question || '').trim().toLowerCase());
@@ -120,12 +121,12 @@ export default function IgcsePaper1Exam({ section = 'igcse_paper1', title = 'Pap
           return;
         }
       }
-      await base44.entities.ExamItem.create({ ...data, section, category: data.category || 'question', order: items.length });
+      await editDb.ExamItem.create({ ...data, section, category: data.category || 'question', order: items.length });
     }
     setEditing(null);
     load();
   };
-  const del = async (id) => { await base44.entities.ExamItem.delete(id); load(); };
+  const del = async (id) => { await editDb.ExamItem.delete(id); load(); };
 
   const handleGenerate = async () => {
     if (selectedTopic === 'all') return;

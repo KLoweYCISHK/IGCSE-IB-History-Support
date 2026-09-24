@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
@@ -87,9 +88,9 @@ export default function IgcseMarkSchemeTemplates() {
 
   const save = async (qt) => {
     const rows = templates[qt] || genericLevels(qt);
-    if (ids[qt]) await base44.entities.IgcseMarkSchemeTemplate.update(ids[qt], { rows });
+    if (ids[qt]) await editDb.IgcseMarkSchemeTemplate.update(ids[qt], { rows });
     else {
-      const created = await base44.entities.IgcseMarkSchemeTemplate.create({ question_type: qt, rows });
+      const created = await editDb.IgcseMarkSchemeTemplate.create({ question_type: qt, rows });
       setIds((i) => ({ ...i, [qt]: created.id }));
     }
     setDirty((d) => ({ ...d, [qt]: false }));

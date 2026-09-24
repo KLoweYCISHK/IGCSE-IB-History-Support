@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil, Trash2, FileText, ClipboardCheck, ExternalLink } from 'lucide-react';
@@ -43,12 +44,12 @@ export default function IgcsePaper2Links({ section = 'igcse_paper2', title = 'Pa
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.IgcsePaper2Link.update(id, data);
-    else await base44.entities.IgcsePaper2Link.create({ ...data, section, order: items.length });
+    if (id) await editDb.IgcsePaper2Link.update(id, data);
+    else await editDb.IgcsePaper2Link.create({ ...data, section, order: items.length });
     setEditing(null);
     load();
   };
-  const del = async (id) => { await base44.entities.IgcsePaper2Link.delete(id); load(); };
+  const del = async (id) => { await editDb.IgcsePaper2Link.delete(id); load(); };
 
   return (
     <section className="py-16 md:py-24 border-t border-border">

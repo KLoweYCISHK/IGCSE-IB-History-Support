@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
@@ -44,14 +45,14 @@ export default function IgcsePaper2Focus({ title = 'Topic focus by year', descri
 
   const save = async (draft) => {
     const { id, ...data } = draft;
-    if (id) await base44.entities.IgcsePaper2Focus.update(id, data);
-    else await base44.entities.IgcsePaper2Focus.create(data);
+    if (id) await editDb.IgcsePaper2Focus.update(id, data);
+    else await editDb.IgcsePaper2Focus.create(data);
     setEditing(null);
     load();
     window.dispatchEvent(new Event('archive:reload'));
   };
   const remove = async (id) => {
-    await base44.entities.IgcsePaper2Focus.delete(id);
+    await editDb.IgcsePaper2Focus.delete(id);
     load();
     window.dispatchEvent(new Event('archive:reload'));
   };

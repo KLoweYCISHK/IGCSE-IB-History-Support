@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { editDb } from '@/api/editor';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
@@ -36,8 +37,8 @@ export default function IgcseFocusUnits({ page, title = 'Focus units', descripti
     const cleanBullets = (Array.isArray(data.bullet_points) ? data.bullet_points : []).map((s) => s.trim()).filter(Boolean);
     const cleanContent = (Array.isArray(data.specified_content) ? data.specified_content : []).map((s) => s.trim()).filter(Boolean);
     const payload = { ...data, bullet_points: cleanBullets, specified_content: cleanContent, page };
-    if (id) await base44.entities.IgcseFocusUnit.update(id, payload);
-    else await base44.entities.IgcseFocusUnit.create({ ...payload, order: units.length });
+    if (id) await editDb.IgcseFocusUnit.update(id, payload);
+    else await editDb.IgcseFocusUnit.create({ ...payload, order: units.length });
     setEditing(null);
     load();
     window.dispatchEvent(new Event('archive:reload'));
@@ -47,7 +48,7 @@ export default function IgcseFocusUnits({ page, title = 'Focus units', descripti
     const target = units[index + dir];
     if (!target) return;
     const current = units[index];
-    await base44.entities.IgcseFocusUnit.bulkUpdate([
+    await editDb.IgcseFocusUnit.bulkUpdate([
       { id: current.id, order: index + dir },
       { id: target.id, order: index },
     ]);
@@ -55,7 +56,7 @@ export default function IgcseFocusUnits({ page, title = 'Focus units', descripti
   };
 
   const remove = async (id) => {
-    await base44.entities.IgcseFocusUnit.delete(id);
+    await editDb.IgcseFocusUnit.delete(id);
     load();
     window.dispatchEvent(new Event('archive:reload'));
   };
