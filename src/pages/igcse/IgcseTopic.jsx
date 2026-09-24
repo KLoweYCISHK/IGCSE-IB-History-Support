@@ -7,6 +7,7 @@ import ResourceLibrary from '@/components/ResourceLibrary';
 import TextbookSection from '@/components/TextbookSection';
 import Roadmap from '@/components/Roadmap';
 import DocumentSection from '@/components/DocumentSection';
+import FinalChecklist from '@/components/FinalChecklist';
 import IgcsePaper1Exam from '@/components/igcse/IgcsePaper1Exam';
 import IgcsePaper2Links from '@/components/igcse/IgcsePaper2Links';
 import IgcsePaper2Focus from '@/components/igcse/IgcsePaper2Focus';
@@ -82,6 +83,7 @@ export default function IgcseTopic() {
               <TabsTrigger value="preparing" className={tabCls}>Preparing</TabsTrigger>
               <TabsTrigger value="writing" className={tabCls}>Writing</TabsTrigger>
               <TabsTrigger value="markscheme" className={tabCls}>Examples</TabsTrigger>
+              <TabsTrigger value="checklist" className={tabCls}>Final checklist</TabsTrigger>
             </TabsList>
             <TabsContent value="preparing" className="mt-8">
               <Roadmap section={cfg.page} stages={[{ key: 'preparing', label: 'Preparing' }]} />
@@ -96,6 +98,9 @@ export default function IgcseTopic() {
                 description="Annotated examples — download them and study the marking."
                 embedded
               />
+            </TabsContent>
+            <TabsContent value="checklist" className="mt-8">
+              <FinalChecklist page={cfg.page} title="Coursework — final checklist" />
             </TabsContent>
           </Tabs>
         </section>

@@ -1,0 +1,44 @@
+{
+  "name": "ChecklistItem",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "string",
+      "description": "ia | igcse_coursework"
+    },
+    "text": {
+      "type": "string",
+      "description": "Checklist item text (supports HTML, rendered with prose-archive)"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "is_deleted": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "page",
+    "text"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

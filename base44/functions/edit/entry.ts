@@ -8,7 +8,7 @@ import { secrets } from "base44:runtime";
 const ENTITIES = new Set([
   "ContentBlock", "Document", "ExamItem", "IgcseFocusUnit", "IgcseMarkSchemeTemplate",
   "IgcsePaper2Focus", "IgcsePaper2Link", "PageMeta", "PageSection", "Perspective",
-  "Resource", "RoadmapStep", "SiteSettings", "Textbook",
+  "ChecklistItem", "Resource", "RoadmapStep", "SiteSettings", "Textbook",
 ]);
 const METHODS = new Set([
   "create", "update", "delete", "bulkCreate", "bulkUpdate", "updateMany", "deleteMany",
